@@ -25,7 +25,7 @@ public class LearningGroupController {
     @RequestMapping(value = "/learninggroup/post", method = RequestMethod.GET)
     public String post(Model model) {
         model.addAttribute("posttest", new Post());
-        return "/learninggroup/post";
+        return "learninggroup/post";
     }
 
     @RequestMapping(value = "/learninggroup/post", method = RequestMethod.POST)
@@ -36,14 +36,14 @@ public class LearningGroupController {
         Post p = new Post();
         p.setText(s.toString() + " by " + mail);
         model.addAttribute("post", p);
-        return "/learninggroup/group";
+        return "learninggroup/group";
     }
 
     @RequestMapping(value = "/learninggroup/create", method = RequestMethod.GET)
     public String create(Model model) {
 
         model.addAttribute("group", new LearningGroup());
-        return "/learninggroup/create";
+        return "learninggroup/create";
     }
 
     @RequestMapping(value = "/learninggroup/create", method = RequestMethod.POST)
@@ -56,22 +56,24 @@ public class LearningGroupController {
     }
 
 
-    @RequestMapping(value ="/learninggroup/join", method = RequestMethod.GET)
+    @RequestMapping(value = "/learninggroup/join", method = RequestMethod.GET)
     public String join(Model model) {
-        LearningGroup l = new LearningGroup();
-        l.setDescription("blaaa");
-        l.setName("NAME-TOLL");
-        l.setPassword("pass");
-        learningGroupRepository.save(l);
-        model.addAttribute("groups",learningGroupRepository.findAll());
-        System.out.println("bla " + learningGroupRepository.findAll().size());
-        return "/learninggroup/join";
+        model.addAttribute("groups", learningGroupRepository.findAll());
+
+        return "learninggroup/join";
     }
+
+    @RequestMapping(value = "/learninggroup/join", method = RequestMethod.POST)
+    public String afterJoin(LearningGroup lg, Model model){
+
+        return "redirect:index";
+    }
+
     @RequestMapping("/learninggroup/group")
     public String joinPost(@RequestParam("name") String name) {
-        System.out.println(name +" yeah ");
+        System.out.println(name + " yeah ");
         learningGroupRepository.findOne(0);
-        return "/learninggroup/group";
+        return "learninggroup/group";
     }
 }
  

@@ -1,6 +1,7 @@
 package de.hohenheim.sopranos.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -11,7 +12,7 @@ public class LearningGroup {
     @GeneratedValue
     Integer lgId;
 
-    @Column(unique = true)
+    //@Column(unique = true)
     String name;
 
     String description;
@@ -29,10 +30,10 @@ public class LearningGroup {
             name = "GROUPPARTICIPANTS",
             joinColumns = @JoinColumn(name = "GROUP_ID"),
             inverseJoinColumns = @JoinColumn(name = "USERMAIL"))
-    public List<SopraUser> sopraUsers;
+    public List<SopraUser> sopraUsers = new ArrayList<SopraUser>();
 
     @OneToMany(mappedBy = "learningGroup")
-    public List<Post> postSet;
+    public List<Post> postList;
 
 
     public LearningGroup() {
@@ -87,12 +88,12 @@ public class LearningGroup {
         this.sopraUsers = sopraUsers;
     }
 
-    public List<Post> getPostSet() {
-        return postSet;
+    public List<Post> getPostList() {
+        return postList;
     }
 
-    public void setPostSet(List<Post> postSet) {
-        this.postSet = postSet;
+    public void setPostList(List<Post> postList) {
+        this.postList = postList;
     }
 
     public Boolean getFreeForAll() {
