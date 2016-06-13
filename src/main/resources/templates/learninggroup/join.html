@@ -83,13 +83,14 @@
         <th>PASSWORT GESCHÜTZT </th>
         <th>MITGLIEDERANZAHL </th>
     </tr>
+    <!--   <button type="submit" class="btn btn-primary btn-lg btn-block login-button">Erstelle Gruppe</button> -->
     <tr th:each="group,iterationStatus  : ${groups}">
-        <td><a type="button" class="btn btn-default" th:href="@{/learninggroup/group(name=${group.getName()})}">Join</a></td>
+        <td><a type="submit" class="btn btn-default" th:href="@{/learninggroup/group(name=${group.getName()})}">Join</a></td>
         <td th:text="${group.getName()}">NAME</td>
         <td th:text="${group.getDescription()}">BESCHREIBUNG</td>
         <td th:if="${group.getFreeForAll()}"><i class="fa fa-square-o" aria-hidden="true"></i></td>
         <td th:if="${!group.getFreeForAll()}"><i class="fa fa-check-square-o" aria-hidden="true"></i></td>
-        <td th:text="${group.getUserCount()}">1</td>
+        <td th:text="${group.getUserCount()}"></td>
     </tr>
 </table>
 </body>

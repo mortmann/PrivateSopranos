@@ -65,7 +65,14 @@ public class LearningGroupController {
 
     @RequestMapping(value = "/learninggroup/join", method = RequestMethod.POST)
     public String afterJoin(LearningGroup lg, Model model){
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        SopraUser newUser = sopraUserRepository.findByEmail(user.getUsername());
+        lg.sopraUsers.add(newUser);
+        newUser.learningGroups.add(lg);
 
+        //eventuell raus
+        learningGroupRepository.save(lg);
+        sopraUserRepository.save(newUser);
         return "redirect:index";
     }
 

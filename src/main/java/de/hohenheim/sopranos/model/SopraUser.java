@@ -2,6 +2,7 @@
 package de.hohenheim.sopranos.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -23,11 +24,11 @@ public class SopraUser {
     Integer rankpoints;
 
     @ManyToMany(mappedBy = "sopraUsers")
-    public List<LearningGroup> learningGroups;
+    public List<LearningGroup> learningGroups = new ArrayList<>();
 
 
     @OneToMany(mappedBy = "sopraUser")
-    public List<Post> postSet;
+    public List<Post> postList = new ArrayList<>();
 
     public SopraUser() {
     }
@@ -96,11 +97,11 @@ public class SopraUser {
         this.learningGroups = learningGroups;
     }
 
-    public List<Post> getPostSet() {
-        return postSet;
+    public List<Post> getPostList() {
+        return postList;
     }
 
-    public void setPostSet(List<Post> postSet) {
-        this.postSet = postSet;
+    public void setPostList(List<Post> postList) {
+        this.postList = postList;
     }
 }

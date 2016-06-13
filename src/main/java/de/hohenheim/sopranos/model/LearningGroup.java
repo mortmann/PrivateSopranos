@@ -12,7 +12,6 @@ public class LearningGroup {
     @GeneratedValue
     Integer lgId;
 
-    //@Column(unique = true)
     String name;
 
     String description;
@@ -20,7 +19,6 @@ public class LearningGroup {
     String password;
 
     Boolean freeForAll = true;
-
 
     @OneToOne
     SopraUser sopraHost;
@@ -30,19 +28,13 @@ public class LearningGroup {
             name = "GROUPPARTICIPANTS",
             joinColumns = @JoinColumn(name = "GROUP_ID"),
             inverseJoinColumns = @JoinColumn(name = "USERMAIL"))
-    public List<SopraUser> sopraUsers = new ArrayList<SopraUser>();
+    public List<SopraUser> sopraUsers = new ArrayList<>();
 
     @OneToMany(mappedBy = "learningGroup")
-    public List<Post> postList;
+    public List<Post> postList = new ArrayList<>();
 
 
     public LearningGroup() {
-    }
-
-    public LearningGroup(SopraUser sopraHost, String name) {
-        this.sopraHost = sopraHost;
-        sopraUsers.add(sopraHost);
-        this.name = name;
     }
 
     public Integer getLgId() {
