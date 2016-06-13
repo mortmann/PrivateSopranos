@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <meta charset="utf-8"/>
+    <title>Post</title>
+    <meta name="generator" content="Bootply" />
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <meta name="description"
+          content="Use bootstrap-wysiwyg with Bootstrap 3." />
+    <link
+            href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"
+            rel="stylesheet"/>
+
+    <!-- include libraries(jQuery, bootstrap) -->
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet"/>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
+
+    <!-- include summernote css/js-->
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.1/summernote.css" rel="stylesheet"/>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.1/summernote.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.summernote').summernote({
+                height: 300,
+                onKeyup: function(e) {
+                    $("#product_desc_l").html($(this).code());
+                }
+            });
+        });
+    </script>
+
+    <style type="text/css">
+        #editor {
+            overflow: scroll;
+            min-height: 380px;
+        }
+    </style>
+</head>
+
+
+<body>
+
+
+<form class="form-horizontal" th:object="${posttest}" th:action="@{/learninggrouppost}" method="post" >
+    <textarea id="editor" name="editor"  th:field="*{text}" type="text" class="summernote form-control" rows="10" placeholder="Enter the product long description..."></textarea>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary btn-lg btn-block login-button">Post</button>
+    </div>
+</form>
+
+
+
+
+
+</body>
+</html>
