@@ -1,6 +1,9 @@
 package de.hohenheim.sopranos.controller;
 
 import de.hohenheim.sopranos.model.*;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -58,20 +61,33 @@ public class LearningGroupController {
 
     @RequestMapping(value ="/learninggroup/join", method = RequestMethod.GET)
     public String join(Model model) {
-        LearningGroup l = new LearningGroup();
-        l.setDescription("blaaa");
-        l.setName("NAME-TOLL");
-        l.setPassword("pass");
-        learningGroupRepository.save(l);
-        model.addAttribute("groups",learningGroupRepository.findAll());
-        System.out.println("bla " + learningGroupRepository.findAll().size());
-        return "/learninggroup/join";
-    }
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        SopraUser loginUser = sopraUserRepository.findByEmail(user.getUsername());
+        LearningGroup g =  learningGroupRepository.findAll().get(0);
+//        loginUser.learningGroups.add(g);
+        g.sopraUsers.add(loginUser);
+        learningGroupRepository.save(g);
+        List<LearningGroup> lgs = learningGroupRepository.findAll();
+        // remove the groups when the user that is logged already is in it
+        // because he doesnt need to join again
+        lgs.removeIf(x -> x.sopraUsers.contains(loginUser));
+        model.addAttribute("groups",lgs);
+        return "/learninggroup/join"; 
+    } 
     @RequestMapping("/learninggroup/group")
-    public String joinPost(@RequestParam("name") String name) {
-        System.out.println(name +" yeah ");
-        learningGroupRepository.findOne(0);
+    public String joinPost(@RequestParam("name") String name,Model model) {
+        LearningGroup lg = learningGroupRepository.findByName(name);
+        if(lg.getFreeForAll() == false){
+        	return "redirect:/learninggroup/login?name="+name;
+        }
         return "/learninggroup/group";
+    }
+    @RequestMapping(value ="/learninggroup/login", method = RequestMethod.GET)
+    public String loginGroup(@RequestParam("name") String name,Model model) {
+        LearningGroup lg = learningGroupRepository.findByName(name);
+        String s = new String();
+        model.addAttribute("password", s);
+        return "/learninggroup/login";
     }
 }
  

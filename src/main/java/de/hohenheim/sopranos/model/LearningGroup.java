@@ -1,7 +1,12 @@
 package de.hohenheim.sopranos.model;
 
 import javax.persistence.*;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 
 @Entity
@@ -29,13 +34,14 @@ public class LearningGroup {
             name = "GROUPPARTICIPANTS",
             joinColumns = @JoinColumn(name = "GROUP_ID"),
             inverseJoinColumns = @JoinColumn(name = "USERMAIL"))
-    public List<SopraUser> sopraUsers;
+    public List<SopraUser> sopraUsers = new ArrayList<>();
 
     @OneToMany(mappedBy = "learningGroup")
-    public List<Post> postSet;
+    public List<Post> postSet = new ArrayList<>();;
 
 
     public LearningGroup() {
+    	
     }
 
     public LearningGroup(SopraUser sopraHost, String name) {
