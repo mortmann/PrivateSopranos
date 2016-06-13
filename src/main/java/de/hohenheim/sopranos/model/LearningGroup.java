@@ -11,7 +11,7 @@ public class LearningGroup {
     @GeneratedValue
     Integer lgId;
 
-   // @Column(unique = true)
+    @Column(unique = true)
     String name;
 
     String description;
@@ -40,6 +40,7 @@ public class LearningGroup {
 
     public LearningGroup(SopraUser sopraHost, String name) {
         this.sopraHost = sopraHost;
+        sopraUsers.add(sopraHost);
         this.name = name;
     }
 
@@ -108,10 +109,10 @@ public class LearningGroup {
 
     public void setSopraHost(SopraUser sopraHost) {
         this.sopraHost = sopraHost;
+        sopraUsers.add(sopraHost);
     }
 
-    public int getUserCount(){
-        return 1;
-                //getSopraUsers().size();
+    public int getUserCount() {
+        return getSopraUsers().size();
     }
 }

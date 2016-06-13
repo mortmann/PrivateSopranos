@@ -31,7 +31,7 @@
             </div>
         </div>
         <div class="main-login main-center">
-            <form class="form-horizontal" th:object="${group}" th:action="@{/learninggroupcreate}" method="post">
+            <form class="form-horizontal" th:object="${group}" th:action="@{/learninggroup/create}" method="post">
                 <div th:if="${param.error}" class="alert alert-error">
                     Invalid data.
                 </div>

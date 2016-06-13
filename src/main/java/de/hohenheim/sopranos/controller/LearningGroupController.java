@@ -22,13 +22,13 @@ public class LearningGroupController {
     @Autowired
     SopraUserRepository sopraUserRepository;
 
-    @RequestMapping(value = "/learninggrouppost", method = RequestMethod.GET)
+    @RequestMapping(value = "/learninggroup/post", method = RequestMethod.GET)
     public String post(Model model) {
         model.addAttribute("posttest", new Post());
-        return "learninggrouppost";
+        return "/learninggroup/post";
     }
 
-    @RequestMapping(value = "/learninggrouppost", method = RequestMethod.POST)
+    @RequestMapping(value = "/learninggroup/post", method = RequestMethod.POST)
     public String registerSubmit(Post post, Model model) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String mail = user.getUsername();
@@ -36,32 +36,27 @@ public class LearningGroupController {
         Post p = new Post();
         p.setText(s.toString() + " by " + mail);
         model.addAttribute("post", p);
-        return "learninggroups";
+        return "/learninggroup/group";
     }
 
-    @RequestMapping(value = "/learninggroupcreate", method = RequestMethod.GET)
+    @RequestMapping(value = "/learninggroup/create", method = RequestMethod.GET)
     public String create(Model model) {
 
         model.addAttribute("group", new LearningGroup());
-        return "learninggroupcreate";
+        return "/learninggroup/create";
     }
 
-    @RequestMapping(value = "/learninggroupcreate", method = RequestMethod.POST)
+    @RequestMapping(value = "/learninggroup/create", method = RequestMethod.POST)
     public String createFinish(LearningGroup lg, Model model) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SopraUser host = sopraUserRepository.findByEmail(user.getUsername());
         lg.setSopraHost(host);
         learningGroupRepository.save(lg);
-        return "index";
+        return "redirect:/index";
     }
 
-    @RequestMapping("/learninggroup")
-    public String show(Model model) {
 
-        return "learninggroups";
-    }
-
-    @RequestMapping(value ="/learninggroupjoin", method = RequestMethod.GET)
+    @RequestMapping(value ="/learninggroup/join", method = RequestMethod.GET)
     public String join(Model model) {
         LearningGroup l = new LearningGroup();
         l.setDescription("blaaa");
@@ -70,13 +65,13 @@ public class LearningGroupController {
         learningGroupRepository.save(l);
         model.addAttribute("groups",learningGroupRepository.findAll());
         System.out.println("bla " + learningGroupRepository.findAll().size());
-        return "learninggroupjoin";
+        return "/learninggroup/join";
     }
     @RequestMapping("/learninggroup/group")
     public String joinPost(@RequestParam("name") String name) {
         System.out.println(name +" yeah ");
         learningGroupRepository.findOne(0);
-        return "learninggroups/group";
+        return "/learninggroup/group";
     }
 }
  

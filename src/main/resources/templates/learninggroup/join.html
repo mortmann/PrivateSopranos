@@ -84,7 +84,7 @@
         <th>MITGLIEDERANZAHL </th>
     </tr>
     <tr th:each="group,iterationStatus  : ${groups}">
-        <td><a type="button" class="btn btn-default" th:href="@{/learninggroups/group(name=${group.getName()})}">Join</a></td>
+        <td><a type="button" class="btn btn-default" th:href="@{/learninggroup/group(name=${group.getName()})}">Join</a></td>
         <td th:text="${group.getName()}">NAME</td>
         <td th:text="${group.getDescription()}">BESCHREIBUNG</td>
         <td th:if="${group.getFreeForAll()}"><i class="fa fa-square-o" aria-hidden="true"></i></td>
