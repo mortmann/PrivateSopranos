@@ -36,7 +36,7 @@ public class LearningGroupController {
         Post p = new Post();
         p.setText(s.toString() + " by " + mail);
         model.addAttribute("post", p);
-        return "learninggroup";
+        return "learninggroups";
     }
 
     @RequestMapping(value = "/learninggroupcreate", method = RequestMethod.GET)
@@ -58,7 +58,7 @@ public class LearningGroupController {
     @RequestMapping("/learninggroup")
     public String show(Model model) {
 
-        return "learninggroup";
+        return "learninggroups";
     }
 
     @RequestMapping(value ="/learninggroupjoin", method = RequestMethod.GET)

@@ -11,7 +11,7 @@ public class LearningGroup {
     @GeneratedValue
     Integer lgId;
 
-    @Column(unique = true)
+   // @Column(unique = true)
     String name;
 
     String description;
@@ -19,6 +19,7 @@ public class LearningGroup {
     String password;
 
     Boolean freeForAll = true;
+
 
     @OneToOne
     SopraUser sopraHost;
@@ -107,5 +108,10 @@ public class LearningGroup {
 
     public void setSopraHost(SopraUser sopraHost) {
         this.sopraHost = sopraHost;
+    }
+
+    public int getUserCount(){
+        return 1;
+                //getSopraUsers().size();
     }
 }
