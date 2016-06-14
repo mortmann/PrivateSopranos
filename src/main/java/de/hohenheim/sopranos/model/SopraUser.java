@@ -2,10 +2,6 @@
 package de.hohenheim.sopranos.model;
 
 import javax.persistence.*;
-<<<<<<< HEAD
-=======
-
->>>>>>> refs/remotes/origin/mortmann
 import java.util.ArrayList;
 import java.util.List;
 
