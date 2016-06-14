@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-/application.properties
+/templates/
 /de/
 /static/
-=======
-/model/
-/de/
->>>>>>> refs/remotes/origin/newmortmann
-/templates/

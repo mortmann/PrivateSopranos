@@ -12,6 +12,7 @@ public class LearningGroup {
     @GeneratedValue
     Integer lgId;
 
+    @Column(unique = true)
     String name;
 
     String description;
@@ -33,8 +34,8 @@ public class LearningGroup {
     @OneToMany(mappedBy = "learningGroup")
     public List<Post> postList = new ArrayList<>();
 
-
     public LearningGroup() {
+    	
     }
 
     public Integer getLgId() {
