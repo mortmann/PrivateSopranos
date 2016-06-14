@@ -12,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * Created by MortmannMKII v2 on 08.06.2016.
@@ -78,24 +80,31 @@ public class LearningGroupController {
     @RequestMapping("/learninggroup/group")
     public String joinPost(@RequestParam("name") String name,Model model) {
         LearningGroup lg = learningGroupRepository.findByName(name);
-        model.
         if(lg.getFreeForAll() == false){
         	return "redirect:/learninggroup/login?name="+name;
         }
         return "/learninggroup/group";
     }
-    @RequestMapping(value ="/learninggroup/login", method = RequestMethod.GET)
-    public String loginGroup(@RequestParam("name") String name,Model model) {
-        return "/learninggroup/login?name="+name;
+    @RequestMapping(value ="/learninggroup/login{name}", method = RequestMethod.GET,params={"name"})
+    public String loginGroup(@RequestParam("name") String name,Model model, RedirectAttributes attr) {
+        model.addAttribute("name", name);
+    	attr.addAttribute("name", name);
+    	return "/learninggroup/login";
     }
-    @RequestMapping(value ="/learninggroup/login", method = RequestMethod.POST)
-    public String loginGroupPOSTmapper(@RequestParam("name") String name,String password,Model model) {
-    	System.out.println("login post");
+    @RequestMapping(value ="/learninggroup/login{name}", method = RequestMethod.POST)
+    public String loginGroupPOSTmapper(@RequestParam("name") String name,String password,Model model, RedirectAttributes attr) {
         LearningGroup lg = learningGroupRepository.findByName(name);
         if(lg.getPassword().equals(password) == false){
         	return "redirect:/learninggroup/join?error";
         }
-        return "/learninggroup/home?name=" +name;
+        attr.addAttribute("name",name);
+        return "redirect:/learninggroup/home";
     }
+    @RequestMapping(value ="/learninggroup/home{name}")
+    public String lgHome(@RequestParam("name") String name,String password,Model model, RedirectAttributes attr) {
+        
+        return "/learninggroup/home";
+    }    
+    
 }
  
