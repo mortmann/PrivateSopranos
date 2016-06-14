@@ -38,7 +38,7 @@ public class LearningGroupController {
         SopraUser host = sopraUserRepository.findByEmail(user.getUsername());
         lg.setSopraHost(host);
         learningGroupRepository.save(lg);
-        return "redirect:/index";
+        return "redirect:/learninggroup/home?name=" + lg.getName() +"&created";
     }
 
 
@@ -89,7 +89,8 @@ public class LearningGroupController {
     public String loginGroupPOSTmapper(@RequestParam("name") String name, String password, Model model, RedirectAttributes attr) {
         LearningGroup lg = learningGroupRepository.findByName(name);
         if (lg.getPassword().equals(password) == false) {
-            return "redirect:/learninggroup/join?error";
+        	attr.addAttribute("name" , name);
+            return "redirect:/learninggroup/login?error";
         }
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SopraUser loginUser = sopraUserRepository.findByEmail(user.getUsername());
@@ -102,9 +103,37 @@ public class LearningGroupController {
 
     @RequestMapping(value = "/learninggroup/home{name}")
     public String lgHome(@RequestParam("name") String name, String password, Model model, RedirectAttributes attr) {
-
+    	model.addAttribute("name",name);
         return "/learninggroup/home";
     }
-
+    @RequestMapping(value = "/learninggroup/users{name}", method = RequestMethod.GET)
+    public String lgUser(@RequestParam("name") String name, Model model, RedirectAttributes attr) {
+    	LearningGroup lg = learningGroupRepository.findByName(name);
+    	model.addAttribute("users", lg.sopraUsers);
+    	User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        SopraUser loginUser = sopraUserRepository.findByEmail(user.getUsername());
+        model.addAttribute("isHost", lg.isHost(loginUser));
+    	model.addAttribute("name", name); 
+    	attr.addAttribute("name", name);
+        return "/learninggroup/users";
+    }
+    @RequestMapping(value = "/learninggroup/users{name}", method = RequestMethod.POST)
+    public String lgUserDelete(@RequestParam("name") String name, String info, Model model, RedirectAttributes attr) {
+    	String emailAdresse = info.split("-")[0];
+    	boolean delete = Boolean.parseBoolean(info.split("-")[1]);
+    	model.addAttribute("name", name);
+    	attr.addAttribute("name", name);
+    	LearningGroup lg = learningGroupRepository.findByName(name);
+    	if(lg.isHost(sopraUserRepository.findByEmail(emailAdresse))){
+    		return "redirect:/learninggroup/home?deleted=error";
+    	}
+    	if(delete){
+	    	lg.sopraUsers.remove(sopraUserRepository.findByEmail(emailAdresse));
+	        return "redirect:/learninggroup/home?deleted=successful";
+    	} else {
+    		
+    		return "redirect:/learninggroup/home?deleted=successful";
+    	}
+    }
 }
  

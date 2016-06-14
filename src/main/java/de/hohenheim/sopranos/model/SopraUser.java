@@ -104,4 +104,8 @@ public class SopraUser {
     public void setPostList(List<Post> postList) {
         this.postList = postList;
     }
+    public int getPostCount(){
+    	return postList.size();
+    }
+   
 }
