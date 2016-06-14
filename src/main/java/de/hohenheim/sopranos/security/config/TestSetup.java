@@ -68,8 +68,7 @@ public class TestSetup implements ApplicationListener<ContextRefreshedEvent> {
         s.setName("blub-TOLL");
         s.setPassword("pass");
         learningGroupRepository.save(s);
-        
-        
+
     }
 
 
