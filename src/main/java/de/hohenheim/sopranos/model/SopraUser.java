@@ -1,12 +1,21 @@
 
 package de.hohenheim.sopranos.model;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class SopraUser {
+
+
+    @Autowired
+    SopraUserRepository sopraUserRepository;
+
 
     @Id
     @Column(name = "email", unique = true, nullable = false)
@@ -103,5 +112,12 @@ public class SopraUser {
 
     public void setPostList(List<Post> postList) {
         this.postList = postList;
+    }
+
+    public SopraUser getCurrentUser() {
+
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        SopraUser currentUser = sopraUserRepository.findByEmail(user.getUsername());
+        return currentUser;
     }
 }

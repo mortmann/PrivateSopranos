@@ -1,9 +1,10 @@
 package de.hohenheim.sopranos.controller;
 
-import de.hohenheim.sopranos.model.*;
+import de.hohenheim.sopranos.model.LearningGroup;
+import de.hohenheim.sopranos.model.LearningGroupRepository;
+import de.hohenheim.sopranos.model.SopraUser;
+import de.hohenheim.sopranos.model.SopraUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,8 @@ public class LearningGroupController {
     @Autowired
     SopraUserRepository sopraUserRepository;
 
+    SopraUser user;
+
     @RequestMapping(value = "/learninggroup/create", method = RequestMethod.GET)
     public String create(Model model) {
 
@@ -34,8 +37,8 @@ public class LearningGroupController {
 
     @RequestMapping(value = "/learninggroup/create", method = RequestMethod.POST)
     public String createFinish(LearningGroup lg, Model model) {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        SopraUser host = sopraUserRepository.findByEmail(user.getUsername());
+
+        SopraUser host = user.getCurrentUser();
         lg.setSopraHost(host);
         learningGroupRepository.save(lg);
         return "redirect:/index";
@@ -45,13 +48,7 @@ public class LearningGroupController {
     @RequestMapping(value = "/learninggroup/join")
     public String join(Model model) {
 
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        SopraUser loginUser = sopraUserRepository.findByEmail(user.getUsername());
-
-        //Testzweck
-        LearningGroup g = learningGroupRepository.findAll().get(0);
-        g.sopraUsers.add(loginUser);
-        learningGroupRepository.save(g);
+        SopraUser loginUser = user.getCurrentUser();
 
         List<LearningGroup> lgs = learningGroupRepository.findAll();
 
@@ -63,8 +60,8 @@ public class LearningGroupController {
     @RequestMapping("/learninggroup/home")
     public String joinPost(@RequestParam("name") String name, Model model, RedirectAttributes attr) {
         LearningGroup lg = learningGroupRepository.findByName(name);
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        SopraUser loginUser = sopraUserRepository.findByEmail(user.getUsername());
+
+        SopraUser loginUser = user.getCurrentUser();
 
         if(lg.sopraUsers.contains(loginUser) == false){
 	        if (lg.getFreeForAll() == false) {
@@ -91,8 +88,8 @@ public class LearningGroupController {
         if (lg.getPassword().equals(password) == false) {
             return "redirect:/learninggroup/join?error";
         }
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        SopraUser loginUser = sopraUserRepository.findByEmail(user.getUsername());
+
+        SopraUser loginUser = user.getCurrentUser();
         attr.addAttribute("join", "successful");
     	lg.sopraUsers.add(loginUser);
     	learningGroupRepository.save(lg);

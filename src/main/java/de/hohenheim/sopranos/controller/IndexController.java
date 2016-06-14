@@ -27,30 +27,22 @@ public class IndexController {
     @RequestMapping("/index")
     public String index(@RequestParam(value = "username", required = false, defaultValue = "user") String username, Model model) {
 
-//
-//        List<SopraUser> user = new ArrayList<SopraUser>();
-//        SopraUser user1 = new SopraUser("ilikburi@live.de", "abc");
-//        SopraUser user2 = new SopraUser("testdetlef1337@aol.de", "abc");
-//        user.add(user1);
-//        user.add(user2);
-//
-//        LearningGroup lg1 = new LearningGroup(user1, "Lerngruppe 1");
-//
-//        Post p1 = new Post("Das ist ein Post");
-//        p1.sopraUser = user2;
-//        p1.learningGroup = lg1;
-//
-//        lg1.setSopraUsers(user);
-//
-//        lg1.setSopraHost(user1);
-//
-//        sopraUserRepository.save(user1);
-//        sopraUserRepository.save(user2);
-//        learningGroupRepository.save(lg1);
-//        postRepository.save(p1);
-
 
         return "index";
+    }
+
+    @RequestMapping("/in")
+    public String in(@RequestParam(value = "username", required = false, defaultValue = "user") String username, Model model) {
+
+
+        return "in";
+    }
+
+    @RequestMapping("/template")
+    public String template(@RequestParam(value = "username", required = false, defaultValue = "user") String username, Model model) {
+
+
+        return "template";
     }
 
 

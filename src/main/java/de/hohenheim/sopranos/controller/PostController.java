@@ -2,8 +2,6 @@ package de.hohenheim.sopranos.controller;
 
 import de.hohenheim.sopranos.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +24,8 @@ public class PostController {
     @Autowired
     PostRepository postRepository;
 
+    SopraUser user;
+
     @RequestMapping(value = "/learninggroup/post", method = RequestMethod.GET)
     public String post(@RequestParam("name") String name, Model model, RedirectAttributes attr) {
         model.addAttribute("post", new Post());
@@ -38,9 +38,9 @@ public class PostController {
     @RequestMapping(value = "/learninggroup/post", method = RequestMethod.POST)
     public String registerSubmit(@RequestParam("name")
                                          String name, Post post, Model model) {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        SopraUser current = sopraUserRepository.findByEmail(user.getUsername());
 
+        SopraUser current = user.getCurrentUser();
+        post.setLearningGroup(learningGroupRepository.findByName(name));
         post.setLearningGroup(learningGroupRepository.findByName(name));
         post.setSopraUser(current);
         postRepository.save(post);
