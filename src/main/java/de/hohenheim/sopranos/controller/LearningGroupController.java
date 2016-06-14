@@ -1,6 +1,9 @@
 package de.hohenheim.sopranos.controller;
 
 import de.hohenheim.sopranos.model.*;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -9,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * Created by MortmannMKII v2 on 08.06.2016.
@@ -34,6 +39,7 @@ public class LearningGroupController {
         String mail = user.getUsername();
         String s = post.getText();
         Post p = new Post();
+        
         p.setText(s.toString() + " by " + mail);
         model.addAttribute("post", p);
         return "learninggroup/group";
@@ -58,6 +64,7 @@ public class LearningGroupController {
 
     @RequestMapping(value = "/learninggroup/join", method = RequestMethod.GET)
     public String join(Model model) {
+<<<<<<< HEAD
         model.addAttribute("groups", learningGroupRepository.findAll());
 
         return "learninggroup/join";
@@ -81,6 +88,49 @@ public class LearningGroupController {
         System.out.println(name + " yeah ");
         learningGroupRepository.findOne(0);
         return "learninggroup/group";
+=======
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        SopraUser loginUser = sopraUserRepository.findByEmail(user.getUsername());
+        LearningGroup g =  learningGroupRepository.findAll().get(0);
+//        loginUser.learningGroups.add(g);
+        g.sopraUsers.add(loginUser);
+        learningGroupRepository.save(g);
+        List<LearningGroup> lgs = learningGroupRepository.findAll();
+        // remove the groups when the user that is logged already is in it
+        // because he doesnt need to join again
+        lgs.removeIf(x -> x.sopraUsers.contains(loginUser));
+        model.addAttribute("groups",lgs);
+        return "/learninggroup/join"; 
+    } 
+    @RequestMapping("/learninggroup/group")
+    public String joinPost(@RequestParam("name") String name,Model model) {
+        LearningGroup lg = learningGroupRepository.findByName(name);
+        if(lg.getFreeForAll() == false){
+        	return "redirect:/learninggroup/login?name="+name;
+        }
+        return "/learninggroup/group";
+>>>>>>> refs/remotes/origin/mortmann
     }
+    @RequestMapping(value ="/learninggroup/login{name}", method = RequestMethod.GET,params={"name"})
+    public String loginGroup(@RequestParam("name") String name,Model model, RedirectAttributes attr) {
+        model.addAttribute("name", name);
+    	attr.addAttribute("name", name);
+    	return "/learninggroup/login";
+    }
+    @RequestMapping(value ="/learninggroup/login{name}", method = RequestMethod.POST)
+    public String loginGroupPOSTmapper(@RequestParam("name") String name,String password,Model model, RedirectAttributes attr) {
+        LearningGroup lg = learningGroupRepository.findByName(name);
+        if(lg.getPassword().equals(password) == false){
+        	return "redirect:/learninggroup/join?error";
+        }
+        attr.addAttribute("name",name);
+        return "redirect:/learninggroup/home";
+    }
+    @RequestMapping(value ="/learninggroup/home{name}")
+    public String lgHome(@RequestParam("name") String name,String password,Model model, RedirectAttributes attr) {
+        
+        return "/learninggroup/home";
+    }    
+    
 }
  

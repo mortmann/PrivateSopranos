@@ -23,7 +23,10 @@
 
 
 <body>
-
-<div  class="content" th:utext="${text.getContentInput()}">  </div>
+<table>
+	<tr th:each="tests,iterationStatus  : ${posts}">
+		<td  class="content" th:utext="${text.getText()}"/> 
+	</tr>
+</table>
 </body>
 </html>

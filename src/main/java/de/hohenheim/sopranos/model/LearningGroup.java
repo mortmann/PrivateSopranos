@@ -1,8 +1,16 @@
 package de.hohenheim.sopranos.model;
 
 import javax.persistence.*;
+<<<<<<< HEAD
 import java.util.ArrayList;
+=======
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+>>>>>>> refs/remotes/origin/mortmann
 import java.util.List;
+import java.util.ListIterator;
 
 
 @Entity
@@ -31,10 +39,15 @@ public class LearningGroup {
     public List<SopraUser> sopraUsers = new ArrayList<>();
 
     @OneToMany(mappedBy = "learningGroup")
+<<<<<<< HEAD
     public List<Post> postList = new ArrayList<>();
+=======
+    public List<Post> postSet = new ArrayList<>();;
+>>>>>>> refs/remotes/origin/mortmann
 
 
     public LearningGroup() {
+    	
     }
 
     public Integer getLgId() {
