@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
     <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <title>Bootply snippet - Bootstrap Wysiwyg Editor</title>
     <meta name="generator" content="Bootply" />
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=1"/>
     <meta name="description"
           content="Use bootstrap-wysiwyg with Bootstrap 3." />
     <link
@@ -23,6 +22,7 @@
 
 
 <body>
+<th:block th:include="fragments/navbar::nav"/>
  <form name="form-login" th:action="@{/learninggroup/login?name=} + ${name}" method="post">
 	 <label for="password" class="sr-only">Passwort</label>
      <input type="password" id="password" name="password" class="form-control" placeholder="Passwort"/>
