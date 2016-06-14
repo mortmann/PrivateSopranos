@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface LearningGroupRepository extends JpaRepository<LearningGroup, Integer> {
 
-    public LearningGroup findByLgId(Integer lgId);
+    public LearningGroup findBySopraHost(SopraUser sopraHost);
 
     public LearningGroup findByName(String name);
 
