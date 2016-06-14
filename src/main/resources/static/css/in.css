@@ -1,0 +1,44 @@
+@import url("//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css");
+
+body{
+    background: url(https://picload.org/image/rgwgwoia/network-connection-35737.jpg);
+    background-color: #444;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: initial;
+
+}
+
+.vertical-offset-100{
+    padding-top:100px;
+}
+.login .user-row{
+    text-align: center;
+    font-size: 30px;
+}
+
+.login .img-responsive {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: auto;
+}
+
+.login.panel {
+    margin-bottom: 20px;
+    background-color: rgba(255, 255, 255, 0.75);
+    border: 1px solid transparent;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+}
+.login label{
+    display: block;
+    width: 100%;
+    color: #49579d;
+    text-shadow: #6aa0ae;
+    text-align: center;
+}
+.login hr{
+    margin: 5px;
+}

@@ -1,23 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"/>
     <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <link href="../static/css/material-kit.css" th:href="@{/css/material-kit.css}" rel="stylesheet" type="text/css"/>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
-          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
-          crossorigin="anonymous">
-
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"/>
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
-          integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r"
-          crossorigin="anonymous">
-
+          integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
             integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
             crossorigin="anonymous"></script>
-
 </head>
 <body>
 
@@ -28,24 +27,23 @@
             <div class="panel panel-default login">
                 <div class="panel-heading">
                     <div class="row-fluid user-row">
-                        <i class="fa fa-eye fa-3x"></i>
+                        <span class="glyphicon glyphicon-off"></span>
                     </div>
-                    <h3 class="panel-title user-row"> NAME </h3>
+                    <h3 class="panel-title user-row"> LOGIN </h3>
                 </div>
                 <div class="panel-body">
                     <div class="form-group">
-                        <label>LOGIN</label>
-                        <hr>
+                        <label> </label>
                     </div>
                     <form accept-charset="UTF-8" role="form">
                         <fieldset>
                             <div class="form-group">
-                                <input class="form-control" placeholder="E-mail" name="email" type="text">
+                                <input class="form-control" placeholder="E-mail" name="email" type="text"/>
                             </div>
                             <div class="form-group">
-                                <input class="form-control" placeholder="Password" name="password" type="password" value="">
+                                <input class="form-control" placeholder="Password" name="password" type="password" value=""/>
                             </div>
-                            <input class="btn btn-lg btn-success btn-block" type="submit" value="Login">
+                            <input class="btn btn-lg btn-info btn-block" type="submit" value="Login"/>
                         </fieldset>
                     </form>
                 </div>
@@ -53,51 +51,6 @@
         </div>
     </div>
 </div>
-<style>
-    @import url("//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css");
 
-    body{
-        background: url(https://picload.org/image/rgwgwoia/network-connection-35737.jpg);
-        background-color: #444;
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: initial;
-
-    }
-
-    .vertical-offset-100{
-        padding-top:100px;
-    }
-    .login .user-row{
-        text-align: center;
-        font-size: 30px;
-    }
-
-    .login .img-responsive {
-        display: block;
-        max-width: 100%;
-        height: auto;
-        margin: auto;
-    }
-
-    .login.panel {
-        margin-bottom: 20px;
-        background-color: rgba(255, 255, 255, 0.75);
-        border: 1px solid transparent;
-        border-radius: 4px;
-        -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-        box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-    }
-    .login label{
-        display: block;
-        width: 100%;
-        color: #49579d;
-        text-shadow: #6aa0ae;
-        text-align: center;
-    }
-    .login hr{
-        margin: 5px;
-    }
-</style>
 </body>
 </html>
