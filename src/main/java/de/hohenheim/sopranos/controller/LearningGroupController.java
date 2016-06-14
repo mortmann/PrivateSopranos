@@ -37,6 +37,7 @@ public class LearningGroupController {
         String mail = user.getUsername();
         String s = post.getText();
         Post p = new Post();
+        
         p.setText(s.toString() + " by " + mail);
         model.addAttribute("post", p);
         return "/learninggroup/group";
@@ -77,6 +78,7 @@ public class LearningGroupController {
     @RequestMapping("/learninggroup/group")
     public String joinPost(@RequestParam("name") String name,Model model) {
         LearningGroup lg = learningGroupRepository.findByName(name);
+        model.
         if(lg.getFreeForAll() == false){
         	return "redirect:/learninggroup/login?name="+name;
         }
@@ -84,10 +86,16 @@ public class LearningGroupController {
     }
     @RequestMapping(value ="/learninggroup/login", method = RequestMethod.GET)
     public String loginGroup(@RequestParam("name") String name,Model model) {
+        return "/learninggroup/login?name="+name;
+    }
+    @RequestMapping(value ="/learninggroup/login", method = RequestMethod.POST)
+    public String loginGroupPOSTmapper(@RequestParam("name") String name,String password,Model model) {
+    	System.out.println("login post");
         LearningGroup lg = learningGroupRepository.findByName(name);
-        String s = new String();
-        model.addAttribute("password", s);
-        return "/learninggroup/login";
+        if(lg.getPassword().equals(password) == false){
+        	return "redirect:/learninggroup/join?error";
+        }
+        return "/learninggroup/home?name=" +name;
     }
 }
  

@@ -23,6 +23,10 @@
 
 
 <body>
-	
+ <form name="form-login" th:action="@{/learninggroup/login}" method="post">
+	 <label for="password" class="sr-only">Passwort</label>
+     <input type="password" id="password" name="password" class="form-control" placeholder="Passwort"/>
+     <button type = "submit" class="btn btn-lg btn-primary btn-block" >Anmelden</button>
+ </form>
 </body>
 </html>
