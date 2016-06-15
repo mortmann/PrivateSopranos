@@ -1,6 +1,10 @@
 .gradle
 .idea
 build/
+workspace.xml
+tasks.xml
+.iws
+
 
 
 # Ignore Gradle GUI config

@@ -1,7 +1,12 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+	<meta charset="utf-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
 	<title>TITLE</title>
+
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
@@ -20,7 +25,9 @@
 <body>
 
 <!-- Navbar will come here -->
-<th:block th:include="fragments/navbar::nav"/>
+<!-- wählen, ob eingeloggt, oder nicht -->
+<th:block th:include="fragments/navbar::nav-In"/>
+<th:block th:include="fragments/navbar::nav-notIn"/>
 <!-- end navbar -->
 
 <div class="wrapper">
