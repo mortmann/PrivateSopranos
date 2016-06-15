@@ -40,7 +40,13 @@ public class LearningGroupController {
         learningGroupRepository.save(lg);
         return "redirect:/learninggroup/home?name=" + lg.getName() +"&created";
     }
-
+    @RequestMapping(value = "/learninggroup/mygroups", method = RequestMethod.GET)
+    public String myGroups(Model model) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        SopraUser host = sopraUserRepository.findByEmail(user.getUsername());
+        model.addAttribute("groups", host.learningGroups);
+        return "/learninggroup/mygroups";
+    }
 
     @RequestMapping(value = "/learninggroup/join")
     public String join(Model model) {
