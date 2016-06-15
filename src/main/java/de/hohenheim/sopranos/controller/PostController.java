@@ -28,24 +28,37 @@ public class PostController {
 
     @RequestMapping(value = "/learninggroup/post", method = RequestMethod.GET)
     public String post(@RequestParam("name") String name, Model model, RedirectAttributes attr) {
-        model.addAttribute("post", new Post());
-        model.addAttribute("name", name);
-        attr.addAttribute("name", name);
 
-        return "learninggroup/post";
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        SopraUser current = sopraUserRepository.findByEmail(user.getUsername());
+        LearningGroup lg = learningGroupRepository.findByName(name);
+
+        if (lg.grayList.contains(current) || lg.blackList.contains(current))
+            return "redirect:/learninggroup/home?name=" + name;
+
+        else {
+            model.addAttribute("post", new Post());
+            model.addAttribute("name", name);
+            attr.addAttribute("name", name);
+
+            return "learninggroup/post";
+        }
     }
 
     @RequestMapping(value = "/learninggroup/post", method = RequestMethod.POST)
     public String registerSubmit(@RequestParam("name")
                                          String name, Post post, Model model) {
+
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SopraUser current = sopraUserRepository.findByEmail(user.getUsername());
+        LearningGroup lg = learningGroupRepository.findByName(name);
 
-        post.setLearningGroup(learningGroupRepository.findByName(name));
+
+        post.setLearningGroup(lg);
         post.setSopraUser(current);
         postRepository.save(post);
 
-        return "redirect:/learninggroup/home?name="+name;
+        return "redirect:/learninggroup/home?name=" + name;
     }
 
 }

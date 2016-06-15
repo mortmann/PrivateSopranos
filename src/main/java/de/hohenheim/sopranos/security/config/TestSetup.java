@@ -1,10 +1,10 @@
 package de.hohenheim.sopranos.security.config;
 
 
-import de.hohenheim.sopranos.model.SopraUserRepository;
 import de.hohenheim.sopranos.model.LearningGroup;
 import de.hohenheim.sopranos.model.LearningGroupRepository;
 import de.hohenheim.sopranos.model.SopraUser;
+import de.hohenheim.sopranos.model.SopraUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -34,6 +34,7 @@ public class TestSetup implements ApplicationListener<ContextRefreshedEvent> {
 
     @Autowired
     private SopraUserRepository sopraUserRepository;
+
     @Autowired
     LearningGroupRepository learningGroupRepository;
 
@@ -60,13 +61,13 @@ public class TestSetup implements ApplicationListener<ContextRefreshedEvent> {
 
         LearningGroup l = new LearningGroup();
         l.setDescription("blaaa");
-        l.setName("NAME-TOLL");
-        l.setPassword("pass");
+        l.setName("BLACK");
+        l.setSopraHost(user1);
         learningGroupRepository.save(l);
         LearningGroup s = new LearningGroup();
         s.setDescription("blub");
-        s.setName("blub-TOLL");
-        s.setPassword("pass");
+        s.setName("GRAY");
+        s.setSopraHost(user1);
         learningGroupRepository.save(s);
 
     }

@@ -23,9 +23,16 @@ public class SopraUser {
 
     Integer rankpoints;
 
+
+
     @ManyToMany(mappedBy = "sopraUsers")
     public List<LearningGroup> learningGroups = new ArrayList<>();
 
+    @ManyToMany(mappedBy = "blackList")
+    public List<LearningGroup> black = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "grayList")
+    public List<LearningGroup> gray = new ArrayList<>();
 
     @OneToMany(mappedBy = "sopraUser")
     public List<Post> postList = new ArrayList<>();
@@ -97,6 +104,22 @@ public class SopraUser {
         this.learningGroups = learningGroups;
     }
 
+    public List<LearningGroup> getBlack() {
+        return black;
+    }
+
+    public void setBlack(List<LearningGroup> black) {
+        this.black = black;
+    }
+
+    public List<LearningGroup> getGray() {
+        return gray;
+    }
+
+    public void setGray(List<LearningGroup> gray) {
+        this.gray = gray;
+    }
+
     public List<Post> getPostList() {
         return postList;
     }
@@ -107,5 +130,5 @@ public class SopraUser {
     public int getPostCount(){
     	return postList.size();
     }
-   
+
 }

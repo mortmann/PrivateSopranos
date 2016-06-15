@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.util.List;
 
 /**
@@ -46,16 +45,12 @@ public class LearningGroupController {
     public String join(Model model) {
 
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        SopraUser loginUser = sopraUserRepository.findByEmail(user.getUsername());
-
-        //Testzweck
-        LearningGroup g = learningGroupRepository.findAll().get(0);
-        g.sopraUsers.add(loginUser);
-        learningGroupRepository.save(g);
+        SopraUser current = sopraUserRepository.findByEmail(user.getUsername());
 
         List<LearningGroup> lgs = learningGroupRepository.findAll();
 
-        lgs.removeIf(x -> x.sopraUsers.contains(loginUser));
+        lgs.removeIf(x -> x.sopraUsers.contains(current));
+        lgs.removeIf(y -> y.blackList.contains(current));
         model.addAttribute("groups", lgs);
         return "/learninggroup/join";
     }
@@ -66,9 +61,13 @@ public class LearningGroupController {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SopraUser loginUser = sopraUserRepository.findByEmail(user.getUsername());
         if(lg.sopraUsers.contains(loginUser) == false){
+            if (lg.blackList.contains(loginUser)){
+                return "redirect:/index";
+            }
 	        if (lg.getFreeForAll() == false) {
 	            return "redirect:/learninggroup/login?name=" + name;
 	        }
+
         	attr.addAttribute("join", "successful");
         	lg.sopraUsers.add(loginUser);
         	learningGroupRepository.save(lg);
@@ -107,10 +106,9 @@ public class LearningGroupController {
 
     @RequestMapping(value = "/learninggroup/home{name}")
     public String lgHome(@RequestParam("name") String name, Model model, RedirectAttributes attr) {
-
-    	
         return "/learninggroup/home";
     }
+
     @RequestMapping(value = "/learninggroup/users{name}", method = RequestMethod.GET)
     public String lgUser(@RequestParam("name") String name, Model model, RedirectAttributes attr) {
     	LearningGroup lg = learningGroupRepository.findByName(name);
@@ -122,21 +120,24 @@ public class LearningGroupController {
     	attr.addAttribute("name", name);
         return "/learninggroup/users";
     }
+
     @RequestMapping(value = "/learninggroup/users{name}", method = RequestMethod.POST)
     public String lgUserDelete(@RequestParam("name") String name, String info, Model model, RedirectAttributes attr) {
-    	String emailAdresse = info.split("-")[0];
+    	String email = info.split("-")[0];
     	boolean delete = Boolean.parseBoolean(info.split("-")[1]);
     	model.addAttribute("name", name);
     	attr.addAttribute("name", name);
     	LearningGroup lg = learningGroupRepository.findByName(name);
-    	if(lg.isHost(sopraUserRepository.findByEmail(emailAdresse))){
+    	if(lg.isHost(sopraUserRepository.findByEmail(email))){
     		return "redirect:/learninggroup/home?deleted=error";
     	}
     	if(delete){
-	    	lg.sopraUsers.remove(sopraUserRepository.findByEmail(emailAdresse));
+	    	lg.kickSopraUser(sopraUserRepository.findByEmail(email));
+            learningGroupRepository.save(lg);
 	        return "redirect:/learninggroup/home?deleted=successful";
     	} else {
-    		
+    		lg.lockSopraUser(sopraUserRepository.findByEmail(email));
+            learningGroupRepository.save(lg);
     		return "redirect:/learninggroup/home?deleted=successful";
     	}
     }

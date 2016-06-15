@@ -4,7 +4,6 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Entity
 public class LearningGroup {
 
@@ -24,6 +23,12 @@ public class LearningGroup {
     @OneToOne
     SopraUser sopraHost;
 
+
+
+    @OneToMany(mappedBy = "learningGroup")
+    public List<Post> postList = new ArrayList<>();
+
+
     @ManyToMany
     @JoinTable(
             name = "GROUPPARTICIPANTS",
@@ -31,19 +36,19 @@ public class LearningGroup {
             inverseJoinColumns = @JoinColumn(name = "USERMAIL"))
     public List<SopraUser> sopraUsers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "learningGroup")
-    public List<Post> postList = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(name = "BLACKLIST",
+            joinColumns = @JoinColumn(name= "GROUP_ID"),
+            inverseJoinColumns = @JoinColumn(name = "BLACK_USER"))
+    public List<SopraUser> blackList = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(name = "GRAYLIST",
+            joinColumns = @JoinColumn(name= "GROUP_ID"),
+            inverseJoinColumns = @JoinColumn(name = "BLACK_USER"))
+    public List<SopraUser> grayList = new ArrayList<>();
 
     public LearningGroup() {
-    	
-    }
-
-    public Integer getLgId() {
-        return lgId;
-    }
-
-    public void setLgId(Integer lgId) {
-        this.lgId = lgId;
     }
 
     public String getName() {
@@ -71,6 +76,22 @@ public class LearningGroup {
             freeForAll = false;
 
         this.password = password;
+    }
+
+    public List<SopraUser> getBlackList() {
+        return blackList;
+    }
+
+    public void setBlackList(List<SopraUser> blackList) {
+        this.blackList = blackList;
+    }
+
+    public List<SopraUser> getGrayList() {
+        return grayList;
+    }
+
+    public void setGrayList(List<SopraUser> grayList) {
+        this.grayList = grayList;
     }
 
     public List<SopraUser> getSopraUsers() {
@@ -109,10 +130,28 @@ public class LearningGroup {
     public int getUserCount() {
         return getSopraUsers().size();
     }
-    public boolean isHost(SopraUser su){
-    	if(sopraHost!=null){
-    		return su.equals(sopraHost);
-    	}
-    	return false;
+
+    public boolean isHost(SopraUser su) {
+        if (sopraHost != null) {
+            return su.equals(sopraHost);
+        }
+        return false;
+    }
+
+    public void kickSopraUser(SopraUser user) {
+        if (sopraUsers.contains(user)) {
+            sopraUsers.remove(user);
+            user.learningGroups.remove(this);
+            blackList.add(user);
+            user.black.add(this);
+        }
+    }
+
+    public void lockSopraUser(SopraUser user) {
+        if (sopraUsers.contains(user)) {
+            grayList.add(user);
+            user.gray.add(this);
+        }
+
     }
 }
