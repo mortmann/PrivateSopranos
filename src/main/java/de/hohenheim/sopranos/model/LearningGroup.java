@@ -109,4 +109,10 @@ public class LearningGroup {
     public int getUserCount() {
         return getSopraUsers().size();
     }
+    public boolean isHost(SopraUser su){
+    	if(sopraHost!=null){
+    		return su.equals(sopraHost);
+    	}
+    	return false;
+    }
 }
