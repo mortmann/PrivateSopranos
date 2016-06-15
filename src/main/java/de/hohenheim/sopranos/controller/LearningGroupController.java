@@ -39,7 +39,13 @@ public class LearningGroupController {
         learningGroupRepository.save(lg);
         return "redirect:/learninggroup/home?name=" + lg.getName() +"&created";
     }
-
+    @RequestMapping(value = "/learninggroup/mygroups", method = RequestMethod.GET)
+    public String myGroups(Model model) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        SopraUser host = sopraUserRepository.findByEmail(user.getUsername());
+        model.addAttribute("groups", host.learningGroups);
+        return "/learninggroup/mygroups";
+    }
 
     @RequestMapping(value = "/learninggroup/join")
     public String join(Model model) {
@@ -104,9 +110,28 @@ public class LearningGroupController {
         return "redirect:/learninggroup/home";
     }
 
+<<<<<<< HEAD
     @RequestMapping(value = "/learninggroup/home{name}")
     public String lgHome(@RequestParam("name") String name, Model model, RedirectAttributes attr) {
         return "/learninggroup/home";
+=======
+    @RequestMapping(value = "/learninggroup/option{name}", method = RequestMethod.GET)
+    public String lgOptionPre(@RequestParam("name") String name, Model model, RedirectAttributes attr) {
+    	LearningGroup lg = learningGroupRepository.findByName(name);
+    	model.addAttribute("group", lg);
+    	model.addAttribute("name",name);
+        attr.addAttribute("name", name);    	
+        return "/learninggroup/option";
+    }
+    @RequestMapping(value = "/learninggroup/option{name}", method = RequestMethod.POST)
+    public String lgOptionPost(@RequestParam("name") String name, LearningGroup group,Model model, RedirectAttributes attr) {
+    	LearningGroup lg = learningGroupRepository.findByName(name);
+    	lg.setDescription(group.getDescription());
+    	lg.setPassword(group.getPassword());
+        learningGroupRepository.save(lg);
+        attr.addAttribute("edited", "successful");
+        return "redirect:/learninggroup/home?name="+name;
+>>>>>>> origin/master
     }
 
     @RequestMapping(value = "/learninggroup/users{name}", method = RequestMethod.GET)
