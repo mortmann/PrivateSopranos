@@ -39,6 +39,7 @@ public class LearningGroupController {
         learningGroupRepository.save(lg);
         return "redirect:/learninggroup/home?name=" + lg.getName() +"&created";
     }
+
     @RequestMapping(value = "/learninggroup/mygroups", method = RequestMethod.GET)
     public String myGroups(Model model) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -79,10 +80,8 @@ public class LearningGroupController {
         	learningGroupRepository.save(lg);
         }
         attr.addAttribute("name", name);
-
     	model.addAttribute("name",name);
-    	
-    	
+
     	model.addAttribute("posts" , lg.postList);
         return "/learninggroup/home";
     }
@@ -110,11 +109,6 @@ public class LearningGroupController {
         return "redirect:/learninggroup/home";
     }
 
-<<<<<<< HEAD
-    @RequestMapping(value = "/learninggroup/home{name}")
-    public String lgHome(@RequestParam("name") String name, Model model, RedirectAttributes attr) {
-        return "/learninggroup/home";
-=======
     @RequestMapping(value = "/learninggroup/option{name}", method = RequestMethod.GET)
     public String lgOptionPre(@RequestParam("name") String name, Model model, RedirectAttributes attr) {
     	LearningGroup lg = learningGroupRepository.findByName(name);
@@ -131,7 +125,6 @@ public class LearningGroupController {
         learningGroupRepository.save(lg);
         attr.addAttribute("edited", "successful");
         return "redirect:/learninggroup/home?name="+name;
->>>>>>> origin/master
     }
 
     @RequestMapping(value = "/learninggroup/users{name}", method = RequestMethod.GET)

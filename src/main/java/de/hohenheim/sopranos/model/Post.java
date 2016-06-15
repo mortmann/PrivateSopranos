@@ -1,12 +1,6 @@
 package de.hohenheim.sopranos.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-
-import org.hibernate.validator.constraints.Length;
+import javax.persistence.*;
 
 /**
  * Created by Burakhan on 07.06.2016.
@@ -18,6 +12,7 @@ public class Post {
     @Id
     @GeneratedValue
     Integer id;
+
     @Column(length=10000)
     String text;
  
