@@ -42,5 +42,10 @@ public class IndexController {
         return "basistemplate";
     }
 
+    @RequestMapping("/home")
+    public String home(String username, Model model) {
+
+        return "home";
+    }
 }
 
