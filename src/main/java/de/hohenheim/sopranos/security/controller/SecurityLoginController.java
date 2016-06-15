@@ -27,7 +27,7 @@ public class SecurityLoginController extends WebMvcConfigurerAdapter {
      */
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String displayHome() {
-        return "redirect:/index";
+        return "redirect:/home";
     }
 
     @RequestMapping(value ="/login", method = RequestMethod.POST)
