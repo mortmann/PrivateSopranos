@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class TemplateController {
 
-    @RequestMapping("/template")
+    @RequestMapping("/basistemplate")
     public String index(@RequestParam(value = "username", required = false, defaultValue = "user") String username, Model model) {
 
 
-        return "template";
+        return "basistemplate";
     }
 
 
