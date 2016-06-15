@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 <meta charset="utf-8"/>
@@ -23,6 +23,8 @@
 
 
 <body>
+<th:block th:include="fragments/navbar::nav-In"/>
+
 <table>
 	<tr>
         <th>EMAIL </th>

@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
-    <link rel="stylesheet" th:href="@{/static/css/font-awesome.min.css}" href="../static/css/font-awesome.min.css"/>
+    <link rel="stylesheet" th:href="@{/static/css/font-awesome.min.css}" href="/static/css/font-awesome.min.css"/>
 
     <!-- CSS Files -->
     <link href="../../static/css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}" rel="stylesheet" />
@@ -38,17 +38,30 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Lerngruppen<b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">Übersicht</a></li>
+                            <li><a th:href="@{/learninggroup/mygroups}">Meine Lerngruppen</a></li>
                             <li class="divider"></li>
-                            <li><a th:href="@{/learninggroup/create}"><i class="material-icons">add</i>Lerngruppe erstellen</a></li>
+                            <li><a th:href="@{/learninggroup/create}">Lerngruppe erstellen</a></li>
+                            <li><a th:href="@{/learninggroup/join}">Lerngruppe beitreten</a></li>
                         </ul>
                     </li>
 
-                    <li class="navbar-form navbar-left" role="">
+                    <form class="navbar-form navbar-left" role="search">
                         <div class="form-group">
                             <input type="text" class="form-control" placeholder="Suche"/>
-                        </div>
-                    </li>
+                            <style>
+                                button {
+                                    background-color: Transparent;
+                                    background-repeat:no-repeat;
+                                    border: none;
+                                    cursor:pointer;
+                                    overflow: hidden;
+                                    outline:none;
+                                }</style>
+                        <button class="button">
+                            <i class="material-icons">search</i>
+                            </button>
+                            </div>
+                    </form>
 
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -60,7 +73,7 @@
                             <li><a href="#">Einstellungen</a></li>
                         </ul>
                     </li>
-                    <li><a th:href="@{/login}"><i class="material-icons">power_settings_new</i>Abmelden</a></li>
+                    <li><a th:href="@{/logout}"><i class="material-icons">power_settings_new</i>Abmelden</a></li>
                 </ul>
             </div>
         </div>
@@ -85,12 +98,23 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
                 <ul class="nav navbar-nav">
                     <li><a th:href="@{/index}">Startseite</a></li>
-                    <li class="navbar-form navbar-left" role="">
+                    <form class="navbar-form navbar-left" role="search">
                         <div class="form-group">
                             <input type="text" class="form-control" placeholder="Suche"/>
+                            <style>
+                                button {
+                                    background-color: Transparent;
+                                    background-repeat:no-repeat;
+                                    border: none;
+                                    cursor:pointer;
+                                    overflow: hidden;
+                                    outline:none;
+                                }</style>
+                            <button class="button">
+                                <i class="material-icons">search</i>
+                            </button>
                         </div>
-                    </li>
-
+                    </form>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                 </ul>
@@ -103,6 +127,7 @@
 
 
 </body>
+
 <!--   Core JS Files   -->
 <script src="../../static/js/jquery.min.js" th:src="@{/js/jquery.min.js}" type="text/javascript"></script>
 <script src="../../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}" type="text/javascript"></script>

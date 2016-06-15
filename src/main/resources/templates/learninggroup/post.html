@@ -42,7 +42,7 @@
 
 
 <body>
-<th:block th:include="fragments/navbar::nav"/>
+<th:block th:include="fragments/navbar::nav-In"/>
 
 <form class="form-horizontal" th:object="${post}" th:action="@{/learninggroup/post?name=} + ${name}" method="post">
     <textarea id="editor" name="editor" th:field="*{text}" type="text" class="summernote form-control" rows="10"
