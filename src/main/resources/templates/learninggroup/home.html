@@ -27,9 +27,11 @@
 <table>
 	<tr th:each="text,iterationStatus  : ${posts}">
 		<td  class="content" th:utext="${text.getText()}"/> 
-		<td  class="content" th:utext="${text.getSopraUser().getEmail()}"/> 
-	
+		<td  class="content" th:utext="${text.getSopraUser().getEmail()}"/>
+
 	</tr>
+	<a type="submit" class="btn btn-default" th:href="@{/learninggroup/post(name=${name})}">Beitrag erstellen</a>
+	<a type="submit" class="btn btn-default" th:href="@{/learninggroup/user(name=${name})}">Benutzerübersicht</a>
 </table>
 </body>
 </html>
