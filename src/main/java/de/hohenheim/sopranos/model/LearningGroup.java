@@ -24,7 +24,6 @@ public class LearningGroup {
     SopraUser sopraHost;
 
 
-
     @OneToMany(mappedBy = "learningGroup")
     public List<Post> postList = new ArrayList<>();
 
@@ -38,13 +37,13 @@ public class LearningGroup {
 
     @ManyToMany
     @JoinTable(name = "BLACKLIST",
-            joinColumns = @JoinColumn(name= "GROUP_ID"),
+            joinColumns = @JoinColumn(name = "GROUP_ID"),
             inverseJoinColumns = @JoinColumn(name = "BLACK_USER"))
     public List<SopraUser> blackList = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "GRAYLIST",
-            joinColumns = @JoinColumn(name= "GROUP_ID"),
+            joinColumns = @JoinColumn(name = "GROUP_ID"),
             inverseJoinColumns = @JoinColumn(name = "BLACK_USER"))
     public List<SopraUser> grayList = new ArrayList<>();
 
@@ -144,6 +143,10 @@ public class LearningGroup {
             user.learningGroups.remove(this);
             blackList.add(user);
             user.black.add(this);
+        }
+        if (grayList.contains(user)) {
+            grayList.remove(user);
+            user.gray.remove(this);
         }
     }
 

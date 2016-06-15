@@ -42,7 +42,7 @@ public class RegisterController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String registerSubmit(SopraUser user, Model model) {
-        if (user.getEmail().isEmpty() || user.getPassword().isEmpty() || user.getName().isEmpty()) {
+        if (user.getEmail().isEmpty() || user.getPassword().isEmpty()) {
             return "redirect:/register?error";
         }
         model.addAttribute("SopraUser", user);
@@ -50,7 +50,7 @@ public class RegisterController {
         auth.add(new SimpleGrantedAuthority("ROLE_USER"));
         userDetailsManager.createUser(new User(user.getEmail(), passwordEncoder.encode(user.getPassword()), auth));
         sopraUserRepository.save(user);
-        return "login";
+        return "redirect:/login";
     }
 }
 
