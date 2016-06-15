@@ -1,108 +1,167 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Registrierung</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
-          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"/>
+    <title>TITLE</title>
 
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
-          integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
-            integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
-            crossorigin="anonymous"></script>
-    <!-- Website Font style -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"/>
-    <!-- Google Fonts -->
-    <link href='https://fonts.googleapis.com/css?family=Passion+One' rel='stylesheet' type='text/css'/>
-    <link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'/>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/png" th:href="@{/static/img/favicon.png}" href="../static/img/favicon.png"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+
+
+
+    <!--     Fonts and icons     -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" th:href="@{/static/css/font-awesome.min.css}" href="../static/css/font-awesome.min.css"/>
+
+    <!-- CSS Files -->
+    <link href="../static/css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}" rel="stylesheet" />
+    <link href="../static/css/material-kit.css" th:href="@{css/material-kit.css}" rel="stylesheet"/>
+
+
 </head>
+
 <body>
 <th:block th:include="fragments/navbar::nav-index"/>
-<div class="container">
-    <div class="row main">
-        <div class="panel-heading">
-            <div class="panel-title text-center">
-                <h1 class="title">Register</h1>
-                <hr/>
+<div class="signup-page">
+    <nav class="navbar navbar-transparent navbar-absolute">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation-example">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+            </div>
+
+            <div class="collapse navbar-collapse" id="navigation-example">
+                <ul class="nav navbar-nav navbar-right">
+                </ul>
             </div>
         </div>
-        <div class="main-login main-center">
-            <form class="form-horizontal" th:object="${SopraUser}" th:action="@{/register}" method="post">
-                <div th:if="${param.error}" class="alert alert-error">
-                    Bitte Pflichtfelder ausfüllen!
-                </div>
-                <div class="form-group">
-                    <label for="name" class="cols-sm-2 control-label">Name</label>
-                    <div class="cols-sm-10">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-                            <input type="text" class="form-control" th:field="*{name}" name="name" id="name"
-                                   placeholder="Gib deinen Namen ein"/>
+    </nav>
+
+    <div class="wrapper">
+        <div class="header header-filter">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
+                        <div class="card card-signup">
+                            <form class="form-horizontal" th:object="${SopraUser}" th:action="@{/register}" method="post">
+                                <div th:if="${param.error}" class="alert alert-error">
+                                    Bitte Pflichtfelder ausfüllen!
+                                </div>
+                                <div class="header header-primary text-center">
+                                    <i class="fa fa-connectdevelop fa-5x"></i>
+                                    <h4>Registrieren</h4>
+                                </div>
+                                <p class="text-divider"></p>
+                                <div class="content">
+
+                                    <div class="input-group">
+										<span class="input-group-addon">
+											<i class="material-icons">perm_identity</i>
+										</span>
+                                        <input type="text" class="form-control" name="name" id="name" placeholder="Name"/>
+                                    </div>
+
+                                    <div class="input-group">
+										<span class="input-group-addon">
+											<i class="material-icons">email</i>
+										</span>
+                                        <input type="email" class="form-control" name="email" id="email" placeholder="Email*"/>
+                                    </div>
+
+                                    <div class="input-group">
+										<span class="input-group-addon">
+											<i class="material-icons">person_pin</i>
+										</span>
+                                        <input type="text" class="form-control" name="username" id="username"
+                                               placeholder="Benutzername"/>
+                                    </div>
+
+                                    <div class="input-group">
+										<span class="input-group-addon">
+											<i class="material-icons">lock_outline</i>
+										</span>
+                                        <input type="password" class="form-control" name="password"
+                                               id="password" placeholder="Passwort*" />
+                                    </div>
+
+                                    <div class="input-group">
+										<span class="input-group-addon">
+											<i class="material-icons">lock</i>
+										</span>
+                                        <input type="password" class="form-control" name="confirm"
+                                               id="confirm" placeholder="Passwort bestätigen*" />
+                                    </div>
+                                    <p style="text-align:center">*Pflichtfelder</p>
+                                </div>
+                                <div class="footer text-center">
+                                    <button type="submit" class="btn btn-primary btn-wd btn-lg">Los geht's!
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <label for="email" class="cols-sm-2 control-label">E-Mail *</label>
-                    <div class="cols-sm-10">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-                            <input type="email" class="form-control" th:field="*{email}" name="email" id="email"
-                                   placeholder="Gib deine E-Mail Adresse ein"/>
-                        </div>
+            <footer class="footer">
+                <div class="container">
+                    <nav class="pull-left">
+                        <ul>
+                        </ul>
+                    </nav>
+                    <div class="copyright pull-right">
+                        &copy;2016 by SoPranos
                     </div>
                 </div>
+            </footer>
 
-                <div class="form-group">
-                    <label for="username" class="cols-sm-2 control-label">Nutzername</label>
-                    <div class="cols-sm-10">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-user-secret fa"
-                                                               aria-hidden="true"></i></span>
-                            <input type="text" class="form-control" th:field="*{username}" name="username" id="username"
-                                   placeholder="Gib deinen Nutzernamen ein"/>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="password" class="cols-sm-2 control-label">Passwort *</label>
-                    <div class="cols-sm-10">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                            <input type="password" class="form-control" th:field="*{password}" name="password"
-                                   id="password" placeholder="Gib ein sicheres Passwort ein"/>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="confirm" class="cols-sm-2 control-label">Passwort bestätigen *</label>
-                    <div class="cols-sm-10">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                            <input type="password" class="form-control" name="confirm" id="confirm"
-                                   placeholder="Wiederhole dein Passwort"/>
-                        </div>
-                    </div>
-                    <br>* Pflichtfelder</br>
-                </div>
-
-                <div class="form-group ">
-                    <button type="submit" class="btn btn-primary btn-lg btn-block login-button">Register</button>
-                </div>
-                <div class="login-register">
-                    <a th:href="@{/login}">Du besitzt bereits einen Account? Login</a>
-
-                </div>
-            </form>
         </div>
+
     </div>
+
 </div>
 </body>
+<!--   Core JS Files   -->
+<script src="../static/js/jquery.min.js" th:src="@{/js/jquery.min.js}" type="text/javascript"></script>
+<script src="../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}" type="text/javascript"></script>
+<script src="../static/js/material.min.js" th:src="@{/js/material.min.js}" type="text/javascript"></script>
+
+<!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
+<script  src="../static/js/nouislider.min.js" th:src="@{/js/nouislider.min.js}" type="text/javascript"></script>
+
+<!--  Plugin for the Datepicker, full documentation here: http://www.eyecon.ro/bootstrap-datepicker/ -->
+<script src="../static/js/bootstrap-datepicker.js" th:src="@{/js/bootstrap-datepicker.js}" type="text/javascript"></script>
+
+<!-- Control Center for Material Kit: activating the ripples, parallax effects, scripts from the example pages etc -->
+<script src="../static/js/material-kit.js" th:src="@{/js/material-kit.js}" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $().ready(function(){
+        // the body of this function is in assets/material-kit.js
+        $(window).on('scroll', materialKit.checkScrollForTransparentNavbar);
+    });
+</script>
+
+<style>
+    body{
+        background-image: url(http://i.imgur.com/BVflqA5.jpg);
+        background-color: #444;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: initial;
+    }
+</style>
+
+
+
+
 </html>
