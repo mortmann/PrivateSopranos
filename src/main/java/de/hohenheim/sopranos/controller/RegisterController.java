@@ -43,7 +43,7 @@ public class RegisterController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String registerSubmit(SopraUser user, Model model) {
         if (user.getEmail().isEmpty() || user.getPassword().isEmpty() || user.getName().isEmpty()) {
-            return "register?error";
+            return "redirect:/register?error";
         }
         model.addAttribute("SopraUser", user);
         Collection<GrantedAuthority> auth = new ArrayList<>();

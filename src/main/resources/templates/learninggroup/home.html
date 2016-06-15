@@ -23,7 +23,7 @@
 
 
 <body>
-<th:block th:include="fragments/navbar::nav"/>
+<th:block th:include="fragments/navbar::nav-In"/>
 <table>
 	<tr th:each="text,iterationStatus  : ${posts}">
 		<td  class="content" th:utext="${text.getText()}"/> 

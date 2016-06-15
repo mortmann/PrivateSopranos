@@ -22,8 +22,11 @@
 
 
 <body>
-<th:block th:include="fragments/navbar::nav"/>
+<th:block th:include="fragments/navbar::nav-In"/>
  <form name="form-login" th:action="@{/learninggroup/login?name=} + ${name}" method="post">
+     <div th:if="${param.error}" class="alert alert-error">
+         Falsches Passwort!
+     </div>
 	 <label for="password" class="sr-only">Passwort</label>
      <input type="password" id="password" name="password" class="form-control" placeholder="Passwort"/>
      <button type = "submit" class="btn btn-lg btn-primary btn-block" >Anmelden</button>
