@@ -45,9 +45,7 @@ public class PostController {
         post.setSopraUser(current);
         postRepository.save(post);
 
-
-        model.addAttribute("post", post);
-        return "redirect:/index";
+        return "redirect:/learninggroup/home?name="+name;
     }
 
 }

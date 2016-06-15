@@ -27,6 +27,8 @@
 <table>
 	<tr th:each="text,iterationStatus  : ${posts}">
 		<td  class="content" th:utext="${text.getText()}"/> 
+		<td  class="content" th:utext="${text.getSopraUser().getEmail()}"/> 
+	
 	</tr>
 </table>
 </body>
