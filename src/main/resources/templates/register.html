@@ -26,26 +26,6 @@
 <body>
 <th:block th:include="fragments/navbar::nav-index"/>
 <div class="signup-page">
-    <nav class="navbar navbar-transparent navbar-absolute">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation-example">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-
-            </div>
-
-            <div class="collapse navbar-collapse" id="navigation-example">
-                <ul class="nav navbar-nav navbar-right">
-                </ul>
-            </div>
-        </div>
-    </nav>
-
     <div class="wrapper">
         <div class="header header-filter">
             <div class="container">
@@ -56,7 +36,7 @@
                                 <div th:if="${param.error}" class="alert alert-error">
                                     Bitte Pflichtfelder ausfüllen!
                                 </div>
-                                <div class="header header-primary text-center">
+                                <div class="header header-info text-center">
                                     <i class="fa fa-connectdevelop fa-5x"></i>
                                     <h4>Registrieren</h4>
                                 </div>
@@ -103,7 +83,7 @@
                                     <p style="text-align:center">*Pflichtfelder</p>
                                 </div>
                                 <div class="footer text-center">
-                                    <button type="submit" class="btn btn-primary btn-wd btn-lg">Los geht's!
+                                    <button type="submit" class="btn btn-info btn-wd btn-lg">Los geht's!
                                     </button>
                                 </div>
                             </form>
