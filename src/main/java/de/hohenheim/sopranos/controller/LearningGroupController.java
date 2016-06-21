@@ -32,8 +32,17 @@ public class LearningGroupController {
     }
 
     @RequestMapping(value = "/learninggroup/create", method = RequestMethod.POST)
-    public String createFinish(LearningGroup lg, Model model) {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public String createFinish(LearningGroup lg,String confirm, Model model, RedirectAttributes attr) {
+        
+    	if(lg.getName()==null || lg.getName().isEmpty()){
+    		attr.addAttribute("error", "invalid");
+    		return "redirect:/learninggroup/create";
+    	}
+    	if(lg.getPassword()!=null && lg.getPassword().equals(confirm)==false){
+    		attr.addAttribute("error", "nomatch");
+    		return "redirect:/learninggroup/create";
+    	}
+    	User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SopraUser host = sopraUserRepository.findByEmail(user.getUsername());
         lg.setSopraHost(host);
         learningGroupRepository.save(lg);
@@ -50,7 +59,6 @@ public class LearningGroupController {
 
     @RequestMapping(value = "/learninggroup/join")
     public String join(Model model) {
-
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SopraUser current = sopraUserRepository.findByEmail(user.getUsername());
 
@@ -131,9 +139,14 @@ public class LearningGroupController {
     public String lgUser(@RequestParam("name") String name, Model model, RedirectAttributes attr) {
     	LearningGroup lg = learningGroupRepository.findByName(name);
     	model.addAttribute("users", lg.sopraUsers);
+    	model.addAttribute("bannedusers", lg.blackList);
+    	model.addAttribute("blockedusers", lg.grayList);
     	User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SopraUser loginUser = sopraUserRepository.findByEmail(user.getUsername());
         model.addAttribute("isHost", lg.isHost(loginUser));
+        if(lg.isHost(loginUser)){
+        	model.addAttribute("host", loginUser);
+        }
     	model.addAttribute("name", name); 
     	attr.addAttribute("name", name);
         return "/learninggroup/users";
@@ -142,22 +155,32 @@ public class LearningGroupController {
     @RequestMapping(value = "/learninggroup/users{name}", method = RequestMethod.POST)
     public String lgUserDelete(@RequestParam("name") String name, String info, Model model, RedirectAttributes attr) {
     	String email = info.split("-")[0];
-    	boolean delete = Boolean.parseBoolean(info.split("-")[1]);
+    	String extra = info.split("-")[1];
     	model.addAttribute("name", name);
     	attr.addAttribute("name", name);
     	LearningGroup lg = learningGroupRepository.findByName(name);
     	if(lg.isHost(sopraUserRepository.findByEmail(email))){
     		return "redirect:/learninggroup/home?deleted=error";
     	}
-    	if(delete){
-	    	lg.kickSopraUser(sopraUserRepository.findByEmail(email));
+		switch (extra) {
+		case "ban":
+			lg.banSopraUser(sopraUserRepository.findByEmail(email));
             learningGroupRepository.save(lg);
 	        return "redirect:/learninggroup/home?deleted=successful";
-    	} else {
-    		lg.lockSopraUser(sopraUserRepository.findByEmail(email));
+		case "block":
+			lg.lockSopraUser(sopraUserRepository.findByEmail(email));
             learningGroupRepository.save(lg);
     		return "redirect:/learninggroup/home?deleted=successful";
-    	}
+		case "unban":
+			lg.unbanSopraUser(sopraUserRepository.findByEmail(email));
+            learningGroupRepository.save(lg);
+	        return "redirect:/learninggroup/home?deleted=successful";
+		case "unblock":
+			lg.unlockSopraUser(sopraUserRepository.findByEmail(email));
+            learningGroupRepository.save(lg);
+    		return "redirect:/learninggroup/home?deleted=successful";
+		}
+		return "redirect:/error";
     }
 }
  

@@ -16,6 +16,8 @@ public class Post {
     @Column(length=10000)
     String text;
  
+    String heading;
+    
     public Post() {}
 
     public Post(String text) {
@@ -51,4 +53,12 @@ public class Post {
     public SopraUser getSopraUser() {return sopraUser;}
 
     public void setSopraUser(SopraUser sopraUser) {this.sopraUser = sopraUser;}
+
+	public String getHeading() {
+		return heading;
+	}
+
+	public void setHeading(String heading) {
+		this.heading = heading;
+	}
 }

@@ -24,7 +24,7 @@
 
 <body>
 <th:block th:include="fragments/navbar::nav-In"/>
-
+<h1>Normale Users</h1>
 <table>
 	<tr>
         <th>EMAIL </th>
@@ -37,14 +37,55 @@
 		<td  class="content" th:utext="${user.getName()}"/> 
 		<td  class="content" th:utext="${user.getUsername()}"/>
 		<td  class="content" th:utext="${user.getPostCount()}"/> 
-        <td th:if="${isHost}">
+        <td th:if="${isHost and user!=host}">
         <form name="form-login" th:action="@{/learninggroup/users?name=} + ${name}" method="post">
-        	<button class="btn btn-default" type="submit" th:name="info" th:value="${user.getEmail() + '-true'}" aria-hidden="true">Kick</button>
+        	<button class="btn btn-default" type="submit" th:name="info" th:value="${user.getEmail() + '-ban'}" aria-hidden="true">Kick</button>
         </form>
         </td> 
-		<td th:if="${isHost}">
+		<td th:if="${isHost and user!=host}">
         <form name="form-login" th:action="@{/learninggroup/users?name=} + ${name}" method="post">
-        	<button class="btn btn-default" type="submit" th:name="info" th:value="${user.getEmail()} + '-false'" aria-hidden="true">Sperren</button>
+        	<button class="btn btn-default" type="submit" th:name="info" th:value="${user.getEmail()} + '-block'" aria-hidden="true">Sperren</button>
+        </form>
+        </td> 
+	</tr>
+</table>
+<h1>Banned Users</h1>
+<table>
+	<tr>
+        <th>EMAIL </th>
+        <th>NAME </th>
+        <th>USERNAME </th>
+        <th>BEITRAGANZAHL </th>
+    </tr>
+	<tr th:each="user,iterationStatus  : ${bannedusers}">
+		<td  class="content" th:utext="${user.getEmail()}"/>
+		<td  class="content" th:utext="${user.getName()}"/> 
+		<td  class="content" th:utext="${user.getUsername()}"/>
+		<td  class="content" th:utext="${user.getPostCount()}"/> 
+        <td th:if="${isHost and user!=host}">
+        <form name="form-login" th:action="@{/learninggroup/users?name=} + ${name}" method="post">
+        	<button class="btn btn-default" type="submit" th:name="info" th:value="${user.getEmail() + '-unban'}" aria-hidden="true">Kick</button>
+        </form>
+        </td> 
+	</tr>
+</table>
+
+<h1>Gesperrte Users</h1>
+<table>
+	<tr>
+        <th>EMAIL </th>
+        <th>NAME </th>
+        <th>USERNAME </th>
+        <th>BEITRAGANZAHL </th>
+    </tr>
+	<tr th:each="user,iterationStatus  : ${blockedusers}">
+		<td  class="content" th:utext="${user.getEmail()}"/>
+		<td  class="content" th:utext="${user.getName()}"/> 
+		<td  class="content" th:utext="${user.getUsername()}"/>
+		<td  class="content" th:utext="${user.getPostCount()}"/> 
+        <td th:if="${isHost and user!=host}">
+        <form name="form-login" th:action="@{/learninggroup/users?name=} + ${name}" method="post">
+        	<button class="btn btn-default" type="submit" th:name="info" th:value="${user.getEmail() + '-unblock'}" aria-hidden="true">Kick</button>
         </form>
         </td> 
 	</tr>

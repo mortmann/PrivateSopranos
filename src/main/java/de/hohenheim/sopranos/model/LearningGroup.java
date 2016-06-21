@@ -52,7 +52,7 @@ public class LearningGroup {
 
     public String getName() {
         return name;
-    }
+    } 
 
     public void setName(String name) {
         this.name = name;
@@ -137,7 +137,7 @@ public class LearningGroup {
         return false;
     }
 
-    public void kickSopraUser(SopraUser user) {
+    public void banSopraUser(SopraUser user) {
         if (sopraUsers.contains(user)) {
             sopraUsers.remove(user);
             user.learningGroups.remove(this);
@@ -149,12 +149,23 @@ public class LearningGroup {
             user.gray.remove(this);
         }
     }
-
+    public void unbanSopraUser(SopraUser user) {
+        if (blackList.contains(user)) {
+        	blackList.remove(user);
+            user.learningGroups.remove(this);
+            user.black.remove(this);
+        }
+    }
     public void lockSopraUser(SopraUser user) {
         if (sopraUsers.contains(user)) {
             grayList.add(user);
             user.gray.add(this);
         }
-
+    }
+    public void unlockSopraUser(SopraUser user) {
+        if (grayList.contains(user)) {
+            sopraUsers.add(user);
+            user.gray.remove(this);
+        }
     }
 }

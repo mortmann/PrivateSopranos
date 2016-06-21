@@ -45,6 +45,8 @@
 <th:block th:include="fragments/navbar::nav-In"/>
 
 <form class="form-horizontal" th:object="${post}" th:action="@{/learninggroup/post?name=} + ${name}" method="post">
+	<label for="heading" class="cols-sm-2 control-label">"Überschrift"</label>
+	<input id="heading" class="form-control" th:field="*{heading}"></input>    
     <textarea id="editor" name="editor" th:field="*{text}" type="text" class="summernote form-control" rows="10"
               placeholder="Enter the product long description..."></textarea>
 
