@@ -23,6 +23,10 @@ jar {
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
+bootRun {
+	addResources=true
+}
+
 repositories {
 	mavenCentral()
 	maven { url "https://repo.spring.io/snapshot" }
