@@ -53,10 +53,14 @@ public class TestSetup implements ApplicationListener<ContextRefreshedEvent> {
         authsHans.add(new SimpleGrantedAuthority("ROLE_USER"));
         userDetailsManager.createUser(new User("hans@aol.de", passwordEncoder.encode("hugo"), authsHans));
 
-        SopraUser user1 = new SopraUser("admin@aol.de", "admin");
+        SopraUser user1 = new SopraUser();
+        user1.setEmail("admin@aol.de");
+        user1.setPassword("admin");
         sopraUserRepository.save(user1);
 
-        SopraUser user2 = new SopraUser("hans@aol.de", "hugo");
+        SopraUser user2 = new SopraUser();
+        user2.setEmail("hans@aol.de");
+        user2.setPassword("hugo");
         sopraUserRepository.save(user2);
 
         LearningGroup l = new LearningGroup();

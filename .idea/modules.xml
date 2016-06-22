@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SoPranos.iml" filepath="$PROJECT_DIR$/.idea/modules/SoPranos.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SoPranos_main.iml" filepath="$PROJECT_DIR$/.idea/modules/SoPranos_main.iml" group="SoPranos" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SoPranos_test.iml" filepath="$PROJECT_DIR$/.idea/modules/SoPranos_test.iml" group="SoPranos" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/PrivateSopranos.iml" filepath="$PROJECT_DIR$/.idea/modules/PrivateSopranos.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/PrivateSopranos_main.iml" filepath="$PROJECT_DIR$/.idea/modules/PrivateSopranos_main.iml" group="PrivateSopranos" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/PrivateSopranos_test.iml" filepath="$PROJECT_DIR$/.idea/modules/PrivateSopranos_test.iml" group="PrivateSopranos" />
     </modules>
   </component>
 </project>

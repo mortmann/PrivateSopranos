@@ -19,8 +19,8 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="SoPranos_main" target="1.8" />
-      <module name="SoPranos_test" target="1.8" />
+      <module name="PrivateSopranos_main" target="1.8" />
+      <module name="PrivateSopranos_test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

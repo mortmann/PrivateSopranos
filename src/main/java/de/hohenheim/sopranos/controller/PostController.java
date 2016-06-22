@@ -33,7 +33,7 @@ public class PostController {
         SopraUser current = sopraUserRepository.findByEmail(user.getUsername());
         LearningGroup lg = learningGroupRepository.findByName(name);
 
-        if (lg.grayList.contains(current) || lg.blackList.contains(current))
+        if (lg.getGrayList().contains(current) || lg.getBlackList().contains(current))
             return "redirect:/learninggroup/home?name=" + name;
 
         else {

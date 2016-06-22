@@ -9,23 +9,28 @@ public class LearningGroup {
 
     @Id
     @GeneratedValue
-    Integer lgId;
+    private Integer lgId;
 
     @Column(unique = true)
-    String name;
+    private String name;
 
-    String description;
+    private String description;
 
-    String password;
+    private  String password;
 
-    Boolean freeForAll = true;
+    private Boolean freeForAll = true;
+
+
+
 
     @OneToOne
-    SopraUser sopraHost;
+    private SopraUser sopraHost;
 
+    @OneToMany
+    private  List<Question> questList = new ArrayList<>();
 
     @OneToMany(mappedBy = "learningGroup")
-    public List<Post> postList = new ArrayList<>();
+    private  List<Post> postList = new ArrayList<>();
 
 
     @ManyToMany
@@ -33,26 +38,28 @@ public class LearningGroup {
             name = "GROUPPARTICIPANTS",
             joinColumns = @JoinColumn(name = "GROUP_ID"),
             inverseJoinColumns = @JoinColumn(name = "USERMAIL"))
-    public List<SopraUser> sopraUsers = new ArrayList<>();
+    private  List<SopraUser> sopraUsers = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "BLACKLIST",
             joinColumns = @JoinColumn(name = "GROUP_ID"),
             inverseJoinColumns = @JoinColumn(name = "BLACK_USER"))
-    public List<SopraUser> blackList = new ArrayList<>();
+    private  List<SopraUser> blackList = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "GRAYLIST",
             joinColumns = @JoinColumn(name = "GROUP_ID"),
             inverseJoinColumns = @JoinColumn(name = "BLACK_USER"))
-    public List<SopraUser> grayList = new ArrayList<>();
+    private  List<SopraUser> grayList = new ArrayList<>();
 
-    public LearningGroup() {
-    }
+
+
+
+    public LearningGroup() {}
 
     public String getName() {
         return name;
-    } 
+    }
 
     public void setName(String name) {
         this.name = name;
@@ -101,6 +108,14 @@ public class LearningGroup {
         this.sopraUsers = sopraUsers;
     }
 
+    public Integer getLgId() {return lgId;}
+
+    public void setLgId(Integer lgId) {this.lgId = lgId;}
+
+    public List<Question> getQuestList() {return questList;}
+
+    public void setQuestList(List<Question> questList) {this.questList = questList;}
+
     public List<Post> getPostList() {
         return postList;
     }
@@ -140,32 +155,35 @@ public class LearningGroup {
     public void banSopraUser(SopraUser user) {
         if (sopraUsers.contains(user)) {
             sopraUsers.remove(user);
-            user.learningGroups.remove(this);
+            user.getLearningGroups().remove(this);
             blackList.add(user);
-            user.black.add(this);
+            user.getBlack().add(this);
         }
         if (grayList.contains(user)) {
             grayList.remove(user);
-            user.gray.remove(this);
+            user.getGray().remove(this);
         }
     }
+
     public void unbanSopraUser(SopraUser user) {
         if (blackList.contains(user)) {
-        	blackList.remove(user);
-            user.learningGroups.remove(this);
-            user.black.remove(this);
+            blackList.remove(user);
+            user.getLearningGroups().remove(this);
+            user.getBlack().remove(this);
         }
     }
+
     public void lockSopraUser(SopraUser user) {
         if (sopraUsers.contains(user)) {
             grayList.add(user);
-            user.gray.add(this);
+            user.getGray().add(this);
         }
     }
+
     public void unlockSopraUser(SopraUser user) {
         if (grayList.contains(user)) {
             sopraUsers.add(user);
-            user.gray.remove(this);
+            user.getGray().remove(this);
         }
     }
 }

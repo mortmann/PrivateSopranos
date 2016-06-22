@@ -1,34 +1,47 @@
 package de.hohenheim.sopranos.model;
 
 import javax.persistence.*;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Burakhan on 07.06.2016.
  */
-
 @Entity
 public class Post {
 
     @Id
     @GeneratedValue
-    Integer id;
+    private Integer id;
 
-    @Column(length=10000)
-    String text;
- 
-    String heading;
-    
+    @Column(length = 10000)
+    private String text;
+
+    private String heading;
+
+    private int rating;
+
+    private int ratingCount = 0;
+
+    //nicht sicher welche Klasse importieren
+    private Date postDdate;
+
+
+
+
+    @ManyToOne
+    private LearningGroup learningGroup;
+
+    @ManyToOne
+    private SopraUser sopraUser;
+
+    @OneToMany(mappedBy = "post")
+    private List<Comment> commentList = new ArrayList<>();
+
+
+
     public Post() {}
-
-    public Post(String text) {
-        this.text = text;
-    } 
-
-    @ManyToOne
-    public LearningGroup learningGroup;
-
-    @ManyToOne
-    public SopraUser sopraUser;
 
     public Integer getId() {
         return id;
@@ -46,19 +59,56 @@ public class Post {
         this.text = text;
     }
 
-    public LearningGroup getLearningGroup() {return learningGroup;}
+    public LearningGroup getLearningGroup() {
+        return learningGroup;
+    }
 
-    public void setLearningGroup(LearningGroup learningGroup) {this.learningGroup = learningGroup;}
+    public void setLearningGroup(LearningGroup learningGroup) {
+        this.learningGroup = learningGroup;
+    }
 
-    public SopraUser getSopraUser() {return sopraUser;}
+    public SopraUser getSopraUser() {
+        return sopraUser;
+    }
 
-    public void setSopraUser(SopraUser sopraUser) {this.sopraUser = sopraUser;}
+    public void setSopraUser(SopraUser sopraUser) {
+        this.sopraUser = sopraUser;
+    }
 
-	public String getHeading() {
-		return heading;
-	}
+    public List<Comment> getCommentList() {return commentList;}
 
-	public void setHeading(String heading) {
-		this.heading = heading;
-	}
+    public void setCommentList(List<Comment> commentList) {this.commentList = commentList;}
+
+    public String getHeading() {
+        return heading;
+    }
+
+    public void setHeading(String heading) {
+        this.heading = heading;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.ratingCount++;
+        this.rating = rating / ratingCount;
+    }
+
+    public int getRatingCount() {
+        return ratingCount;
+    }
+
+    public void setRatingCount(int ratingCount) {
+        this.ratingCount = ratingCount;
+    }
+
+    public Date getPostDdate() {
+        return postDdate;
+    }
+
+    public void setPostDdate(Date postDdate) {
+        this.postDdate = postDdate;
+    }
 }

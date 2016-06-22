@@ -10,43 +10,38 @@ public class SopraUser {
 
     @Id
     @Column(name = "email", unique = true, nullable = false)
-    String email;
+    private String email;
 
-    String password;
+    private String password;
 
-    String name;
+    private String name;
 
     @Column(unique = true)
-    String username;
+    private String username;
 
-    String courseOfStudys;
+    private String courseOfStudys;
 
-    Integer rankpoints;
-
-
+    private Integer rankpoints;
 
     @ManyToMany(mappedBy = "sopraUsers")
-    public List<LearningGroup> learningGroups = new ArrayList<>();
+    private List<LearningGroup> learningGroups = new ArrayList<>();
 
     @ManyToMany(mappedBy = "blackList")
-    public List<LearningGroup> black = new ArrayList<>();
+    private List<LearningGroup> black = new ArrayList<>();
 
     @ManyToMany(mappedBy = "grayList")
-    public List<LearningGroup> gray = new ArrayList<>();
+    private List<LearningGroup> gray = new ArrayList<>();
 
     @OneToMany(mappedBy = "sopraUser")
-    public List<Post> postList = new ArrayList<>();
+    private List<Post> postList = new ArrayList<>();
 
-    public SopraUser() {
-    }
+    @OneToMany(mappedBy = "sopraUser")
+    private List<Question> questList = new ArrayList<>();
 
-    public SopraUser(String email, String password) {
-        this.email = email;
-        this.password = password;
-        this.name = null;
-        this.courseOfStudys = null;
-        this.rankpoints = 0;
-    }
+    @OneToMany(mappedBy = "sopraUser")
+    private List<Comment> commentList = new ArrayList<>();
+
+    public SopraUser() {}
 
     public String getEmail() {
         return email;
@@ -120,6 +115,10 @@ public class SopraUser {
         this.gray = gray;
     }
 
+    public List<Comment> getCommentList() {return commentList;}
+
+    public void setCommentList(List<Comment> commentList) {this.commentList = commentList;}
+
     public List<Post> getPostList() {
         return postList;
     }
@@ -127,8 +126,12 @@ public class SopraUser {
     public void setPostList(List<Post> postList) {
         this.postList = postList;
     }
-    public int getPostCount(){
-    	return postList.size();
+
+    public int getPostCount() {
+        return postList.size();
     }
 
+    public List<Question> getQuestList() {return questList;}
+
+    public void setQuestList(List<Question> questList) {this.questList = questList;}
 }

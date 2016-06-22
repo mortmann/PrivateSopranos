@@ -53,7 +53,7 @@ public class LearningGroupController {
     public String myGroups(Model model) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SopraUser host = sopraUserRepository.findByEmail(user.getUsername());
-        model.addAttribute("groups", host.learningGroups);
+        model.addAttribute("groups", host.getLearningGroups());
         return "/learninggroup/mygroups";
     }
 
@@ -64,8 +64,8 @@ public class LearningGroupController {
 
         List<LearningGroup> lgs = learningGroupRepository.findAll();
 
-        lgs.removeIf(x -> x.sopraUsers.contains(current));
-        lgs.removeIf(y -> y.blackList.contains(current));
+        lgs.removeIf(x -> x.getSopraUsers().contains(current));
+        lgs.removeIf(y -> y.getBlackList().contains(current));
         model.addAttribute("groups", lgs);
         return "/learninggroup/join";
     }
@@ -75,8 +75,8 @@ public class LearningGroupController {
         LearningGroup lg = learningGroupRepository.findByName(name);
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SopraUser loginUser = sopraUserRepository.findByEmail(user.getUsername());
-        if(lg.sopraUsers.contains(loginUser) == false){
-            if (lg.blackList.contains(loginUser)){
+        if(lg.getSopraUsers().contains(loginUser) == false){
+            if (lg.getBlackList().contains(loginUser)){
                 return "redirect:/index";
             }
 	        if (lg.getFreeForAll() == false) {
@@ -84,13 +84,13 @@ public class LearningGroupController {
 	        }
 
         	attr.addAttribute("join", "successful");
-        	lg.sopraUsers.add(loginUser);
+        	lg.getSopraUsers().add(loginUser);
         	learningGroupRepository.save(lg);
         }
         attr.addAttribute("name", name);
     	model.addAttribute("name",name);
 
-    	model.addAttribute("posts" , lg.postList);
+    	model.addAttribute("posts" , lg.getPostList());
         return "/learninggroup/home";
     }
 
@@ -111,7 +111,7 @@ public class LearningGroupController {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SopraUser loginUser = sopraUserRepository.findByEmail(user.getUsername());
         attr.addAttribute("join", "successful");
-    	lg.sopraUsers.add(loginUser);
+    	lg.getSopraUsers().add(loginUser);
     	learningGroupRepository.save(lg);
         attr.addAttribute("name", name);
         return "redirect:/learninggroup/home";
@@ -138,9 +138,9 @@ public class LearningGroupController {
     @RequestMapping(value = "/learninggroup/users{name}", method = RequestMethod.GET)
     public String lgUser(@RequestParam("name") String name, Model model, RedirectAttributes attr) {
     	LearningGroup lg = learningGroupRepository.findByName(name);
-    	model.addAttribute("users", lg.sopraUsers);
-    	model.addAttribute("bannedusers", lg.blackList);
-    	model.addAttribute("blockedusers", lg.grayList);
+    	model.addAttribute("users", lg.getSopraUsers());
+    	model.addAttribute("bannedusers", lg.getBlackList());
+    	model.addAttribute("blockedusers", lg.getGrayList());
     	User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SopraUser loginUser = sopraUserRepository.findByEmail(user.getUsername());
         model.addAttribute("isHost", lg.isHost(loginUser));
