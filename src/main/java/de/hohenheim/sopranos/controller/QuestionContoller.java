@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import de.hohenheim.sopranos.model.Answer;
 import de.hohenheim.sopranos.model.SopraUser;
 import de.hohenheim.sopranos.model.SopraUserRepository;
 
@@ -43,15 +44,14 @@ public class QuestionContoller {
     }
     @RequestMapping(value = "/question/answer", method = RequestMethod.GET)
     public String answer(Model model) {
-    	model.addAttribute("question", "Was is das richtige?");
+    	model.addAttribute("question", "Was is das richtige?"); 
     	String[] strs =  {"a","b","c","d"};
         model.addAttribute("answerstext",strs);
-
+        model.addAttribute("Answer",new Answer());
         return "/question/answer";
     }
     @RequestMapping(value = "/question/answer", method = RequestMethod.POST)
-    public String answerPOST(Model model, String answers0, String answers1, String answers2, String answers3, String direction) {
-    	System.out.println( answers0+" " + direction);
+    public String answerPOST(Answer answer, Model model,  String direction) {
 
         return "/question/answer";
     }

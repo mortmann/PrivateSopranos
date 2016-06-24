@@ -37,14 +37,14 @@
 </head>
 <body>
 
-<form th:action="@{/question/answer}" method="post">
+<form th:action="@{/question/answer}" th:object="${Answer}" method="post">
 	<label class="content" th:utext="${question}"></label>
 		<label for="sel2">Wähle:</label>
 		<table>
 			<tr th:each="answer,iterationStatus  : ${answerstext}">
 				<td>	
 					<label class="checkbox-inline" th:utext="${answer}">Option 1</label>
-					<input type="checkbox" value="false" th:field="${answers1}"></input>
+					<input type="checkbox" th:id="${'answer'+__${iterationStatus.index}__} " th:name="${'answer'+__${iterationStatus.index}__}"></input>
 				</td>
 			</tr>
 		</table>
