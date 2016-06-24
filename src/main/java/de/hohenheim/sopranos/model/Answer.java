@@ -167,10 +167,7 @@ public class Answer {
 		b[9] = isBoolean(answer9);
 		return b;
 	}
-	
-	public String getAnswertext(int i){
-		return "yeah";
-	}
+
 	
 	/**
 	 * Get the stings values if you create a question

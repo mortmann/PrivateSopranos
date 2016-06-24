@@ -34,6 +34,7 @@
 	rel='stylesheet' type='text/css' />
 <link href='https://fonts.googleapis.com/css?family=Oxygen'
 	rel='stylesheet' type='text/css' />
+	
 </head>
 <body>
 
@@ -59,13 +60,13 @@
 					<div th:if="${param.error}" class="alert alert-error">
 						Invalid data.</div>
 						
-					<table>
+					<table id="inputtable">
 						<tr th:each="a,iterationStatus  : ${amount}">
-							<td>
+							<td id="content">
 								<div class="checkbox">
-											<input type="checkbox" th:checked="${answer.answer__${iterationStatus.index}__ }== on "
+											<input type="checkbox" th:checked="${answer.answer__${iterationStatus.index}__ }== on or ${amount.length}==1 " th:disabled=" ${amount.length}==1 "
 												th:id="${'answer'+__${iterationStatus.index}__} "
-												th:name="${'answer'+__${iterationStatus.index}__}"></input>
+												th:name="__${iterationStatus.index}__"></input>
 								</div>
 								<div class="form-group">
 									<label for="password" class="cols-sm-2 control-label">Antwort</label>
@@ -76,7 +77,7 @@
 											<input th:with="text=${answer.answertext__${iterationStatus.index}__}"
 												type="text" class="form-control" th:value="${text}"
 												th:name="${'answertext'+__${iterationStatus.index}__}" 
-												th:id="${'answertext'+__${iterationStatus.index}__} " 
+												th:id="__${iterationStatus.index}__ " 
 												 />
 										</div>
 										
@@ -84,16 +85,20 @@
 								</div>
 							</td>
 						</tr>
+						
 					</table>	
 					<div class="form-group ">
-						<button type="submit"
+						<button type="submit" th:name="info" th:value="create"
 							class="btn btn-primary btn-lg btn-block login-button">Erstelle
 							Frage</button>
+							<button type="submit" th:name="info" th:value="${'sub-'+amountcount}"  id="sub" class="btn btn-primary btn-lg btn-block login-button">-</button>
+							<button type="submit" th:name="info"  th:value="${'add-'+amountcount}" id="add" class="btn btn-primary btn-lg btn-block login-button">+</button>
 					</div>
 				
 			</div>
 			</form>
 		</div>
 	</div>
+
 </body>
 </html>

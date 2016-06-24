@@ -19,7 +19,17 @@
     <!-- CSS Files -->
     <link href="../static/css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}" rel="stylesheet" />
     <link href="../static/css/material-kit.css" th:href="@{css/material-kit.css}" rel="stylesheet"/>
+<script type="text/javascript">
+function checkPasswordMatch() {
+    var password = $("#password").val();
+    var confirmPassword = $("#confirm").val();
 
+    if (password != confirmPassword)
+        $("#divCheckPasswordMatch").html("Passwords do not match!");
+    else
+        $("#divCheckPasswordMatch").html("");
+}
+</script>
 
 </head>
 
@@ -33,6 +43,7 @@
                     <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
                         <div class="card card-signup">
                             <form class="form-horizontal" th:object="${SopraUser}" th:action="@{/profil/edit}" method="post">
+                                <div class="registrationFormAlert" id="divCheckPasswordMatch"> </div>
                                 <div th:if="${param.error}" class="alert alert-error">
                                     Bitte Pflichtfelder ausfüllen (ausgefüllt lassen)!
                                 </div>
@@ -63,7 +74,7 @@
 											<i class="material-icons">lock_outline</i>
 										</span>
                                         <input type="password" class="form-control" name="password"
-                                               id="password" placeholder="Passwort*" />
+                                               id="password" placeholder="Passwort*" onkeyup="checkPasswordMatch();"/>
                                     </div>
 
                                     <div class="input-group">
@@ -71,7 +82,7 @@
 											<i class="material-icons">lock</i>
 										</span>
                                         <input type="password" class="form-control" name="confirm"
-                                               id="confirm" placeholder="Passwort bestätigen*" />
+                                               id="confirm" placeholder="Passwort bestätigen*" onkeyup="checkPasswordMatch();"/>
                                     </div>
                                     <p style="text-align:center">*Pflichtfelder</p>
                                 </div>

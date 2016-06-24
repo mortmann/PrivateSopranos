@@ -25,20 +25,50 @@ public class QuestionContoller {
      
     @Autowired
     McQuestionRepository mcQuestionRepository;
-      
+    @Autowired
+    OpenQuestionRepository openQuestionRepository;
     @Autowired
     QuizRepository quizRepository;
     
     @RequestMapping(value = "/question/create")
-    public String create(Model model, RedirectAttributes attr,@ModelAttribute("question") String question,@ModelAttribute("Answer") Answer answers) {
-    	int amount = 4;
+    public String create(Model model, RedirectAttributes attr,@ModelAttribute("question") String question,@ModelAttribute("Answer") Answer answers,@ModelAttribute("amountcount") String amountstring) {
+    	if(amountstring == null || amountstring.isEmpty()){
+    		amountstring = "4";
+    	}
+    	int amount = Integer.parseInt(amountstring);
+    	if(amount<1){
+    		amount = 1;
+    	}
+    	if(amount>10){
+    		amount = 10;
+    	}
+    	model.addAttribute("amountcount",amount);
     	model.addAttribute("amount",new int[amount]);
     	model.addAttribute("question", question); 
         model.addAttribute("answer", answers);
+        
         return "/question/create";
     }
     @RequestMapping(value = "/question/create", method = RequestMethod.POST)
-    public String createFinish(Answer answers, String question, Model model, RedirectAttributes attr) {
+    public String createFinish(Answer answers, String question,String info, Model model, RedirectAttributes attr) {
+    	
+    	int amount = Integer.parseInt(info.split("-")[1]);
+    	attr.addFlashAttribute("amount",new int[amount]);
+    	attr.addFlashAttribute("question", question);
+    	attr.addFlashAttribute("Answer", answers);
+    	switch(info.split("-")[0]){
+    		case "create":
+    			break; 
+    		case "add":
+    			amount++;
+    			attr.addFlashAttribute("amountcount",Integer.toString(amount));
+    			return "redirect:/question/create";
+    		case "sub":
+    			amount--; 
+    			attr.addFlashAttribute("amountcount",Integer.toString(amount));
+    			return "redirect:/question/create";
+    	}
+    	
     	boolean hasAnswer=false;
     	for (boolean b : answers.getBooleans()) {
     		if(b==true){
@@ -46,36 +76,35 @@ public class QuestionContoller {
     		}
     	}   
     	if(hasAnswer == false){
-    		attr.addAttribute("error", "noanswer");
-        	int amount = 4;
-        	attr.addFlashAttribute("amount",new int[amount]);
-        	attr.addFlashAttribute("question", question);
-        	attr.addFlashAttribute("Answer", answers);
+    		attr.addAttribute("error", "noanswer");    	
     		return "redirect:/question/create";
     	}
     	String[] strs = answers.getStrings();
     	for (int i = 0; i < strs.length; i++) {
-    		for (int s = 0; s < strs.length; s++) {
+    		for (int s = i+1; s < strs.length; s++) {
     			if(strs[i].equalsIgnoreCase(strs[s])){
     				attr.addAttribute("error", "sameanswer");
-    		    	int amount = 4;
-    		    	attr.addFlashAttribute("amount",new int[amount]);
-    		    	attr.addFlashAttribute("question", question);
-    		    	attr.addFlashAttribute("Answer", answers);
     	    		return "redirect:/question/create";
     			}
     		}
 		}	
-    	
     	User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SopraUser host = sopraUserRepository.findByEmail(user.getUsername());
-        McQuestion mc = new McQuestion();
-        mc.setQuestText(question);
-        mc.setSopraUser(host);
-        mc.setAnswers(answers.getStrings());
-        mc.setSolutions(answers.getBooleans());
-        System.out.println("question " + question);
-        mc = mcQuestionRepository.save(mc);
+        if(answers.getStrings().length>1){
+	        McQuestion mc = new McQuestion();
+	        mc.setQuestText(question);
+	        mc.setSopraUser(host);
+	        mc.setAnswers(answers.getStrings());
+	        mc.setSolutions(answers.getBooleans());
+	        System.out.println("question " + question);
+	        mc = mcQuestionRepository.save(mc);
+        } else {
+        	OpenQuestion qc = new OpenQuestion();
+        	qc.setAnswer(answers.getAnswertext0());
+        	qc.setQuestText(question);
+        	qc.setSopraUser(host);
+        	openQuestionRepository.save(qc);
+        }
         return "redirect:/quiz";
     }
     
