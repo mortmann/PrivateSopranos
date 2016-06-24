@@ -39,12 +39,16 @@
 
 <form th:action="@{/question/answer(id=${id},number=${number})}" th:object="${Answer}" method="post">
 	<label class="content" th:utext="${question}"></label>
-		<label for="sel2">Wähle:</label>
+		<label for="sel2" th:if="${answerstext.length} > 1">Wähle:</label>
+		<label for="sel2" th:if="${answerstext.length} == 1">Schreibe die Lösung:</label>
 		<table>
 			<tr th:each="answer,iterationStatus  : ${answerstext}">
-				<td>	
+				<td th:if="${answerstext.length} > 1">	
 					<label class="checkbox-inline" th:utext="${answer}">Option 1</label>
 					<input type="checkbox" th:id="${'answer'+__${iterationStatus.index}__} " th:name="${'answer'+__${iterationStatus.index}__}"></input>
+				</td>
+				<td th:if="${answerstext.length} == 1">	
+					<textarea class="checkbox-inline" th:id="${'answertext'+__${iterationStatus.index}__} " th:name="${'answertext'+__${iterationStatus.index}__}" Placeholder="Ihre Lösung:"></textarea>
 				</td>
 			</tr>
 		</table>
