@@ -6,7 +6,7 @@
 <meta
 	content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'
 	name='viewport' />
-<title>Lerngruppe erstellen</title>
+<title>Frage erstellen</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet"
@@ -40,29 +40,30 @@
 	<th:block th:include="fragments/navbar::nav-In" />
 	<div class="container">
 		<div class="row main">
+		<form class="form-horizontal" th:object="${Answer}"
+					th:action="@{/question/create}" method="post" autocomplete="on"> 
 			<div class="panel-heading">
 				<div class="panel-title text-center">
-					<h1 class="title">Lerngruppe erstellen</h1>
+					<h1 class="title">Frage erstellen</h1>
 					<hr />
 				</div>
 			</div>
-
+  
 			<div class="form-group">
-				<label for="Question">Question:</label> <input type="text"
-					class="form-control" id="Question"/>
+				<label for="Question">Question:</label> <input type="text"  th:value="${question}"
+					class="form-control" name="question" id="question"/>
 			</div>
 
 			<div class="main-login main-center">
-				<form class="form-horizontal" th:object="${Answer}"
-					th:action="@{/question/create}" method="post">
+				
 					<div th:if="${param.error}" class="alert alert-error">
 						Invalid data.</div>
 						
 					<table>
-						<tr th:each="answer,iterationStatus  : ${amount}">
+						<tr th:each="a,iterationStatus  : ${amount}">
 							<td>
 								<div class="checkbox">
-											<input type="checkbox"
+											<input type="checkbox" th:checked="${answer.answer__${iterationStatus.index}__ }== on "
 												th:id="${'answer'+__${iterationStatus.index}__} "
 												th:name="${'answer'+__${iterationStatus.index}__}"></input>
 								</div>
@@ -70,13 +71,13 @@
 									<label for="password" class="cols-sm-2 control-label">Antwort</label>
 									<div class="cols-sm-10">
 										<div class="input-group">
-											<span class="input-group-addon"><i
+											<span class="input-group-addon"><i 
 												class="fa  fa-question-circle-o  fa-lg" aria-hidden="true"></i></span>
-											<input
-												type="text" class="form-control" 
+											<input th:with="text=${answer.answertext__${iterationStatus.index}__}"
+												type="text" class="form-control" th:value="${text}"
 												th:name="${'answertext'+__${iterationStatus.index}__}" 
 												th:id="${'answertext'+__${iterationStatus.index}__} " 
-												placeholder="Antwort" />
+												 />
 										</div>
 										
 									</div>
@@ -89,10 +90,10 @@
 							class="btn btn-primary btn-lg btn-block login-button">Erstelle
 							Frage</button>
 					</div>
-				</form>
+				
 			</div>
+			</form>
 		</div>
 	</div>
-
 </body>
 </html>

@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,15 +30,11 @@ public class QuestionContoller {
     QuizRepository quizRepository;
     
     @RequestMapping(value = "/question/create")
-    public String create(Model model) {
+    public String create(Model model, RedirectAttributes attr,@ModelAttribute("question") String question,@ModelAttribute("Answer") Answer answers) {
     	int amount = 4;
-//    	String[] s = new String[amount];
-//    	for (int i = 0; i < s.length; i++) {
-//			s[i] = "placeholder";
-//		}
     	model.addAttribute("amount",new int[amount]);
-    	model.addAttribute("question", new String());
-        model.addAttribute("Answer", new Answer());
+    	model.addAttribute("question", question); 
+        model.addAttribute("answer", answers);
         return "/question/create";
     }
     @RequestMapping(value = "/question/create", method = RequestMethod.POST)
@@ -47,17 +44,25 @@ public class QuestionContoller {
     		if(b==true){
     			hasAnswer = true;
     		}
-    	}
+    	}   
     	if(hasAnswer == false){
     		attr.addAttribute("error", "noanswer");
-    		return "/question/create";
+        	int amount = 4;
+        	attr.addFlashAttribute("amount",new int[amount]);
+        	attr.addFlashAttribute("question", question);
+        	attr.addFlashAttribute("Answer", answers);
+    		return "redirect:/question/create";
     	}
     	String[] strs = answers.getStrings();
     	for (int i = 0; i < strs.length; i++) {
     		for (int s = 0; s < strs.length; s++) {
     			if(strs[i].equalsIgnoreCase(strs[s])){
     				attr.addAttribute("error", "sameanswer");
-    	    		return "/question/create";
+    		    	int amount = 4;
+    		    	attr.addFlashAttribute("amount",new int[amount]);
+    		    	attr.addFlashAttribute("question", question);
+    		    	attr.addFlashAttribute("Answer", answers);
+    	    		return "redirect:/question/create";
     			}
     		}
 		}	
@@ -124,7 +129,7 @@ public class QuestionContoller {
     	model.addAttribute("question", mc.getQuestText()); 
         model.addAttribute("answerstext",mc.getAnswers());
         model.addAttribute("Answer",new Answer());
-        model.addAttribute("id",id);
+        model.addAttribute("id",id); 
         model.addAttribute("number",number);
         attr.addAttribute("id",id);
         attr.addAttribute("number", number);

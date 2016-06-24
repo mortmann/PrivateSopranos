@@ -18,16 +18,16 @@ public class Answer {
 	private String answer7;
 	private String answer8;
 	private String answer9;
-	private String answertext0;
-	private String answertext1;
-	private String answertext2;
-	private String answertext3;
-	private String answertext4;
-	private String answertext5;
-	private String answertext6;
-	private String answertext7;
-	private String answertext8;
-	private String answertext9;
+	public String answertext0;
+	public String answertext1;
+	public String answertext2;
+	public String answertext3;
+	public String answertext4;
+	public String answertext5;
+	public String answertext6;
+	public String answertext7;
+	public String answertext8;
+	public String answertext9;
 	public String getAnswer0() {
 		return answer0;
 	}
@@ -167,6 +167,11 @@ public class Answer {
 		b[9] = isBoolean(answer9);
 		return b;
 	}
+	
+	public String getAnswertext(int i){
+		return "yeah";
+	}
+	
 	/**
 	 * Get the stings values if you create a question
 	 * dont use this in anyother context
