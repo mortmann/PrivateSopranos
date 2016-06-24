@@ -37,7 +37,7 @@
 </head>
 <body>
 
-<form th:action="@{/question/answer}" th:object="${Answer}" method="post">
+<form th:action="@{/question/answer(id=${id},number=${number})}" th:object="${Answer}" method="post">
 	<label class="content" th:utext="${question}"></label>
 		<label for="sel2">Wähle:</label>
 		<table>
@@ -57,8 +57,8 @@
 							<li><button th:name="direction" type="submit" th:value="'next'">Next →</button></li>
 					</ul>
 					<div class="progress">
-						<div class="progress-bar" role="progressbar" style="width: 60%;">60%
-							Complete</div>
+						<div class="progress-bar" role="progressbar" th:utext="${percentage +'%'}" th:style="${'width: '+ percentage +'%;'}">
+							</div>
 					</div>
 				</div>
 			</div>

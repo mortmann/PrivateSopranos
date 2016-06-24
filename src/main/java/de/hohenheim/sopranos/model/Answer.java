@@ -1,5 +1,12 @@
 package de.hohenheim.sopranos.model;
 
+import java.util.ArrayList;
+
+/**
+ * going to replace this class when/if i find a better solution to get alot of data from one site in a list or so
+ * @author Mortmann
+ *
+ */
 public class Answer {
 	private String answer0;
 	private String answer1;
@@ -11,6 +18,16 @@ public class Answer {
 	private String answer7;
 	private String answer8;
 	private String answer9;
+	private String answertext0;
+	private String answertext1;
+	private String answertext2;
+	private String answertext3;
+	private String answertext4;
+	private String answertext5;
+	private String answertext6;
+	private String answertext7;
+	private String answertext8;
+	private String answertext9;
 	public String getAnswer0() {
 		return answer0;
 	}
@@ -71,6 +88,71 @@ public class Answer {
 	public void setAnswer9(String answer9) {
 		this.answer9 = answer9;
 	}
+	public String getAnswertext0() {
+		return answertext0;
+	}
+	public void setAnswertext0(String answertext0) {
+		this.answertext0 = answertext0;
+	}
+	public String getAnswertext1() {
+		return answertext1;
+	}
+	public void setAnswertext1(String answertext1) {
+		this.answertext1 = answertext1;
+	}
+	public String getAnswertext2() {
+		return answertext2;
+	}
+	public void setAnswertext2(String answertext2) {
+		this.answertext2 = answertext2;
+	}
+	public String getAnswertext3() {
+		return answertext3;
+	}
+	public void setAnswertext3(String answertext3) {
+		this.answertext3 = answertext3;
+	}
+	public String getAnswertext4() {
+		return answertext4;
+	}
+	public void setAnswertext4(String answertext4) {
+		this.answertext4 = answertext4;
+	}
+	public String getAnswertext5() {
+		return answertext5;
+	}
+	public void setAnswertext5(String answertext5) {
+		this.answertext5 = answertext5;
+	}
+	public String getAnswertext6() {
+		return answertext6;
+	}
+	public void setAnswertext6(String answertext6) {
+		this.answertext6 = answertext6;
+	}
+	public String getAnswertext7() {
+		return answertext7;
+	}
+	public void setAnswertext7(String answertext7) {
+		this.answertext7 = answertext7;
+	}
+	public String getAnswertext8() {
+		return answertext8;
+	}
+	public void setAnswertext8(String answertext8) {
+		this.answertext8 = answertext8;
+	}
+	public String getAnswertext9() {
+		return answertext9;
+	}
+	public void setAnswertext9(String answertext9) {
+		this.answertext9 = answertext9;
+	}
+	/**
+	 * Get the boolean values if you answer a question
+	 * dont use this in anyother context
+	 * @return
+	 */
 	public boolean[] getBooleans(){
 		boolean[] b = new boolean[10];
 		b[0] = isBoolean(answer0);
@@ -85,7 +167,35 @@ public class Answer {
 		b[9] = isBoolean(answer9);
 		return b;
 	}
-	
+	/**
+	 * Get the stings values if you create a question
+	 * dont use this in anyother context
+	 * @return
+	 */
+	public String[] getStrings(){
+		ArrayList<String> s = new ArrayList<>();
+		if (answertext0!=null && answertext0.isEmpty() == false)
+			s.add(answertext0);
+		if (answertext1!=null && answertext1.isEmpty() == false)
+			s.add(answertext1);
+		if (answertext2!=null && answertext2.isEmpty() == false)
+			s.add(answertext2);
+		if (answertext3!=null && answertext3.isEmpty() == false)
+			s.add(answertext3);
+		if (answertext4!=null && answertext4.isEmpty() == false)
+			s.add(answertext4);
+		if (answertext5!=null && answertext5.isEmpty() == false)
+			s.add(answertext5);
+		if (answertext6!=null && answertext6.isEmpty() == false)
+			s.add(answertext6);
+		if (answertext7!=null && answertext7.isEmpty() == false)
+			s.add(answertext7);
+		if (answertext8!=null && answertext8.isEmpty() == false)
+			s.add(answertext8);
+		if (answertext9!=null && answertext9.isEmpty() == false)
+			s.add(answertext9);
+		return (String[]) s.toArray(new String[0]);
+	}
 	private boolean isBoolean(String s){
 		if(s==null){
 			return false;
