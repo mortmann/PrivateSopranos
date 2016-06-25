@@ -29,9 +29,14 @@
 		<td  class="content" th:utext="${text.getHeading()}"/>
 		<td  class="content" th:utext="${text.getText()}"/> 
 		<td  class="content" th:utext="${text.getSopraUser().getEmail()}"/>
-		<td  class="content" th:if="${text.getSopraUser()}==${loginUser}">
+		<td  class="content" th:if="${text.getSopraUser()}==${loginUser} or ${isHost}">
 		<form name="form-login" th:action="@{/learninggroup/home?name=} + ${name}" method="post">
-        	<button class="btn btn-default" type="submit" th:name="info" th:value="${text.getId()}" aria-hidden="true">EDIT</button>
+        	<button class="btn btn-default" type="submit" th:name="info" th:value="${'edit-' + text.getId()}" aria-hidden="true">EDIT</button>
+        </form>
+		</td>
+		<td  class="content" th:if="${text.getSopraUser()}==${loginUser} or ${isHost}">
+		<form name="form-login" th:action="@{/learninggroup/home?name=} + ${name}" method="post">
+        	<button class="btn btn-default" type="submit" th:name="info" th:value="${'delete-' + text.getId()}" aria-hidden="true">Löschen</button>
         </form>
 		</td>
 	</tr>

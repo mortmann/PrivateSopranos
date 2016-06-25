@@ -91,16 +91,24 @@ public class LearningGroupController {
         attr.addAttribute("name", name);
     	model.addAttribute("name",name);
     	model.addAttribute("loginUser",loginUser);
+    	model.addAttribute("isHost",lg.isHost(loginUser));
     	model.addAttribute("posts" , lg.getPostList());
         return "/learninggroup/home";
     }
     @RequestMapping(value = "/learninggroup/home{name}", method = RequestMethod.POST)
     public String postEDIT(@RequestParam("name")
                                          String name, String info, Model model, RedirectAttributes attr) {
-    	Post p = postRepository.getOne(Integer.valueOf(info));
-    	System.out.println("post: " +p.getHeading());
-    	System.out.println("posttext: " +p.getText());
-		attr.addFlashAttribute("post",p);
+    	String[] is = info.split("-");
+    	Post p = postRepository.getOne(Integer.valueOf(is[1]));
+    	//delete
+    	if(is[0].equals("delete")){
+    		postRepository.delete(p);
+    		attr.addAttribute("delete", "successful");
+    		attr.addAttribute("name" , name);
+    		return "redirect:/learninggroup/home";
+    	}
+    	//change 
+    	attr.addFlashAttribute("post",p);
 		attr.addAttribute("name", name);
 		attr.addFlashAttribute("edit", true); 
         return "redirect:/learninggroup/post";
