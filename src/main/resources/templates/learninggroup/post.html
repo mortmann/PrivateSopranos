@@ -46,12 +46,15 @@
 
 <form class="form-horizontal" th:object="${post}" th:action="@{/learninggroup/post?name=} + ${name}" method="post">
 	<label for="heading" class="cols-sm-2 control-label">"Überschrift"</label>
-	<input id="heading" class="form-control" th:field="*{heading}"></input>    
-    <textarea id="editor" name="editor" th:field="*{text}" type="text" class="summernote form-control" rows="10"
+	<input id="heading" class="form-control" th:value="${post.getHeading()}" th:field="*{heading}"></input>    
+    <textarea id="editor" name="editor" th:value="${post.getText()}" th:field="*{text}" type="text" class="summernote form-control" rows="10"
               placeholder="Enter the product long description..."></textarea>
 
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary btn-lg btn-block login-button">Post</button>
+    <div th:if="${edit}==false" class="form-group">
+        <button class="btn btn-primary btn-lg btn-block login-button" type="submit" th:value="-1" th:name="info">Post</button>
+    </div>
+    <div th:if="${edit}" class="form-group">
+        <button class="btn btn-primary btn-lg btn-block login-button" type="submit" th:value="${post.getId()}" th:name="info" >Speichere Änderungen</button>
     </div>
 </form>
 

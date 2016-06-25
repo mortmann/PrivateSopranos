@@ -23,7 +23,8 @@ public class LearningGroupController {
 
     @Autowired
     SopraUserRepository sopraUserRepository;
-
+    @Autowired
+    PostRepository postRepository;
     @RequestMapping(value = "/learninggroup/create", method = RequestMethod.GET)
     public String create(Model model) {
 
@@ -70,8 +71,8 @@ public class LearningGroupController {
         return "/learninggroup/join";
     }
 
-    @RequestMapping("/learninggroup/home")
-    public String joinPost(@RequestParam("name") String name, Model model, RedirectAttributes attr) {
+    @RequestMapping(value = "/learninggroup/home{name}", method = RequestMethod.GET)
+    public String home(@RequestParam("name") String name, Model model, RedirectAttributes attr) {
         LearningGroup lg = learningGroupRepository.findByName(name);
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SopraUser loginUser = sopraUserRepository.findByEmail(user.getUsername());
@@ -89,11 +90,21 @@ public class LearningGroupController {
         }
         attr.addAttribute("name", name);
     	model.addAttribute("name",name);
-
+    	model.addAttribute("loginUser",loginUser);
     	model.addAttribute("posts" , lg.getPostList());
         return "/learninggroup/home";
     }
-
+    @RequestMapping(value = "/learninggroup/home{name}", method = RequestMethod.POST)
+    public String postEDIT(@RequestParam("name")
+                                         String name, String info, Model model, RedirectAttributes attr) {
+    	Post p = postRepository.getOne(Integer.valueOf(info));
+    	System.out.println("post: " +p.getHeading());
+    	System.out.println("posttext: " +p.getText());
+		attr.addFlashAttribute("post",p);
+		attr.addAttribute("name", name);
+		attr.addFlashAttribute("edit", true); 
+        return "redirect:/learninggroup/post";
+    }
     @RequestMapping(value = "/learninggroup/login{name}", method = RequestMethod.GET, params = {"name"})
     public String loginGroup(@RequestParam("name") String name, Model model, RedirectAttributes attr) {
         model.addAttribute("name", name);

@@ -106,7 +106,6 @@ public class QuestionContoller {
 	        mc.setSopraUser(host);
 	        mc.setAnswers(answers.getStrings());
 	        mc.setSolutions(answers.getBooleans());
-	        System.out.println("question " + question);
 	        mc = mcQuestionRepository.save(mc);
         } else {
         	OpenQuestion qc = new OpenQuestion();
