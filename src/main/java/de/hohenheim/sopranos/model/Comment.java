@@ -1,14 +1,14 @@
 package de.hohenheim.sopranos.model;
 
 import javax.persistence.*;
-import java.util.ArrayList;
+
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by HP Brk on 22.06.2016.
  */
-
 @Entity
 public class Comment {
 
@@ -16,7 +16,7 @@ public class Comment {
     @GeneratedValue
     private Integer commId;
 
-    private String comment;
+    private String text;
 
     //nicht sicher welche Klasse importieren
     private Date commDate;
@@ -41,14 +41,6 @@ public class Comment {
 
     public void setCommId(Integer commId) {
         this.commId = commId;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
     }
 
     public Date getCommDate() {
@@ -82,4 +74,12 @@ public class Comment {
     public void setPost(Post post) {
         this.post = post;
     }
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
 }

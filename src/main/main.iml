@@ -3,5 +3,6 @@
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <orderEntry type="sourceFolder" forTests="false" />
+    <prop key="hibernate.enable_lazy_load_no_trans">true</prop>
   </component>
 </module>

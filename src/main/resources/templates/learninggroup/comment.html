@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
-    <title>Post</title>
+    <title>Kommentieren</title>
     <meta name="generator" content="Bootply"/>
     <meta name="description"
           content="Use bootstrap-wysiwyg with Bootstrap 3."/>
@@ -44,17 +44,35 @@
 <body>
 <th:block th:include="fragments/navbar::nav-In"/>
 
-<form class="form-horizontal" th:object="${post}" th:action="@{/learninggroup/post?name=} + ${name}" method="post">
-	<label for="heading" class="cols-sm-2 control-label">"Überschrift"</label>
-	<input id="heading" class="form-control" th:value="${post.getHeading()}" th:field="*{heading}"></input>    
-    <textarea id="editor" name="editor" th:value="${post.getText()}" th:field="*{text}" class="summernote form-control" rows="10"
-              placeholder="Enter the product long description..."></textarea>
 
+
+<table>
+	<tr>
+		<td  class="content" th:utext="${post.getHeading()}"/>
+		<td  class="content" th:utext="${post.getText()}"/> 
+		<td  class="content" th:utext="${post.getSopraUser().getEmail()}"/>
+		<td  class="content" th:if="${post.getSopraUser()}==${loginUser} or ${isHost}">
+		<form name="form-login" th:action="@{/learninggroup/home?name=} + ${name}" method="post">
+        	<button class="btn btn-default" type="submit" th:name="info" th:value="${'edit-' + post.getId()}" aria-hidden="true">EDIT</button>
+        </form>
+		</td>
+		<td  class="content" th:if="${post.getSopraUser()}==${loginUser} or ${isHost}">
+		<form name="form-login" th:action="@{/learninggroup/home?name=} + ${name}" method="post">
+        	<button class="btn btn-default" type="submit" th:name="info" th:value="${'delete-' + post.getId()}" aria-hidden="true">Löschen</button>
+        </form>
+		</td>
+	</tr>
+	<tr th:each="c,iterationStatus  : ${post.getCommentList()}">
+		<td  class="content" th:utext="${c.getText()}"/> 
+
+	</tr>
+</table>
+
+<form class="form-horizontal" th:object="${comment}" th:action="@{/learninggroup/comment?name=} + ${name}" method="post">
+    <textarea id="editor" name="editor" th:value="${comment.getText()}" th:field="*{text}" class="summernote form-control" rows="10"
+              placeholder=""></textarea>
     <div th:if="${edit}==false" class="form-group">
         <button class="btn btn-primary btn-lg btn-block login-button" type="submit" th:value="-1" th:name="info">Post</button>
-    </div>
-    <div th:if="${edit}" class="form-group">
-        <button class="btn btn-primary btn-lg btn-block login-button" type="submit" th:value="${post.getId()}" th:name="info" >Speichere Änderungen</button>
     </div>
 </form>
 
