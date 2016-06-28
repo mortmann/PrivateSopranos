@@ -124,9 +124,12 @@ public class PostController {
 	        post.getCommentList().add(temp);
         } else {
         	Comment c = commentRepository.getOne(id);
-        	c.setText(post.getText());
+        	c.setText(comment.getText());
         	commentRepository.save(c);
         }
         return "redirect:/learninggroup/home?name=" + name;
     }
+    
+    
+    
 }

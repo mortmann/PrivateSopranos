@@ -211,5 +211,45 @@ public class LearningGroupController {
 		}
 		return "redirect:/error";
     }
+    @RequestMapping(value = "/learninggroup/questionlist{name}", method = RequestMethod.GET)
+    public String allquestion(@RequestParam("name")
+                                         String name, String info, Model model, RedirectAttributes attr) {
+    	LearningGroup lg = learningGroupRepository.findByName(name);
+
+    	model.addAttribute("questions", lg.getQuestList());
+    	model.addAttribute("name", name);
+    	attr.addAttribute("name", name);
+    	return "/learninggroup/questionlist";
+    }
+    @RequestMapping(value = "/learninggroup/questionlist{name}", method = RequestMethod.POST)
+    public String allquestionPOST(@RequestParam("name")
+                                         String name, String info, Model model, RedirectAttributes attr) {
+    	String[] is = info.split("-");
+    	Post p = postRepository.getOne(Integer.valueOf(is[1]));
+
+    	switch(is[0]){
+    		case "delete":
+    	    	//delete
+        		postRepository.delete(p);
+        		attr.addAttribute("delete", "successful");
+        		attr.addAttribute("name" , name);
+        		return "redirect:/learninggroup/home";
+    		case "edit":
+    	    	//change 
+    	    	attr.addFlashAttribute("post",p);
+    			attr.addAttribute("name", name);
+    			attr.addFlashAttribute("edit", true); 
+    	        return "redirect:/question/create";
+    		case "comment":
+    			//change 
+    	    	attr.addFlashAttribute("postid",p.getId());
+    			attr.addAttribute("name", name);
+    			attr.addFlashAttribute("edit", false); 
+    			return "redirect:/question/comment";
+    	}
+    	return "redirect:/error";
+    }
+    
+    
 }
  

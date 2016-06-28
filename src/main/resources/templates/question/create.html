@@ -42,7 +42,7 @@
 	<div class="container">
 		<div class="row main">
 		<form class="form-horizontal" th:object="${Answer}"
-					th:action="@{/question/create}" method="post" autocomplete="on"> 
+					th:action="@{/question/create(name=${name})}" method="post" autocomplete="on"> 
 			<div class="panel-heading">
 				<div class="panel-title text-center">
 					<h1 class="title">Frage erstellen</h1>
@@ -64,9 +64,9 @@
 						<tr th:each="a,iterationStatus  : ${amount}">
 							<td id="content">
 								<div class="checkbox">
-											<input type="checkbox" th:checked="${answer.answer__${iterationStatus.index}__ }== on or ${amount.length}==1 " th:disabled=" ${amount.length}==1 "
+											<input type="checkbox" th:checked="${answer.answer__${iterationStatus.index}__}== on or ${amount.length}==1 " th:disabled=" ${amount.length}==1 "
 												th:id="${'answer'+__${iterationStatus.index}__} "
-												th:name="__${iterationStatus.index}__"></input>
+												th:name="${'answer'+__${iterationStatus.index}__} "></input>
 								</div>
 								<div class="form-group">
 									<label for="password" class="cols-sm-2 control-label">Antwort</label>

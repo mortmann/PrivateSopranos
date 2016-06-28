@@ -168,7 +168,16 @@ public class Answer {
 		return b;
 	}
 
-	
+	private boolean isBoolean(String s){
+		if(s==null){
+			return false;
+		}
+		if(s.equalsIgnoreCase("on")==true){
+			return true;
+		} else {
+			return false;
+		}
+	}
 	/**
 	 * Get the stings values if you create a question
 	 * dont use this in anyother context
@@ -198,14 +207,5 @@ public class Answer {
 			s.add(answertext9);
 		return (String[]) s.toArray(new String[0]);
 	}
-	private boolean isBoolean(String s){
-		if(s==null){
-			return false;
-		}
-		if(s.contains("on")==true){
-			return true;
-		} else {
-			return false;
-		}
-	}
+
 }
