@@ -5,20 +5,25 @@ import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import de.hohenheim.sopranos.model.*;
 
-
+@Transactional
+@EnableAspectJAutoProxy(proxyTargetClass=true)
 @Controller
 public class QuestionContoller {
     @Autowired
@@ -26,9 +31,7 @@ public class QuestionContoller {
     @Autowired
     SopraUserRepository sopraUserRepository;
     @Autowired
-    McQuestionRepository mcQuestionRepository;
-    @Autowired
-    OpenQuestionRepository openQuestionRepository;
+    QuestionRepository questionRepository;
     @Autowired
     QuizRepository quizRepository;
     @Autowired
@@ -57,6 +60,7 @@ public class QuestionContoller {
     public String createFinish(HttpServletRequest request, Answer answers, String question,String info, Model model, RedirectAttributes attr) {
     	String[] st = info.split("-");
     	LearningGroup group = (LearningGroup) request.getSession().getAttribute("group");
+    	group = learningGroupRepository.getOne(group.getLgId());
     	attr.addFlashAttribute("question", question);
     	attr.addFlashAttribute("Answer", answers);
     	attr.addAttribute("name", group.getName());
@@ -106,21 +110,19 @@ public class QuestionContoller {
         			}
         		}
     		}	
-	        McQuestion mc = new McQuestion();
-	        mc.setQuestText(question);
-	        mc.setSopraUser(host);
-	        mc.setAnswers(answers.getStrings());
-	        mc.setSolutions(answers.getBooleans());
-	        mc.setLearningGroup(group);
-	        mc = mcQuestionRepository.save(mc);
-        } else {
-        	OpenQuestion qc = new OpenQuestion();
-        	qc.setAnswer(answers.getAnswertext0());
-        	qc.setQuestText(question);
-        	qc.setSopraUser(host);
-        	qc.setLearningGroup(group);
-        	openQuestionRepository.save(qc);
-        }
+        } 
+        
+    	Question qc = new Question();
+    	qc.setAnswers(answers.getStrings());
+    	qc.setSolutions(answers.getBooleans());
+    	qc.setQuestText(question);
+    	qc.setSopraUser(host);
+    	qc.setLearningGroup(group);
+    	qc=questionRepository.save(qc);
+        group.getQuestList().add(qc);
+        learningGroupRepository.save(group);
+        
+        System.out.println("group " + group.getQuestList().size());
         return "redirect:/quiz";
     }
     
@@ -130,7 +132,7 @@ public class QuestionContoller {
     	ArrayList<Question> al = new ArrayList<>();
     	// setup for test so there is always a question
     	String st = "Was is das richtige?";
-    	McQuestion testmc = new McQuestion();
+    	Question testmc = new Question();
     	testmc.setQuestText(st);
     	String[] strs =  {"a","b","c","d"};
     	testmc.setAnswers(strs);
@@ -140,10 +142,10 @@ public class QuestionContoller {
     	LearningGroup group = (LearningGroup) request.getSession().getAttribute("group");
     	
     	testmc.setLearningGroup(group);
-    	mcQuestionRepository.save(testmc);
+    	questionRepository.save(testmc);
     	
     	ArrayList<Question> qs = new ArrayList<>();
-    	qs.addAll(mcQuestionRepository.findAll());
+    	qs.addAll(questionRepository.findAll());
     	int questionCount = 10;
     	for (int i = 0; i < questionCount; i++) {
     		int id = r.nextInt((int)qs.size());
@@ -178,18 +180,9 @@ public class QuestionContoller {
     public String answer(@RequestParam("id") String id,@RequestParam("number") String number,Model model, RedirectAttributes attr) {
     	Quiz quiz =quizRepository.getOne(Integer.parseInt(id));
     	Question q = quiz.getQuestList().get(Integer.parseInt(number)-1);
-    	if(q instanceof  McQuestion){
-	    	McQuestion mc = (McQuestion)q;
-	    	model.addAttribute("question", mc.getQuestText()); 
-	        model.addAttribute("answerstext",mc.getAnswers());
-    	} else {
-    		OpenQuestion oc = (OpenQuestion)q;
-	    	model.addAttribute("question", oc.getQuestText()); 
-	    	String[] temp = new String[1];
-	    	temp[0] = oc.getAnswer();
-	    	
-	        model.addAttribute("answerstext",temp);
-    	}
+    	Question mc = q;
+    	model.addAttribute("question", mc.getQuestText()); 
+        model.addAttribute("answerstext",mc.getAnswers());
         model.addAttribute("Answer",new Answer());
         model.addAttribute("id",id); 
         model.addAttribute("number",number); 
@@ -213,12 +206,12 @@ public class QuestionContoller {
     	attr.addAttribute("number", number);
     	Quiz quiz =quizRepository.getOne(Integer.parseInt(id));
     	Question q = quiz.getQuestList().get(Integer.parseInt(number));
-    	if(q instanceof  McQuestion){
-	    	McQuestion mc = (McQuestion) q;
+    	if(q.getAnswers().length>1){
+	    	
 	    	boolean[] b = answer.getBooleans();
 	
-	    	for (int i = 0; i < mc.getSolutions().length; i++) {
-				if(b[i]!=mc.getSolutions()[i]){
+	    	for (int i = 0; i < q.getSolutions().length; i++) {
+				if(b[i]!=q.getSolutions()[i]){
 					System.out.println("false");
 		    		attr.addAttribute("successful",false);
 		    		
@@ -239,26 +232,38 @@ public class QuestionContoller {
     
     
     @RequestMapping(value = "/question/comment", method = RequestMethod.GET)
-    public String comment(HttpServletRequest request,Model model,@ModelAttribute("questiontype") String type,@ModelAttribute("Question") Question question
+    public String comment(HttpServletRequest request,Model model,@ModelAttribute("questiontype") String type,@ModelAttribute("quest") Question question
     		,@ModelAttribute("comment") Comment comment,@ModelAttribute("edit") String edit, RedirectAttributes attr) {
 
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SopraUser current = sopraUserRepository.findByEmail(user.getUsername());
         LearningGroup lg = (LearningGroup) request.getSession().getAttribute("group");
+        lg = learningGroupRepository.getOne(lg.getLgId());
+        Hibernate.initialize(lg);
         String name = lg.getName();
         if (lg.getGrayList().contains(current) || lg.getBlackList().contains(current))
             return "redirect:/learninggroup/home?name=" + name;
+        
+
+        
         model.addAttribute("comment", comment);
         model.addAttribute("name", name);
+        question = questionRepository.getOne(question.getQuestId());
+        for (boolean string : question.getSolutions()) {
+			System.out.println(string);
+		}
         model.addAttribute("question",question);
+        attr.addFlashAttribute("quest", question);
         request.getSession().setAttribute("question", question);
         model.addAttribute("edit", Boolean.parseBoolean(edit));
         return "question/comment"; 
     }
     @RequestMapping(value = "/question/comment", method = RequestMethod.POST)
-    public String commentPOST(HttpServletRequest request,Comment comment, String info, Model model, RedirectAttributes attr) {
+    public String commentPOST(HttpServletRequest request,@ModelAttribute("quest") Question question,Comment comment, String info, Model model, RedirectAttributes attr) {
     	int id = Integer.parseInt(info);
-    	Question question = (Question) request.getSession().getAttribute("question");
+    	question = (Question) request.getSession().getAttribute("question");
+    	
+    	question = questionRepository.getOne(question.getQuestId());
     	String text =  comment.getText();
     	if(text == null || text.isEmpty() || text.trim() == "" || text.equals("<p><br></p>")){
     		attr.addFlashAttribute("post",question);

@@ -20,7 +20,8 @@ public class LearningGroupController {
 
     @Autowired
     LearningGroupRepository learningGroupRepository;
-
+    @Autowired
+    QuestionRepository questionRepository;
     @Autowired
     SopraUserRepository sopraUserRepository;
     @Autowired
@@ -215,9 +216,13 @@ public class LearningGroupController {
     public String allquestion(@RequestParam("name")
                                          String name, String info, Model model, RedirectAttributes attr) {
     	LearningGroup lg = learningGroupRepository.findByName(name);
+    	User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        SopraUser loginUser = sopraUserRepository.findByEmail(user.getUsername());
 
     	model.addAttribute("questions", lg.getQuestList());
     	model.addAttribute("name", name);
+    	model.addAttribute("isHost", lg.isHost(loginUser));
+    	model.addAttribute("loginUser",loginUser);
     	attr.addAttribute("name", name);
     	return "/learninggroup/questionlist";
     }
@@ -225,24 +230,25 @@ public class LearningGroupController {
     public String allquestionPOST(@RequestParam("name")
                                          String name, String info, Model model, RedirectAttributes attr) {
     	String[] is = info.split("-");
-    	Post p = postRepository.getOne(Integer.valueOf(is[1]));
+    	Question p = questionRepository.getOne(Integer.valueOf(is[0]));
 
-    	switch(is[0]){
+    	switch(is[1]){
     		case "delete":
     	    	//delete
-        		postRepository.delete(p);
+    			questionRepository.delete(p);
         		attr.addAttribute("delete", "successful");
         		attr.addAttribute("name" , name);
         		return "redirect:/learninggroup/home";
     		case "edit":
     	    	//change 
-    	    	attr.addFlashAttribute("post",p);
+    	    	attr.addFlashAttribute("quest",p);
     			attr.addAttribute("name", name);
     			attr.addFlashAttribute("edit", true); 
     	        return "redirect:/question/create";
     		case "comment":
     			//change 
-    	    	attr.addFlashAttribute("postid",p.getId());
+    			System.out.println(p.getQuestText());
+    	    	attr.addFlashAttribute("quest",p);
     			attr.addAttribute("name", name);
     			attr.addFlashAttribute("edit", false); 
     			return "redirect:/question/comment";

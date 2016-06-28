@@ -12,7 +12,7 @@ import java.util.List;
  */
 @Transactional
 @Entity
-public abstract class Question {
+public class Question {
 
     @Id
     @GeneratedValue
@@ -26,6 +26,8 @@ public abstract class Question {
     private int rating;
 
 
+	private String[] answers;
+	private boolean[] solutions;
 
     @OneToMany(mappedBy = "question")
     private List<Comment> commentList = new ArrayList<>();
@@ -97,6 +99,19 @@ public abstract class Question {
         this.quizList = quizList;
     }
 
+	
+	public String[] getAnswers() {
+		return answers;
+	}
+	public void setAnswers(String[] answers) {
+		this.answers = answers;
+	}
+	public boolean[] getSolutions() {
+		return solutions;
+	}
+	public void setSolutions(boolean[] solutions) {
+		this.solutions = solutions;
+	}
     public List<Comment> getCommentList() {return commentList;}
 
     public void setCommentList(List<Comment> commentList) {this.commentList = commentList;}

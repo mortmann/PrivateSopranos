@@ -33,19 +33,19 @@
 	<tr th:each="question,iterationStatus  : ${questions}">
 		<td  class="content" th:utext="${question.getQuestText()}"/>
 		<td  class="content" th:utext="${question.getSopraUser().getEmail()}"/> 
-        <td th:if="${isHost and user!=host}">
-        <form name="form-login" th:action="@{/learninggroup/users?name=} + ${name}" method="post">
-        	<button class="btn btn-default" type="submit" th:name="info" th:value="${question.getId() + '-comment'}" aria-hidden="true">Kommentieren</button>
+        <td >
+        <form name="form-login" th:action="@{/learninggroup/questionlist?name=} + ${name}" method="post">
+        	<button class="btn btn-default" type="submit" th:name="info" th:value="${question.getQuestId() + '-comment'}" aria-hidden="true">Kommentieren</button>
         </form>
         </td> 
-		<td th:if="${isHost and user!=host}">
-        <form name="form-login" th:action="@{/learninggroup/users?name=} + ${name}" method="post">
-        	<button class="btn btn-default" type="submit" th:name="info" th:value="${question.getId()} + '-edit'" aria-hidden="true">Ändern</button>
+		<td th:if="${isHost and question.getSopraUser()==loginUser}">
+        <form name="form-login" th:action="@{/learninggroup/questionlist?name=} + ${name}" method="post">
+        	<button class="btn btn-default" type="submit" th:name="info" th:value="${question.getQuestId()} + '-edit'" aria-hidden="true">Ändern</button>
         </form>
         </td> 
-        <td th:if="${isHost and user!=host}">
-        <form name="form-login" th:action="@{/learninggroup/users?name=} + ${name}" method="post">
-        	<button class="btn btn-default" type="submit" th:name="info" th:value="${question.getId()} + '-delete'" aria-hidden="true">Löschen</button>
+        <td th:if="${isHost and question.getSopraUser()==loginUser}">
+        <form name="form-login" th:action="@{/learninggroup/questionlist?name=} + ${name}" method="post">
+        	<button class="btn btn-default" type="submit" th:name="info" th:value="${question.getQuestId()} + '-delete'" aria-hidden="true">Löschen</button>
         </form>
         </td> 
 	</tr>

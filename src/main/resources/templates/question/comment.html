@@ -47,21 +47,22 @@
 
 <label class="content" th:utext="${question.getQuestText()}"></label>
 <table>
-	<tr th:each="answer,iterationStatus  : ${answerstext}">
+	<tr th:each="answer,iterationStatus  : ${question.getAnswers()}">
 		<td>	
 			<label class="checkbox-inline" th:utext="${answer}">Option 1</label>
 		</td>
-		<td th:if="${answerstext.length} > 1">	
+		<td>	
 			<input type="checkbox" th:checked="${question.solutions[__${iterationStatus.index}__]}" th:disabled="true" ></input>
+			<label class="checkbox-inline" th:utext="${answer}">Option 1</label>
 		</td>
 	</tr>	
+</table>
+<table th:if="${question.getCommentList()}">
 	<tr th:each="q,iterationStatus  : ${question.getCommentList()}">
 		<td  class="content" th:utext="${q.getText()}"/> 
-
 	</tr>
 </table>
-
-<form class="form-horizontal" th:object="${comment}" th:action="@{/learninggroup/comment?name=} + ${name}" method="post">
+<form class="form-horizontal" th:object="${comment}" th:action="@{/question/comment?name=} + ${name}" method="post">
     <textarea id="editor" name="editor" th:value="${comment.getText()}" th:field="*{text}" class="summernote form-control" rows="10"
               placeholder=""></textarea>
     <div th:if="${edit}==false" class="form-group">
