@@ -1,26 +1,20 @@
 package de.hohenheim.sopranos.model;
 
+
 import javax.persistence.*;
 
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Date;
 
 /**
  * Created by HP Brk on 22.06.2016.
  */
 @Entity
-public class Comment {
+public class Comment extends DateClass{
 
     @Id
     @GeneratedValue
     private Integer commId;
 
     private String text;
-
-    //nicht sicher welche Klasse importieren
-    private Date commDate;
-
 
 
     @ManyToOne
@@ -33,22 +27,12 @@ public class Comment {
     private Post post;
 
 
-
-
     public Integer getCommId() {
         return commId;
     }
 
     public void setCommId(Integer commId) {
         this.commId = commId;
-    }
-
-    public Date getCommDate() {
-        return commDate;
-    }
-
-    public void setCommDate(Date commDate) {
-        this.commDate = commDate;
     }
 
     public SopraUser getSopraUser() {

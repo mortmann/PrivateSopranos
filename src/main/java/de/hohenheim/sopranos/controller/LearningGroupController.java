@@ -52,7 +52,7 @@ public class LearningGroupController {
     }
 
     @RequestMapping(value = "/learninggroup/mygroups", method = RequestMethod.GET)
-    public String myGroups(Model model) {
+    public String myGroups(Model model) { 
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SopraUser host = sopraUserRepository.findByEmail(user.getUsername());
         model.addAttribute("groups", host.getLearningGroups());

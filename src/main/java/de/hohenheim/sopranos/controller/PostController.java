@@ -2,6 +2,9 @@ package de.hohenheim.sopranos.controller;
 
 import de.hohenheim.sopranos.model.*;
 
+import java.sql.Date;
+import java.text.DateFormat;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,11 +76,15 @@ public class PostController {
         if(id==-1){
 	        post.setLearningGroup(lg);
 	        post.setSopraUser(current);
-	        postRepository.save(post);
+	        post.setCreateDate();
+	        post = postRepository.save(post);
+	        
         } else {
         	Post p = postRepository.getOne(id);
         	p.setHeading(post.getHeading());
         	p.setText(post.getText());
+	        p.setEditDate();
+	        p.setEditUser(current);
         	postRepository.save(p);
         }
         return "redirect:/learninggroup/home?name=" + name;
@@ -120,11 +127,15 @@ public class PostController {
         if(id==-1){
         	comment.setPost(post);
 	        comment.setSopraUser(current);
+	        comment.setCreateDate();
 	        Comment temp = commentRepository.save(comment);
 	        post.getCommentList().add(temp);
+	        
         } else {
         	Comment c = commentRepository.getOne(id);
         	c.setText(comment.getText());
+        	comment.setEditDate();
+        	comment.setEditUser(current);
         	commentRepository.save(c);
         }
         return "redirect:/learninggroup/home?name=" + name;

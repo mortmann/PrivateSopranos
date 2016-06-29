@@ -12,7 +12,7 @@ import java.util.List;
  */
 @Transactional
 @Entity
-public class Question {
+public class Question extends DateClass {
 
     @Id
     @GeneratedValue
@@ -40,7 +40,6 @@ public class Question {
 
     @ManyToMany(mappedBy = "questList")
     private List<Quiz> quizList = new ArrayList<>();
-
 
 
     public Integer getQuestId() {

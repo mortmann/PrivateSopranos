@@ -1,5 +1,6 @@
 package de.hohenheim.sopranos.controller;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -118,6 +119,7 @@ public class QuestionContoller {
     	qc.setQuestText(question);
     	qc.setSopraUser(host);
     	qc.setLearningGroup(group);
+    	qc.setCreateDate();
     	qc=questionRepository.save(qc);
         group.getQuestList().add(qc);
         learningGroupRepository.save(group);
@@ -275,6 +277,7 @@ public class QuestionContoller {
         if(id==-1){
         	comment.setQuestion(question);
 	        comment.setSopraUser(current);
+	        
 	        Comment temp = commentRepository.save(comment);
 	        question.getCommentList().add(temp);
         } else {

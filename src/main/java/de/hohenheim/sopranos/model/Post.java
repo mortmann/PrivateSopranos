@@ -2,8 +2,6 @@ package de.hohenheim.sopranos.model;
 
 import javax.persistence.*;
 
-
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +9,7 @@ import java.util.List;
  * Created by Burakhan on 07.06.2016.
  */
 @Entity
-public class Post {
+public class Post extends DateClass{
 
     @Id
     @GeneratedValue
@@ -23,13 +21,7 @@ public class Post {
     private String heading;
 
     private int rating;
-
-    private int ratingCount = 0;
-
-    //nicht sicher welche Klasse importieren
-    private Date postDdate;
-
-
+    private int ratingCount;
 
 
     @ManyToOne
@@ -106,11 +98,4 @@ public class Post {
         this.ratingCount = ratingCount;
     }
 
-    public Date getPostDdate() {
-        return postDdate;
-    }
-
-    public void setPostDdate(Date postDdate) {
-        this.postDdate = postDdate;
-    }
 }

@@ -2,6 +2,8 @@
 package de.hohenheim.sopranos.model;
 
 import javax.persistence.*;
+
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +17,7 @@ public class SopraUser {
     private String password;
 
     private String name;
-
+    private Date createDate;
     @Column(unique = true)
     private String username;
 
@@ -41,7 +43,9 @@ public class SopraUser {
     @OneToMany(mappedBy = "sopraUser")
     private List<Comment> commentList = new ArrayList<>();
 
-    public SopraUser() {}
+    public SopraUser() {
+    	createDate = new Date(System.currentTimeMillis());
+    }
 
     public String getEmail() {
         return email;
@@ -134,4 +138,12 @@ public class SopraUser {
     public List<Question> getQuestList() {return questList;}
 
     public void setQuestList(List<Question> questList) {this.questList = questList;}
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
 }
