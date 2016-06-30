@@ -214,13 +214,10 @@ public class QuestionContoller {
 	
 	    	for (int i = 0; i < q.getSolutions().length; i++) {
 				if(b[i]!=q.getSolutions()[i]){
-					System.out.println("false");
 		    		attr.addAttribute("successful",false);
-		    		
 		    		return "/quiz";
 				}
 			}
-			System.out.println("true");
 	
 	    	attr.addAttribute("successful",true);
     	} else {
@@ -235,7 +232,7 @@ public class QuestionContoller {
     
     @RequestMapping(value = "/question/comment", method = RequestMethod.GET)
     public String comment(HttpServletRequest request,Model model,@ModelAttribute("questiontype") String type,@ModelAttribute("quest") Question question
-    		,@ModelAttribute("comment") Comment comment,@ModelAttribute("edit") String edit, RedirectAttributes attr) {
+    		,@ModelAttribute("comment") Comment comment,@ModelAttribute("edit") String edit,RedirectAttributes attr) {
 
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SopraUser current = sopraUserRepository.findByEmail(user.getUsername());
@@ -251,9 +248,6 @@ public class QuestionContoller {
         model.addAttribute("comment", comment);
         model.addAttribute("name", name);
         question = questionRepository.getOne(question.getQuestId());
-        for (boolean string : question.getSolutions()) {
-			System.out.println(string);
-		}
         model.addAttribute("question",question);
         attr.addFlashAttribute("quest", question);
         request.getSession().setAttribute("question", question);
@@ -261,10 +255,10 @@ public class QuestionContoller {
         return "question/comment"; 
     }
     @RequestMapping(value = "/question/comment", method = RequestMethod.POST)
-    public String commentPOST(HttpServletRequest request,@ModelAttribute("quest") Question question,Comment comment, String info, Model model, RedirectAttributes attr) {
+    public String commentPOST(HttpServletRequest request,@ModelAttribute("quest") Question question,String rating,Comment comment, String info, Model model, RedirectAttributes attr) {
     	int id = Integer.parseInt(info);
     	question = (Question) request.getSession().getAttribute("question");
-    	
+    	System.out.println("rating " + rating);
     	question = questionRepository.getOne(question.getQuestId());
     	String text =  comment.getText();
     	if(text == null || text.isEmpty() || text.trim() == "" || text.equals("<p><br></p>")){

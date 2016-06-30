@@ -4,6 +4,7 @@ package de.hohenheim.sopranos.model;
 import javax.persistence.*;
 
 import java.sql.Date;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -143,7 +144,10 @@ public class SopraUser {
 		return createDate;
 	}
 
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
+	public void setCreateDate() {
+		this.createDate = new Date(System.currentTimeMillis());
+	}
+	public String getCreateDateString() {
+		return DateFormat.getInstance().format(getCreateDate());
 	}
 }

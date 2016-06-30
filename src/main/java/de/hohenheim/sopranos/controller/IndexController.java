@@ -63,7 +63,7 @@ public class IndexController {
                 (o1, o2) -> o1.getCreateDate().compareTo(o2.getCreateDate()));
     	Collections.reverse(all);
     	System.out.println(all.size());
-    	model.addAttribute("activities", all); 
+    	model.addAttribute("activities", all.toArray()); 
         return "home";
     }
 }

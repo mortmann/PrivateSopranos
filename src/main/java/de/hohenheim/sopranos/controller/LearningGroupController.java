@@ -47,6 +47,7 @@ public class LearningGroupController {
     	User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SopraUser host = sopraUserRepository.findByEmail(user.getUsername());
         lg.setSopraHost(host);
+        lg.setCreateDate(); 
         learningGroupRepository.save(lg);
         return "redirect:/learninggroup/home?name=" + lg.getName() +"&created";
     }

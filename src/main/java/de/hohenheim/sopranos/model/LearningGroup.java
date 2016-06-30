@@ -1,6 +1,9 @@
 package de.hohenheim.sopranos.model;
 
 import javax.persistence.*;
+
+import java.sql.Date;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +23,7 @@ public class LearningGroup {
 
     private Boolean freeForAll = true;
 
-
+    private Date createDate;
 
 
     @OneToOne
@@ -186,4 +189,14 @@ public class LearningGroup {
             user.getGray().remove(this);
         }
     }
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate() {
+		this.createDate = new Date(System.currentTimeMillis());
+	}
+	public String getCreateDateString() {
+		return DateFormat.getInstance().format(getCreateDate());
+	}
 }

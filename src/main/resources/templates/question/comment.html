@@ -20,7 +20,7 @@
     <!-- include summernote css/js-->
     <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.1/summernote.css" rel="stylesheet"/>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.1/summernote.js"></script>
-
+	<script th:src="@{/js/fivestar.js}"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $('.summernote').summernote({
@@ -68,6 +68,12 @@
     <div th:if="${edit}==false" class="form-group">
         <button class="btn btn-primary btn-lg btn-block login-button" type="submit" th:value="-1" th:name="info">Post</button>
     </div>
+    <div class="container">
+	    <div class="row lead">
+	        <div id="stars" class="starrr"></div>
+	        Bewertung: <label name="rating" id="count" data-rating='3'>0</label> star(s)
+		</div>
+	</div>
 </form>
 
 
