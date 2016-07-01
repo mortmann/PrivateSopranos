@@ -23,7 +23,7 @@ public class Question extends DateClass {
 
     private Boolean quizQuest = false;
 
-    private int rating;
+    private int rating = 0;
 
 
 	private String[] answers;

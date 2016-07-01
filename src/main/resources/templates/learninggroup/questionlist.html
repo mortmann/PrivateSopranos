@@ -17,6 +17,31 @@
 <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet"/>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script> 
 <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script> 
+<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet"/>
+<script src="https://code.jquery.com/jquery-1.4.1.min.js"></script>
+
+<!-- We need the raterater stylesheet -->
+<link th:href="@{/css/raterater.css}" rel="stylesheet"/>
+<script th:src="@{/js/raterater.jquery.js}"></script>
+<style>
+/* Override star colors */
+.raterater-bg-layer {
+    color: rgba( 0, 0, 0, 0.25 );
+}
+.raterater-hover-layer {
+    color: rgba( 255, 255, 0, 0.75 );
+}
+.raterater-hover-layer.rated {
+    color: rgba( 255, 255, 0, 1 );
+}
+.raterater-rating-layer {
+    color: rgba( 255, 155, 0, 0.75 );
+}
+.raterater-outline-layer {
+    color: rgba( 0, 0, 0, 0.25 );
+}
+</style>
+
 
 
 </head>
@@ -48,7 +73,37 @@
         	<button class="btn btn-default" type="submit" th:name="info" th:value="${question.getQuestId()} + '-delete'" aria-hidden="true">Löschen</button>
         </form>
         </td> 
+        <td>
+        	<form name="form-login" th:object="${Rating}" th:action="@{/learninggroup/questionlist?name=} + ${name}" method="post">
+					<div class="ratebox" th:attr="data-id=${question.getQuestId()},data-rating=${question.getRating()}" ></div>
+					<input th:id="rating" style="display: none;" th:field="*{test}"></input>
+					<button class="btn btn-default"  type="submit" aria-hidden="true">Submit</button>
+			 </form>	
+		</td>
 	</tr>
 </table>
+<div class="ratebox" data-id="2" data-rating="2.5"></div>
+
+<script>
+
+/* This is out callback function for when a rating is submitted
+ */
+function rateAlert(id, rating)
+{
+	document.getElementById("rating").value  = id+"-rating-"+rating;
+}
+
+	/* Here we initialize raterater on our rating boxes
+	 */
+	$(function() {
+		$('.ratebox').raterater({
+			submitFunction : 'rateAlert',
+			allowChange : true,
+			starWidth : 20,
+			spaceWidth : 5,
+			numStars : 5
+		});
+	});
+</script>
 </body>
 </html>

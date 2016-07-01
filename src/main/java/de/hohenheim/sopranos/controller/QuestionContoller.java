@@ -255,10 +255,9 @@ public class QuestionContoller {
         return "question/comment"; 
     }
     @RequestMapping(value = "/question/comment", method = RequestMethod.POST)
-    public String commentPOST(HttpServletRequest request,@ModelAttribute("quest") Question question,String rating,Comment comment, String info, Model model, RedirectAttributes attr) {
+    public String commentPOST(HttpServletRequest request,@ModelAttribute("quest") Question question,Comment comment, String info, Model model, RedirectAttributes attr) {
     	int id = Integer.parseInt(info);
     	question = (Question) request.getSession().getAttribute("question");
-    	System.out.println("rating " + rating);
     	question = questionRepository.getOne(question.getQuestId());
     	String text =  comment.getText();
     	if(text == null || text.isEmpty() || text.trim() == "" || text.equals("<p><br></p>")){

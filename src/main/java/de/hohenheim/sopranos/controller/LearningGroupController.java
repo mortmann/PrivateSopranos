@@ -219,8 +219,20 @@ public class LearningGroupController {
     	LearningGroup lg = learningGroupRepository.findByName(name);
     	User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SopraUser loginUser = sopraUserRepository.findByEmail(user.getUsername());
-
+    	String st = "Was is das richtige?";
+    	Question testmc = new Question();
+    	testmc.setQuestText(st);
+    	String[] strs =  {"a","b","c","d"};
+    	testmc.setAnswers(strs);
+    	boolean[] b = {true,false,false,false};
+    	testmc.setSopraUser(loginUser);
+    	testmc.setSolutions(b);
+    	testmc.setLearningGroup(lg);
+    	testmc = questionRepository.save(testmc);
+    	lg.getQuestList().add(testmc);
+    	
     	model.addAttribute("questions", lg.getQuestList());
+    	model.addAttribute("Rating", new Rating());
     	model.addAttribute("name", name);
     	model.addAttribute("isHost", lg.isHost(loginUser));
     	model.addAttribute("loginUser",loginUser);
@@ -229,8 +241,14 @@ public class LearningGroupController {
     }
     @RequestMapping(value = "/learninggroup/questionlist{name}", method = RequestMethod.POST)
     public String allquestionPOST(@RequestParam("name")
-                                         String name, String info, Model model, RedirectAttributes attr) {
-    	String[] is = info.split("-");
+                                         String name, String info,Rating rating, Model model, RedirectAttributes attr) {
+    	String[] is = null;
+    	if(info != null){
+    		is=info.split("-");
+    	} else {
+    		is=rating.getTest().split("-");
+    	}
+    	
     	Question p = questionRepository.getOne(Integer.valueOf(is[0]));
 
     	switch(is[1]){
@@ -253,6 +271,11 @@ public class LearningGroupController {
     			attr.addAttribute("name", name);
     			attr.addFlashAttribute("edit", false); 
     			return "redirect:/question/comment";
+    		case "rating":
+    			//change 
+    			attr.addAttribute("rating", "successful");
+    			attr.addAttribute("name", name);
+    			return "redirect:/learninggroup/questionlist";	
     	}
     	return "redirect:/error";
     }
