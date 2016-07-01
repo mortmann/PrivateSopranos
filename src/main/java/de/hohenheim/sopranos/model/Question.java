@@ -23,7 +23,8 @@ public class Question extends DateClass {
 
     private Boolean quizQuest = false;
 
-    private int rating = 0;
+    private float rating = 0;
+    private int ratingCount = 0;
 
 
 	private String[] answers;
@@ -66,12 +67,19 @@ public class Question extends DateClass {
         this.quizQuest = quizQuest;
     }
 
-    public int getRating() {
-        return rating;
+    public float getRating() {
+    	if(rating==0){
+    		return 0;
+    	}
+        return rating/ratingCount;
     }
 
     public void setRating(int rating) {
         this.rating = rating;
+    }
+    public void addRating(float rating) {
+        this.rating += rating;
+        ratingCount++;
     }
 
     public SopraUser getSopraUser() {
@@ -111,7 +119,15 @@ public class Question extends DateClass {
 	public void setSolutions(boolean[] solutions) {
 		this.solutions = solutions;
 	}
-    public List<Comment> getCommentList() {return commentList;}
+    public int getRatingCount() {
+		return ratingCount;
+	}
+
+	public void setRatingCount(int ratingCount) {
+		this.ratingCount = ratingCount;
+	}
+
+	public List<Comment> getCommentList() {return commentList;}
 
     public void setCommentList(List<Comment> commentList) {this.commentList = commentList;}
 }

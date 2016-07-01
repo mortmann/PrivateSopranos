@@ -2,6 +2,7 @@ package de.hohenheim.sopranos.model;
 
 import javax.persistence.*;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class Post extends DateClass{
     private int rating;
     private int ratingCount;
 
-
+    private File file;
     @ManyToOne
     private LearningGroup learningGroup;
 
@@ -97,5 +98,13 @@ public class Post extends DateClass{
     public void setRatingCount(int ratingCount) {
         this.ratingCount = ratingCount;
     }
+
+	public File getFile() {
+		return file;
+	}
+
+	public void setFile(File file) {
+		this.file = file;
+	}
 
 }

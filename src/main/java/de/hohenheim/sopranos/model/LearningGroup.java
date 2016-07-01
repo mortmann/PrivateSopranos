@@ -31,6 +31,8 @@ public class LearningGroup {
 
     @OneToMany
     private  List<Question> questList = new ArrayList<>();
+    @OneToMany
+    private  List<Question> notReleasedQuestionList = new ArrayList<>();
 
     @OneToMany(mappedBy = "learningGroup")
     private  List<Post> postList = new ArrayList<>();
@@ -198,5 +200,13 @@ public class LearningGroup {
 	}
 	public String getCreateDateString() {
 		return DateFormat.getInstance().format(getCreateDate());
+	}
+
+	public List<Question> getNotReleasedQuestionList() {
+		return notReleasedQuestionList;
+	}
+
+	public void setNotReleasedQuestionList(List<Question> notReleasedQuestionList) {
+		this.notReleasedQuestionList = notReleasedQuestionList;
 	}
 }

@@ -6,7 +6,7 @@
 
 ;(function( $ ) {
     var data = {};
-    var opts = {};
+    var opts = 0.5;
     
     var MODE_INPUT = 'input';
     var MODE_CALLBACK = 'callback';
@@ -182,7 +182,7 @@
             hiliteStars (
                 $this.find( '.raterater-rating-layer' ).first(), 
                 whole, 
-                partial
+                partial,false
             );
         });
     }
@@ -195,7 +195,25 @@
         /* Round stars to 2 decimals
          */
         stars = Math.round( stars * 100 ) / 100;
-
+        if(stars<0.5){
+        	stars =0.5;
+        }
+        /*
+         * make it clamp bewteen 0.5-5
+         * and make it only .5 rates possible
+         */
+        var s = stars-Math.floor(stars);
+        if(s>0.5){
+        	s=s-0.5; 
+        } 
+        if(s<=0.5){
+        	s=0.5-s;
+        }
+        stars=stars+s
+        
+        if(stars>5){
+        	stars=5;
+        }
         /* Set the state to 'rated' to disable functionality
          */
         data[id].state = 'rated';
@@ -249,7 +267,7 @@
 
     /* Given a layer object and rating data, highlight the stars
      */
-    function hiliteStars($layer, whole, partial) {
+    function hiliteStars($layer, whole, partial, half) {
         var id = dataId( $layer.parent() );
 
         /* highlight the 'whole' stars
@@ -261,6 +279,20 @@
 
         /* highlight the partial star
          */
+        if(half){
+            var s = partial-Math.floor(partial);
+            if(s>=0.5){
+            	s=s-0.5; 
+            } 
+            if(s<0.5){
+            	s=0.5-s;
+            }
+            partial=partial+s
+            
+            if(partial>5){
+            	partial=5;
+            }
+        }
         $layer.find( 'i' ).eq( whole )
             .css( 'width', opts.starWidth * partial + 'px' );
 
@@ -302,7 +334,7 @@
 
         /* Call the more generic highlighting function
          */
-        hiliteStars( $layer, data[id].whole_stars_hover, data[id].partial_star_hover );
+        hiliteStars( $layer, data[id].whole_stars_hover, data[id].partial_star_hover,true );
     }
 
     /* Active this rating box
@@ -348,7 +380,7 @@
              hiliteStars (
                  $this.find( '.raterater-rating-layer' ).first(), 
                  whole, 
-                 partial );
+                 partial,false );
              
             return;
         }

@@ -49,13 +49,50 @@
 
 <body>
 <th:block th:include="fragments/navbar::nav-In"/>
-<h1>FRAGEN</h1>
+<h1>NOCH KEINE QUIZFRAGEN</h1>
 <table>
 	<tr>
         <th>FRAGE </th>
         <th>BENUTZER </th>
     </tr>
-	<tr th:each="question,iterationStatus  : ${questions}">
+	<tr th:each="question,iterationStatus  : ${nonquizquestions}">
+		<td  class="content" th:utext="${question.getQuestText()}"/>
+		<td  class="content" th:utext="${question.getSopraUser().getEmail()}"/> 
+        <td >
+        <form name="form-login" th:action="@{/learninggroup/questionlist?name=} + ${name}" method="post">
+        	<button class="btn btn-default" type="submit" th:name="info" th:value="${question.getQuestId() + '-comment'}" aria-hidden="true">Kommentieren</button>
+        </form>
+        </td> 
+		<td th:if="${isHost and question.getSopraUser()==loginUser}">
+        <form name="form-login" th:action="@{/learninggroup/questionlist?name=} + ${name}" method="post">
+        	<button class="btn btn-default" type="submit" th:name="info" th:value="${question.getQuestId()} + '-edit'" aria-hidden="true">Ändern</button>
+        </form>
+        </td> 
+        <td th:if="${isHost and question.getSopraUser()==loginUser}">
+        <form name="form-login" th:action="@{/learninggroup/questionlist?name=} + ${name}" method="post">
+        	<button class="btn btn-default" type="submit" th:name="info" th:value="${question.getQuestId()} + '-delete'" aria-hidden="true">Löschen</button>
+        </form>
+        </td> 
+        <td th:if="${isHost}">
+        <form name="form-login" th:action="@{/learninggroup/questionlist?name=} + ${name}" method="post">
+        	<button class="btn btn-default" type="submit" th:name="info" th:value="${question.getQuestId()} + '-addquiz'" aria-hidden="true">Für Quiz freigeben</button>
+        </form>
+        </td> 
+        <td>
+        	<form name="form-login" th:object="${Rating}" th:action="@{/learninggroup/questionlist?name=} + ${name}" method="post">
+					<div class="ratebox" th:attr="data-id=${question.getQuestId()},data-rating=${question.getRating()}" ></div>
+					<button th:id="rating" th:name="info" class="btn btn-default"  type="submit" aria-hidden="true">Submit</button>
+			 </form>	
+		</td>
+	</tr>
+</table>
+<h1>QUIZFRAGEN</h1>
+<table>
+	<tr>
+        <th>FRAGE </th>
+        <th>BENUTZER </th>
+    </tr>
+	<tr th:each="question,iterationStatus  : ${quizquestions}">
 		<td  class="content" th:utext="${question.getQuestText()}"/>
 		<td  class="content" th:utext="${question.getSopraUser().getEmail()}"/> 
         <td >
@@ -74,23 +111,21 @@
         </form>
         </td> 
         <td>
-        	<form name="form-login" th:object="${Rating}" th:action="@{/learninggroup/questionlist?name=} + ${name}" method="post">
+        	<form name="form-login" th:action="@{/learninggroup/questionlist?name=} + ${name}" method="post">
 					<div class="ratebox" th:attr="data-id=${question.getQuestId()},data-rating=${question.getRating()}" ></div>
-					<input th:id="rating" style="display: none;" th:field="*{test}"></input>
-					<button class="btn btn-default"  type="submit" aria-hidden="true">Submit</button>
+					<button th:id="${'rating'+question.getQuestId()}" th:name="info" class="btn btn-default" style="display:none" type="submit" aria-hidden="true" >Submit</button>
 			 </form>	
 		</td>
 	</tr>
 </table>
-<div class="ratebox" data-id="2" data-rating="2.5"></div>
-
 <script>
 
 /* This is out callback function for when a rating is submitted
  */
 function rateAlert(id, rating)
 {
-	document.getElementById("rating").value  = id+"-rating-"+rating;
+	document.getElementById("rating"+id).style = "";
+	document.getElementById("rating"+id).value = id+"-rating-"+rating;
 }
 
 	/* Here we initialize raterater on our rating boxes

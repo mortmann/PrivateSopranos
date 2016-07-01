@@ -121,7 +121,7 @@ public class QuestionContoller {
     	qc.setLearningGroup(group);
     	qc.setCreateDate();
     	qc=questionRepository.save(qc);
-        group.getQuestList().add(qc);
+        group.getNotReleasedQuestionList().add(qc);
         learningGroupRepository.save(group);
         
         System.out.println("group " + group.getQuestList().size());
@@ -147,7 +147,13 @@ public class QuestionContoller {
     	questionRepository.save(testmc);
     	
     	ArrayList<Question> qs = new ArrayList<>();
-    	qs.addAll(questionRepository.findAll());
+    	if(group!=null && learningGroupRepository.findByName(group.getName())!=null){
+        	//TODO REMOVE question from loginUser ???
+    		
+    		qs.addAll(group.getQuestList());
+    	} else {
+        	qs.addAll(questionRepository.findAll());
+    	}
     	int questionCount = 10;
     	for (int i = 0; i < questionCount; i++) {
     		int id = r.nextInt((int)qs.size());
@@ -166,12 +172,55 @@ public class QuestionContoller {
     	model.addAttribute("percentage", Float.toString( 100*((float)1/(float)q.getQuestList().size())));
         return "redirect:/question/answer";
     }
+    @RequestMapping(value = "/quiz/end{id}", method = RequestMethod.GET)
+    public String quizEND(@RequestParam("id") String id,@RequestParam("number") String number,Model model, RedirectAttributes attr) {
+    	Quiz quiz =quizRepository.getOne(Integer.parseInt(id));
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        SopraUser current = sopraUserRepository.findByEmail(user.getUsername());
+
+        if(quiz.getGenerated()==current){
+        	
+        }
+    	
+    	boolean[] correct = new boolean[quiz.getQuestList().size()];
+	    for (int i =0; i< quiz.getQuestList().size();i++) {
+	    	Question q = quiz.getQuestList().get(i);
+	    	Answer answer = quiz.getAnswers()[i];
+	    	if(q.getAnswers().length>1){
+		    	correct[i] = questioncorrected(q, answer);
+			} else {
+				
+				
+				//what todo for openquestions?
+				System.out.println(answer.getAnswer0());
+			}
+		}
+	    for (boolean b : correct) {
+			if(b){
+				current.increaseRankpoints();
+			} else {
+				current.decreaseRankpoints();
+			}
+		}	    
+	    return "quiz/end";
+	}  
+    private boolean questioncorrected(Question q,Answer answer){
+    	boolean[] b = answer.getBooleans();
+
+    	for (int s = 0; s < q.getSolutions().length; s++) {
+			if(b[s]!=q.getSolutions()[s]){
+				return false;
+			}
+		}
+    	return true;
+    }
+    
     @RequestMapping(value = "/question/next{id,number}", method = RequestMethod.GET)
     public String quizNextQuestion(@RequestParam("id") String id,@RequestParam("number") String number,Model model, RedirectAttributes attr) {
     	Quiz q =quizRepository.getOne(Integer.parseInt(id));
     	if(Integer.parseInt(number) > q.getQuestList().size()){
     		//TODO end site to add
-    		return "/home";
+    		return "redirect:/quiz/end?id="+id;
     	}
         attr.addAttribute("id",id);
         attr.addAttribute("number", number);
@@ -195,6 +244,9 @@ public class QuestionContoller {
     }
     @RequestMapping(value = "/question/answer{id,number}", method = RequestMethod.POST)
     public String answerPOST(@RequestParam("id") String id,@RequestParam("number") String number,Answer answer, Model model,  String direction, RedirectAttributes attr) {
+    	Quiz quiz =quizRepository.getOne(Integer.parseInt(id));
+    	quiz.addAnswer(Integer.parseInt(number),answer);
+    	
     	if(direction.contains("next")){
     		number = Integer.toString(Integer.parseInt(number)+1);
     	} else 
@@ -206,26 +258,7 @@ public class QuestionContoller {
     	}
     	attr.addAttribute("id", id);
     	attr.addAttribute("number", number);
-    	Quiz quiz =quizRepository.getOne(Integer.parseInt(id));
-    	Question q = quiz.getQuestList().get(Integer.parseInt(number));
-    	if(q.getAnswers().length>1){
-	    	
-	    	boolean[] b = answer.getBooleans();
-	
-	    	for (int i = 0; i < q.getSolutions().length; i++) {
-				if(b[i]!=q.getSolutions()[i]){
-		    		attr.addAttribute("successful",false);
-		    		return "/quiz";
-				}
-			}
-	
-	    	attr.addAttribute("successful",true);
-    	} else {
-    		
-    		
-    		//what todo for openquestions?
-    		System.out.println(answer.getAnswer0());
-    	}
+    	
         return "redirect:/question/next";
     }
     

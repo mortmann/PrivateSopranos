@@ -91,7 +91,12 @@ public class SopraUser {
     public Integer getRankpoints() {
         return rankpoints;
     }
-
+    public void increaseRankpoints(){
+    	rankpoints++;
+    }
+	public void decreaseRankpoints(){
+		rankpoints--;
+	}
     public void setRankpoints(Integer rankpoints) {
         this.rankpoints = rankpoints;
     }

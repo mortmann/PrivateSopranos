@@ -231,8 +231,9 @@ public class LearningGroupController {
     	testmc = questionRepository.save(testmc);
     	lg.getQuestList().add(testmc);
     	
-    	model.addAttribute("questions", lg.getQuestList());
-    	model.addAttribute("Rating", new Rating());
+    	model.addAttribute("quizquestions", lg.getQuestList());
+    	model.addAttribute("nonquizquestions", lg.getNotReleasedQuestionList());
+
     	model.addAttribute("name", name);
     	model.addAttribute("isHost", lg.isHost(loginUser));
     	model.addAttribute("loginUser",loginUser);
@@ -241,15 +242,11 @@ public class LearningGroupController {
     }
     @RequestMapping(value = "/learninggroup/questionlist{name}", method = RequestMethod.POST)
     public String allquestionPOST(@RequestParam("name")
-                                         String name, String info,Rating rating, Model model, RedirectAttributes attr) {
+                                         String name, String info, Model model, RedirectAttributes attr) {
     	String[] is = null;
-    	if(info != null){
-    		is=info.split("-");
-    	} else {
-    		is=rating.getTest().split("-");
-    	}
-    	
+		is=info.split("-");    	
     	Question p = questionRepository.getOne(Integer.valueOf(is[0]));
+    	LearningGroup lg = learningGroupRepository.findByName(name);
 
     	switch(is[1]){
     		case "delete":
@@ -273,7 +270,21 @@ public class LearningGroupController {
     			return "redirect:/question/comment";
     		case "rating":
     			//change 
+    			System.out.println(info);
+    			p.addRating(Float.valueOf(is[2]));
+    			//up for discussion -- how good rated/how many it have to rate it so it 
+    			//can be up for quiz
+    			if(p.getRating()>2.5f && p.getRatingCount()>=Math.min(lg.getUserCount(), 5)){
+    				lg.getNotReleasedQuestionList().remove(p);
+        			lg.getQuestList().add(p);
+    			}
     			attr.addAttribute("rating", "successful");
+    			attr.addAttribute("name", name);
+    			return "redirect:/learninggroup/questionlist";	
+    		case "addquiz":
+    			lg.getNotReleasedQuestionList().remove(p);
+    			lg.getQuestList().add(p);
+    			attr.addAttribute("adding", "successful");
     			attr.addAttribute("name", name);
     			return "redirect:/learninggroup/questionlist";	
     	}
