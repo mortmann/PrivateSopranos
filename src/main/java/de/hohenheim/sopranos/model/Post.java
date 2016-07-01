@@ -2,6 +2,8 @@ package de.hohenheim.sopranos.model;
 
 import javax.persistence.*;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +25,8 @@ public class Post extends DateClass{
 
     private int rating;
     private int ratingCount;
-
-    private File file;
+    @Transient
+    private MultipartFile file;
     @ManyToOne
     private LearningGroup learningGroup;
 
@@ -99,12 +101,14 @@ public class Post extends DateClass{
         this.ratingCount = ratingCount;
     }
 
-	public File getFile() {
+	public MultipartFile getFile() {
 		return file;
 	}
 
-	public void setFile(File file) {
+	public void setFile(MultipartFile file) {
 		this.file = file;
 	}
+
+
 
 }
