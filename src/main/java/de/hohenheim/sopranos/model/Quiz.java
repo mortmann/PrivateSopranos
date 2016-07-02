@@ -17,7 +17,7 @@ public class Quiz extends DateClass {
     private Integer quizId;
     @ManyToOne
     private SopraUser generated;
-    
+    private int points=0;
     private boolean[][] answers;
     private String[] answertext; 
 
@@ -88,6 +88,14 @@ public class Quiz extends DateClass {
 
 	public void setAnswertext(String[] answertext) {
 		this.answertext = answertext;
+	}
+
+	public int getPoints() {
+		return points;
+	}
+
+	public void setPoints(int points) {
+		this.points = points;
 	}
 	
 	

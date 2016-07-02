@@ -45,7 +45,9 @@ public class SopraUser {
 
     @OneToMany(mappedBy = "sopraUser")
     private List<Comment> commentList = new ArrayList<>();
-
+    @OneToMany(mappedBy = "generated")
+    private List<Quiz> quizList = new ArrayList<>(); 
+     
     public SopraUser() {
     	createDate = new Date(System.currentTimeMillis());
     }
@@ -149,6 +151,14 @@ public class SopraUser {
 
 	public Date getCreateDate() {
 		return createDate;
+	}
+
+	public List<Quiz> getQuizList() {
+		return quizList;
+	}
+
+	public void setQuizList(List<Quiz> quizList) {
+		this.quizList = quizList;
 	}
 
 	public void setCreateDate() {

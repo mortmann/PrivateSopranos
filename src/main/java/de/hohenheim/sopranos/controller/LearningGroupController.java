@@ -316,7 +316,7 @@ public class LearningGroupController {
     			attr.addAttribute("adding", "successful");
     			attr.addAttribute("name", name);
     			return "redirect:/learninggroup/questionlist";	
-    	}
+    	} 
     	return "redirect:/error";
     }
     

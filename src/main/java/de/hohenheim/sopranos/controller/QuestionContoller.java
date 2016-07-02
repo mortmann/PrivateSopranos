@@ -1,6 +1,5 @@
 package de.hohenheim.sopranos.controller;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import de.hohenheim.sopranos.model.*;
@@ -130,60 +128,95 @@ public class QuestionContoller {
     
     @RequestMapping(value = "/quiz", method = RequestMethod.GET)
     public String quiz(HttpServletRequest request,Model model, RedirectAttributes attr) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        SopraUser current = sopraUserRepository.findByEmail(user.getUsername());
+        
+    	
+    	model.addAttribute("groups", current.getLearningGroups());
+    	return "/quiz";
+    }
+    @RequestMapping(value = "/quiz", method = RequestMethod.POST)
+    public String quizPOST(HttpServletRequest request,String info,String count,String open,String closed,Model model, RedirectAttributes attr) {
+    	if(info==null||info.isEmpty()){
+    		attr.addAttribute("error", "info");
+    		return "redirect:/quiz";
+    	}
+    	int questionCount = Integer.valueOf(count);
     	Random r = new Random();
     	ArrayList<Question> al = new ArrayList<>();
     	ArrayList<Question> qs = new ArrayList<>();
-
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        SopraUser current = sopraUserRepository.findByEmail(user.getUsername());
+        
+//__________________________________________________________________________
+        LearningGroup group=learningGroupRepository.findByName("BLACK");
     	// setup for test so there is always a question
     	String st = "Was is das richtige?";
     	Question testmc = new Question();
     	testmc.setQuestText(st);
-    	String[] strs =  {"a","b","c","d"};
-    	testmc.setAnswers(strs);
+    	String[] astrs =  {"a","b","c","d"};
+    	testmc.setAnswers(astrs);
     	boolean[] b = {true,false,false,false};
     	testmc.setSolutions(b);
     	qs.add(testmc);
-    	LearningGroup group = (LearningGroup) request.getSession().getAttribute("group");
-    	group=learningGroupRepository.findByName("BLACK");
+//    	group = (LearningGroup) request.getSession().getAttribute("group");
     	testmc.setLearningGroup(group);
     	testmc = questionRepository.save(testmc);
     	group.getQuestList().add(testmc);
     	group = learningGroupRepository.save(group);
-    	if(group!=null && learningGroupRepository.findByName(group.getName())!=null){
-        	//TODO REMOVE question from loginUser ???
-    		
-    		qs.addAll(group.getQuestList());
-    	} else {
-        	qs.addAll(questionRepository.findAll());
+//__________________________________________________________________________   
+    	System.out.println(info);
+    	String[] grs = info.split(",");
+    	System.out.println(grs.length);
+    	for(String name : grs){
+        	group=learningGroupRepository.findByName("name");
+	    	if(group!=null && learningGroupRepository.findByName(name)!=null){
+	    		System.out.println("add");
+	    		qs.addAll(group.getQuestList());
+	    	} 
     	}
-    	int questionCount = 2;
+    	
+    	if(qs.isEmpty()){
+    		qs.addAll(questionRepository.findAll());
+    	}
+    	if(closed==null){
+    		qs.removeIf(x->x.getAnswers().length>1);
+    	}
+    	if(open==null){
+    		qs.removeIf(x->x.getAnswers().length==1);
+    	}
+		qs.removeIf(x->x.getSopraUser().getEmail().equals(current.getEmail()));
+    	if(qs.isEmpty() || qs.size()<questionCount){
+    		attr.addAttribute("error", "questioncount");
+    		return "redirect:/quiz";
+    	}
     	for (int i = 0; i < questionCount; i++) {
     		int id = r.nextInt((int)qs.size());
         	if(id == 0){
         		id++;
         	}
-        	al.add(qs.get(id));
+        	al.add(qs.get(id-1));
 		}
     	//id start at 1
-
     	Quiz q = new Quiz();
     	q.setQuestList(al);
+    	q.setGenerated(current);
     	q = quizRepository.save(q);
     	attr.addAttribute("id", Integer.toString(q.getQuizId()));
     	attr.addAttribute("number", Integer.toString(1));
     	model.addAttribute("percentage", Float.toString( 100*((float)1/(float)q.getQuestList().size())));
         return "redirect:/question/answer";
+    	
     }
     @RequestMapping(value = "/question/end{id}", method = RequestMethod.GET)
     public String quizEND(@RequestParam("id") String id,Model model, RedirectAttributes attr) {
     	Quiz quiz =quizRepository.getOne(Integer.parseInt(id));
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SopraUser current = sopraUserRepository.findByEmail(user.getUsername());
-        System.out.println(quiz.getQuestList().size());
-//        if(quiz.getGenerated()!=current){
-//        	return "redirect:/home";
-//        }
-//    	
+        if(quiz.getGenerated().getEmail().equals(current.getEmail())==false){
+        	return "redirect:/home";
+        }
+    	
     	boolean[] correct = new boolean[quiz.getQuestList().size()];
 	    for (int i =0; i< quiz.getQuestList().size();i++) {
 	    	Question q = quiz.getQuestList().get(i);
@@ -195,13 +228,18 @@ public class QuestionContoller {
 				System.out.println(quiz.getAnswertext()[i]);
 			}
 		}
+	    int points= 0;
 	    for (boolean b : correct) {
 			if(b){
-//				current.increaseRankpoints();
+				points++;
+				current.increaseRankpoints();
 			} else {
-//				current.decreaseRankpoints();
+				points--;
+				current.decreaseRankpoints();
 			}
 		}	    
+	    quiz.setPoints(points);
+	    quizRepository.save(quiz);
 	    model.addAttribute("questions", quiz.getQuestList());
 	    model.addAttribute("quiz", quiz);
 	    model.addAttribute("correct", correct);
