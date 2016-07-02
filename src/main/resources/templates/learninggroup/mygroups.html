@@ -8,14 +8,23 @@
     <meta name="generator" content="Bootply" />
     <meta name="description"
           content="Use bootstrap-wysiwyg with Bootstrap 3." />
-    <link
-            href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"
-            rel="stylesheet"/>
 
-    <!-- include libraries(jQuery, bootstrap) -->
-    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet"/>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
-    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"/>
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="@{/css/register.css"/>
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
+          integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+            integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+            crossorigin="anonymous"></script>
+    <!-- Website Font style -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
 
 
 </head>
@@ -24,19 +33,24 @@
 <body>
 <th:block th:include="fragments/navbar::nav-In"/>
 
-<table>
+<h1>Meine Lerngruppen</h1>
+<table class="table">
+    <thead>
     <tr>
-        <th>NAME </th>
-        <th>BESCHREIBUNG </th>
+        <th>Home</th>
+        <th>Name</th>
+        <th>Beschreibung</th>
     </tr>
     <!--   <button type="submit" class="btn btn-primary btn-lg btn-block login-button">Erstelle Gruppe</button> -->
+    </thead>
+    <tbody>
     <tr th:each="group,iterationStatus  : ${groups}">
         <td><a type="submit" class="btn btn-default" th:href="@{/learninggroup/home(name=${group.getName()})}">HOME</a></td>
-        <td th:text="${group.getName()}">NAME</td>
-        <td th:text="${group.getDescription()}">BESCHREIBUNG</td>
+        <td th:text="${group.getName()}"></td>
+        <td th:text="${group.getDescription()}"></td>
     </tr>
+    </tbody>
 </table>
-
 
 </body>
 </html>

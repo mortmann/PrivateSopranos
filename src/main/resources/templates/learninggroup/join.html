@@ -4,7 +4,11 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
-    <title>Home</title>
+    <title>Bootply snippet - Bootstrap Wysiwyg Editor</title>
+    <meta name="generator" content="Bootply" />
+    <meta name="description"
+          content="Use bootstrap-wysiwyg with Bootstrap 3." />
+
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
           integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"/>
@@ -20,28 +24,36 @@
             crossorigin="anonymous"></script>
     <!-- Website Font style -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+
 </head>
+
 <body>
 <th:block th:include="fragments/navbar::nav-In"/>
 
 <h1>Gruppen-Liste</h1>
-
-<table>
+<table class="table">
+    <thead>
     <tr>
-        <th>NAME </th>
-        <th>BESCHREIBUNG </th>
-        <th>PASSWORT GESCHÜTZT </th>
-        <th>MITGLIEDERANZAHL </th>
+        <th>Gruppenbeitritt</th>
+        <th>Name</th>
+        <th>Beschreibung</th>
+        <th>Passwort geschützt</th>
+        <th>Mitgliederanzahl</th>
     </tr>
     <!--   <button type="submit" class="btn btn-primary btn-lg btn-block login-button">Erstelle Gruppe</button> -->
+    </thead>
+    <tbody>
     <tr th:each="group,iterationStatus  : ${groups}">
-        <td><a type="submit" class="btn btn-default" th:href="@{/learninggroup/home(name=${group.getName()})}">Join</a></td>
-        <td th:text="${group.getName()}">NAME</td>
-        <td th:text="${group.getDescription()}">BESCHREIBUNG</td>
+        <td><a type="submit" class="btn btn-default" th:href="@{/learninggroup/home(name=${group.getName()})}">Beitreten</a></td>
+        <td th:text="${group.getName()}"></td>
+        <td th:text="${group.getDescription()}"></td>
         <td th:if="${group.getFreeForAll()}"><i class="fa fa-square-o" aria-hidden="true"></i></td>
         <td th:if="${!group.getFreeForAll()}"><i class="fa fa-check-square-o" aria-hidden="true"></i></td>
         <td th:text="${group.getUserCount()}"></td>
     </tr>
+    </tbody>
 </table>
+
 </body>
 </html>
