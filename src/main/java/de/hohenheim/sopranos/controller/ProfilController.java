@@ -12,19 +12,19 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import de.hohenheim.sopranos.model.SopraUser;
 import de.hohenheim.sopranos.model.SopraUserRepository;
 @Controller
-public class ProfileController {
+public class ProfilController {
 	
 	@Autowired
     SopraUserRepository sopraUserRepository;
-    @RequestMapping(value = "/profile/edit", method = RequestMethod.GET)
+    @RequestMapping(value = "/profil/edit", method = RequestMethod.GET)
     public String editUserGet(Model model, RedirectAttributes attr) {
     	User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SopraUser loginUser = sopraUserRepository.findByEmail(user.getUsername());
         model.addAttribute("user", loginUser);
-        return "/profile/edit";
+        return "/profil/edit";
     }
     
-    @RequestMapping(value = "/profile/edit", method = RequestMethod.POST)
+    @RequestMapping(value = "/profil/edit", method = RequestMethod.POST)
     public String editUserPost(Model model,SopraUser su, RedirectAttributes attr) {
     	User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SopraUser loginUser = sopraUserRepository.findByEmail(user.getUsername());
@@ -34,7 +34,8 @@ public class ProfileController {
         sopraUserRepository.save(loginUser);
         model.addAttribute("user", loginUser);
         attr.addAttribute("edit", "successful");
-        return "/profile/edit";
+        return "/profil/edit";
     }
     
 }
+ 

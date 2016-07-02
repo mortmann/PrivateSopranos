@@ -23,7 +23,7 @@ public class Post extends DateClass{
 
     private String heading;
 
-    private int rating;
+    private float rating;
     private int ratingCount;
     @Transient
     private MultipartFile file;
@@ -84,15 +84,6 @@ public class Post extends DateClass{
         this.heading = heading;
     }
 
-    public int getRating() {
-        return rating;
-    }
-
-    public void setRating(int rating) {
-        this.ratingCount++;
-        this.rating = rating / ratingCount;
-    }
-
     public int getRatingCount() {
         return ratingCount;
     }
@@ -107,6 +98,19 @@ public class Post extends DateClass{
 
 	public void setFile(MultipartFile file) {
 		this.file = file;
+	}
+
+	public void addRating(Float valueOf) {
+		valueOf+=valueOf;
+		ratingCount++;
+	}
+
+	public float getRating() {
+		return rating/ratingCount;
+	}
+
+	public void setRating(float rating) {
+		this.rating = rating;
 	}
 
 

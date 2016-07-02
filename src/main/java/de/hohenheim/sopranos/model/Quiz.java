@@ -18,8 +18,8 @@ public class Quiz extends DateClass {
     @ManyToOne
     private SopraUser generated;
     
-    private Answer[] answers;
-    
+    private boolean[][] answers;
+    private String[] answertext; 
 
 	@ManyToMany
     @JoinTable(
@@ -52,16 +52,42 @@ public class Quiz extends DateClass {
 		this.generated = generated;
 	}
 
-	public Answer[] getAnswers() {
+	public String[][] getAnswers() {
+		String[][] s = new String[answers.length][];
+		for (int i = 0; i<answers.length;i++) {
+			for (int x = 0; x<answers[i].length;x++) {
+				if(s[i]==null){
+					s[i] = new String[answers[i].length];
+				}
+				s[i][x] = Boolean.toString(answers[i][x]);
+			}
+		}
+		return s;
+	}
+	public boolean[][] getAnswersBoolean() {
 		return answers;
 	}
-
-	public void setAnswers(Answer[] answers) {
+	public void setAnswers(boolean[][] answers) {
 		this.answers = answers;
 	}
 
 	public void addAnswer(int number,Answer answer){
-		answers[number]=answer;
+		if(answers==null){
+			answers=new boolean[questList.size()][];
+		}
+		if(answer.getBooleans().length>1){
+			answers[number-1]=answer.getBooleans();
+		} else {
+			answertext[number-1] = answer.getAnswertext0();
+		}
+	}
+
+	public String[] getAnswertext() {
+		return answertext;
+	}
+
+	public void setAnswertext(String[] answertext) {
+		this.answertext = answertext;
 	}
 	
 	

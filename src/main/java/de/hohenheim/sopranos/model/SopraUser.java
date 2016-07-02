@@ -21,10 +21,12 @@ public class SopraUser {
     private Date createDate;
     @Column(unique = true)
     private String username;
-
+    
     private String courseOfStudys;
 
-    private Integer rankpoints;
+    private String linkToPicture;
+    
+    private Integer rankpoints = 10;
 
     @ManyToMany(mappedBy = "sopraUsers")
     private List<LearningGroup> learningGroups = new ArrayList<>();
@@ -154,5 +156,13 @@ public class SopraUser {
 	}
 	public String getCreateDateString() {
 		return DateFormat.getInstance().format(getCreateDate());
+	}
+
+	public String getLinkToPicture() {
+		return linkToPicture;
+	}
+
+	public void setLinkToPicture(String linkToPicture) {
+		this.linkToPicture = linkToPicture;
 	}
 }

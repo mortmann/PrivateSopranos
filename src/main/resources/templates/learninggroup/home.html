@@ -4,11 +4,11 @@
 	<meta charset="utf-8"/>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
-<title>Bootply snippet - Bootstrap Wysiwyg Editor</title>
+<title>Lerngruppe - Home</title>
 <meta name="generator" content="Bootply" />
 
 <meta name="description"
-	content="Use bootstrap-wysiwyg with Bootstrap 3." />
+	content="Lerngruppe - Home." />
 <link
 	href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"
 	rel="stylesheet"/>
@@ -17,7 +17,29 @@
 <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet"/>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script> 
 <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script> 
+<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet"/>
 
+ <!-- We need the raterater stylesheet -->
+<link th:href="@{/css/raterater.css}" rel="stylesheet"/>
+<script th:src="@{/js/raterater.jquery.js}"></script>
+<style>
+/* Override star colors */
+.raterater-bg-layer {
+    color: rgba( 0, 0, 0, 0.25 );
+}
+.raterater-hover-layer {
+    color: rgba( 255, 255, 0, 0.75 );
+}
+.raterater-hover-layer.rated {
+    color: rgba( 255, 255, 0, 1 );
+}
+.raterater-rating-layer {
+    color: rgba( 255, 155, 0, 0.75 );
+}
+.raterater-outline-layer {
+    color: rgba( 0, 0, 0, 0.25 );
+}
+</style>
  
 </head>
 
@@ -31,18 +53,24 @@
 		<td  class="content" th:utext="${text.getSopraUser().getEmail()}"/>
 		<td  class="content" >
 		<form name="form-login" th:action="@{/learninggroup/home?name=} + ${name}" method="post">
-        	<button class="btn btn-default" type="submit" th:name="info" th:value="${'comment-' + text.getId()}" aria-hidden="true">Kommentiere</button>
+        	<button class="btn btn-default" type="submit" th:name="info" th:value="${text.getId() +'-comment'}" aria-hidden="true">Kommentiere</button>
         </form>
 		</td>
 		<td  class="content" th:if="${text.getSopraUser()}==${loginUser} or ${isHost}">
 		<form name="form-login" th:action="@{/learninggroup/home?name=} + ${name}" method="post">
-        	<button class="btn btn-default" type="submit" th:name="info" th:value="${'edit-' + text.getId()}" aria-hidden="true">EDIT</button>
+        	<button class="btn btn-default" type="submit" th:name="info" th:value="${text.getId() +'-edir'}" aria-hidden="true">EDIT</button>
         </form>
 		</td>
 		<td  class="content" th:if="${text.getSopraUser()}==${loginUser} or ${isHost}">
 		<form name="form-login" th:action="@{/learninggroup/home?name=} + ${name}" method="post">
-        	<button class="btn btn-default" type="submit" th:name="info" th:value="${'delete-' + text.getId()}" aria-hidden="true">Löschen</button>
+        	<button class="btn btn-default" type="submit" th:name="info" th:value="${text.getId() +'-delete'}" aria-hidden="true">Löschen</button>
         </form>
+		</td>
+		<td>
+        	<form name="form-login" th:action="@{/learninggroup/home?name=} + ${name}" method="post">
+					<div class="ratebox" th:attr="data-id=${text.getId()},data-rating=${text.getRating()}" ></div>
+					<button th:id="${'rating'+text.getId()}" th:name="info" class="btn btn-default" style="display:none" type="submit" aria-hidden="true" >Submit</button>
+			 </form>	
 		</td>
 	</tr>
 </table>
@@ -51,5 +79,28 @@
 	<a type="submit" class="btn btn-default" th:href="@{/question/create(name=${name})}">Frage erstellen</a>
 	<a type="submit" class="btn btn-default" th:href="@{/learninggroup/questionlist(name=${name})}">Alle Fragen</a>
 	<a type="submit" class="btn btn-default" th:href="@{/quiz(name=${name})}">Quiz machen</a>
+	
+<script>
+
+/* This is out callback function for when a rating is submitted
+ */
+function rateAlert(id, rating)
+{
+	document.getElementById("rating"+id).style = "";
+	document.getElementById("rating"+id).value = id+"-rating-"+rating;
+}
+
+	/* Here we initialize raterater on our rating boxes
+	 */
+	$(function() {
+		$('.ratebox').raterater({
+			submitFunction : 'rateAlert',
+			allowChange : true,
+			starWidth : 20,
+			spaceWidth : 5,
+			numStars : 5
+		});
+	});
+</script>
 </body>
 </html>

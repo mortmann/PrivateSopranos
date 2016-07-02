@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,7 +53,19 @@ public class LearningGroupController {
         learningGroupRepository.save(lg);
         return "redirect:/learninggroup/home?name=" + lg.getName() +"&created";
     }
-
+    @RequestMapping(value = "/learninggroup/ranklist{name}", method = RequestMethod.GET)
+    public String ranklist(@RequestParam("name") String name,Model model, RedirectAttributes attr) {
+    	LearningGroup lg = learningGroupRepository.findByName(name);
+    	ArrayList<SopraUser> us = new ArrayList<>();
+    	us.addAll(lg.getSopraUsers());
+    	us.sort((x,y)->x.getRankpoints().compareTo(y.getRankpoints()));
+    	
+    	model.addAttribute("users", us);
+    	attr.addAttribute("name", name);
+    	model.addAttribute("name",name);
+        return "learninggroup/ranklist";
+    }
+     
     @RequestMapping(value = "/learninggroup/mygroups", method = RequestMethod.GET)
     public String myGroups(Model model) { 
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -90,6 +104,14 @@ public class LearningGroupController {
         	lg.getSopraUsers().add(loginUser);
         	learningGroupRepository.save(lg);
         }
+        Post p =new Post();
+        p.setText("BLINDTEXT _____-_");
+        p.setHeading("POOOOOOOOOOOOOST");
+        p.setSopraUser(loginUser);
+        p.setLearningGroup(lg);
+        p = postRepository.save(p);
+//        lg.getPostList().add(p);
+        
         attr.addAttribute("name", name);
     	model.addAttribute("name",name);
     	model.addAttribute("loginUser",loginUser);
@@ -101,9 +123,9 @@ public class LearningGroupController {
     public String postEDIT(@RequestParam("name")
                                          String name, String info, Model model, RedirectAttributes attr) {
     	String[] is = info.split("-");
-    	Post p = postRepository.getOne(Integer.valueOf(is[1]));
+    	Post p = postRepository.getOne(Integer.valueOf(is[0]));
 
-    	switch(is[0]){
+    	switch(is[1]){
     		case "delete":
     	    	//delete
         		postRepository.delete(p);
@@ -122,6 +144,13 @@ public class LearningGroupController {
     			attr.addAttribute("name", name);
     			attr.addFlashAttribute("edit", false); 
     			return "redirect:/learninggroup/comment";
+    		case "rating":
+    			//change 
+    			System.out.println(info);
+    			p.addRating(Float.valueOf(is[2]));
+    			attr.addAttribute("rating", "successful");
+    			attr.addAttribute("name", name);
+    			return "redirect:/learninggroup/home";
     	}
     	return "redirect:/error";
     }

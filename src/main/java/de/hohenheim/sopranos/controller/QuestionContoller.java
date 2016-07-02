@@ -132,6 +132,8 @@ public class QuestionContoller {
     public String quiz(HttpServletRequest request,Model model, RedirectAttributes attr) {
     	Random r = new Random();
     	ArrayList<Question> al = new ArrayList<>();
+    	ArrayList<Question> qs = new ArrayList<>();
+
     	// setup for test so there is always a question
     	String st = "Was is das richtige?";
     	Question testmc = new Question();
@@ -140,13 +142,13 @@ public class QuestionContoller {
     	testmc.setAnswers(strs);
     	boolean[] b = {true,false,false,false};
     	testmc.setSolutions(b);
-    	
+    	qs.add(testmc);
     	LearningGroup group = (LearningGroup) request.getSession().getAttribute("group");
-    	
+    	group=learningGroupRepository.findByName("BLACK");
     	testmc.setLearningGroup(group);
-    	questionRepository.save(testmc);
-    	
-    	ArrayList<Question> qs = new ArrayList<>();
+    	testmc = questionRepository.save(testmc);
+    	group.getQuestList().add(testmc);
+    	group = learningGroupRepository.save(group);
     	if(group!=null && learningGroupRepository.findByName(group.getName())!=null){
         	//TODO REMOVE question from loginUser ???
     		
@@ -154,7 +156,7 @@ public class QuestionContoller {
     	} else {
         	qs.addAll(questionRepository.findAll());
     	}
-    	int questionCount = 10;
+    	int questionCount = 2;
     	for (int i = 0; i < questionCount; i++) {
     		int id = r.nextInt((int)qs.size());
         	if(id == 0){
@@ -172,55 +174,46 @@ public class QuestionContoller {
     	model.addAttribute("percentage", Float.toString( 100*((float)1/(float)q.getQuestList().size())));
         return "redirect:/question/answer";
     }
-    @RequestMapping(value = "/quiz/end{id}", method = RequestMethod.GET)
-    public String quizEND(@RequestParam("id") String id,@RequestParam("number") String number,Model model, RedirectAttributes attr) {
+    @RequestMapping(value = "/question/end{id}", method = RequestMethod.GET)
+    public String quizEND(@RequestParam("id") String id,Model model, RedirectAttributes attr) {
     	Quiz quiz =quizRepository.getOne(Integer.parseInt(id));
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SopraUser current = sopraUserRepository.findByEmail(user.getUsername());
-
-        if(quiz.getGenerated()==current){
-        	
-        }
-    	
+        System.out.println(quiz.getQuestList().size());
+//        if(quiz.getGenerated()!=current){
+//        	return "redirect:/home";
+//        }
+//    	
     	boolean[] correct = new boolean[quiz.getQuestList().size()];
 	    for (int i =0; i< quiz.getQuestList().size();i++) {
 	    	Question q = quiz.getQuestList().get(i);
-	    	Answer answer = quiz.getAnswers()[i];
-	    	if(q.getAnswers().length>1){
-		    	correct[i] = questioncorrected(q, answer);
+	    	boolean[] answer = quiz.getAnswersBoolean()[i];
+	    	if(answer.length>1){
+		    	correct[i] = q.questioncorrected(answer);
 			} else {
-				
-				
 				//what todo for openquestions?
-				System.out.println(answer.getAnswer0());
+				System.out.println(quiz.getAnswertext()[i]);
 			}
 		}
 	    for (boolean b : correct) {
 			if(b){
-				current.increaseRankpoints();
+//				current.increaseRankpoints();
 			} else {
-				current.decreaseRankpoints();
+//				current.decreaseRankpoints();
 			}
 		}	    
-	    return "quiz/end";
+	    model.addAttribute("questions", quiz.getQuestList());
+	    model.addAttribute("quiz", quiz);
+	    model.addAttribute("correct", correct);
+	    return "question/end";
 	}  
-    private boolean questioncorrected(Question q,Answer answer){
-    	boolean[] b = answer.getBooleans();
 
-    	for (int s = 0; s < q.getSolutions().length; s++) {
-			if(b[s]!=q.getSolutions()[s]){
-				return false;
-			}
-		}
-    	return true;
-    }
     
     @RequestMapping(value = "/question/next{id,number}", method = RequestMethod.GET)
     public String quizNextQuestion(@RequestParam("id") String id,@RequestParam("number") String number,Model model, RedirectAttributes attr) {
     	Quiz q =quizRepository.getOne(Integer.parseInt(id));
     	if(Integer.parseInt(number) > q.getQuestList().size()){
-    		//TODO end site to add
-    		return "redirect:/quiz/end?id="+id;
+    		return "redirect:/question/end?id="+id;
     	}
         attr.addAttribute("id",id);
         attr.addAttribute("number", number);

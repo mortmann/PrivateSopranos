@@ -130,4 +130,14 @@ public class Question extends DateClass {
 	public List<Comment> getCommentList() {return commentList;}
 
     public void setCommentList(List<Comment> commentList) {this.commentList = commentList;}
+    
+    public boolean questioncorrected(boolean[] b){
+    	for (int s = 0; s < getSolutions().length; s++) {
+			if(b[s]!=getSolutions()[s]){
+				return false;
+			}
+		}
+    	return true;
+    }
+    
 }

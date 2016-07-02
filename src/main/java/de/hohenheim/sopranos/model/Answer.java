@@ -2,12 +2,18 @@ package de.hohenheim.sopranos.model;
 
 import java.util.ArrayList;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 /**
  * going to replace this class when/if i find a better solution to get alot of data from one site in a list or so
  * @author Mortmann
  *
  */
+
 public class Answer {
+
 	private String answer0;
 	private String answer1;
 	private String answer2;

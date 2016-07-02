@@ -29,6 +29,9 @@ function checkPasswordMatch() {
     else
         $("#divCheckPasswordMatch").html("");
 }
+function PictureUpdate(){
+	document.getElementById("Profilbild").src=document.getElementById("linkToPicture").value;
+}
 </script>
 
 </head>
@@ -60,7 +63,19 @@ function checkPasswordMatch() {
 										</span>
                                         <input type="text" class="form-control" name="name" id="name" th:value="${user.getName()}"/>
                                     </div>
-
+									<div class="input-group">
+										<span class="input-group-addon">
+											<i class="material-icons">picture_in_picture</i>
+										</span>
+										<img src="" alt="Profilbild" id="Profilbild" style="width:50px;height:50px;"/>
+                                        <input type="text" class="form-control" name="linkToPicture" id="linkToPicture" onkeyup="PictureUpdate()" th:value="${user.getLinkToPicture()}"/>
+                                    </div>
+                                    <div class="input-group">
+										<span class="input-group-addon">
+											<i class="material-icons">description</i>
+										</span>
+                                        <textarea class="form-control" name="courseOfStudys" id="courseOfStudys" th:value="${user.getCourseOfStudys()}"></textarea>
+                                    </div>
                                     <div class="input-group">
 										<span class="input-group-addon">
 											<i class="material-icons">person_pin</i>

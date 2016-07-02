@@ -97,7 +97,7 @@ public class PostController {
         	Post p = postRepository.getOne(id);
         	p.setHeading(post.getHeading());
         	p.setText(post.getText());
-        	p.setFile(file);
+//        	p.setFile(file);
 	        p.setEditDate();
 	        p.setEditUser(current);
         	postRepository.save(p);
