@@ -23,8 +23,8 @@ public class Post extends DateClass{
 
     private String heading;
 
-    private float rating;
-    private int ratingCount;
+    private float rating=0;
+    private int ratingCount=0;
     @Transient
     private MultipartFile file;
     @ManyToOne
@@ -106,6 +106,9 @@ public class Post extends DateClass{
 	}
 
 	public float getRating() {
+		if(rating==0 || ratingCount==0){
+			return 0;
+		}
 		return rating/ratingCount;
 	}
 
