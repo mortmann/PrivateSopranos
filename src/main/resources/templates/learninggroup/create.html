@@ -23,6 +23,15 @@
     <!-- Google Fonts -->
     <link href='https://fonts.googleapis.com/css?family=Passion+One' rel='stylesheet' type='text/css'/>
     <link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'/>
+    <script>
+    function InputPassword(){
+    	if(document.getElementById("password").value.length>1){
+    		document.getElementById("fff").disabled = false;
+    	} else {
+    		document.getElementById("fff").disabled = true;
+    	}
+    }
+    </script>
 </head>
 <body>
 <th:block th:include="fragments/navbar::nav-In"/>
@@ -60,13 +69,22 @@
                         </div>
                     </div>
                 </div>
-
+				<div class="form-group">
+                    <label for="password" class="cols-sm-2 control-label">Frei für Freunde?)</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                            <input type="checkbox" class="form-control" th:field="*{freeForFriends}" name="fff"
+                                   id="fff" placeholder="" disabled="disabled"/>
+                        </div>
+                    </div>
+                </div>
                 <div class="form-group">
                     <label for="password" class="cols-sm-2 control-label">Passwort (Optionale Eingabe)</label>
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                            <input type="password" class="form-control" th:field="*{password}" name="password"
+                            <input type="password" class="form-control" th:field="*{password}" name="password" oninput="InputPassword()"
                                    id="password" placeholder="Passwort"/>
                         </div>
                     </div>

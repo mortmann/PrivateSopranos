@@ -97,9 +97,14 @@ public class LearningGroupController {
                 return "redirect:/index";
             }
 	        if (lg.getFreeForAll() == false) {
-	            return "redirect:/learninggroup/login?name=" + name;
+	        	if(lg.isFreeForFriends() == true){
+	        		if(lg.getSopraHost().getFriendsListALL().contains(loginUser) == false){
+	        			return "redirect:/learninggroup/login?name=" + name;
+	        		}
+	        	} else {
+	        		return "redirect:/learninggroup/login?name=" + name;
+	        	}
 	        }
-
         	attr.addAttribute("join", "successful");
         	lg.getSopraUsers().add(loginUser);
         	learningGroupRepository.save(lg);
