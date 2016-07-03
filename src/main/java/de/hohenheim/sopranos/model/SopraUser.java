@@ -28,6 +28,24 @@ public class SopraUser {
     
     private Integer rankpoints = 10;
 
+	@ManyToMany
+    @JoinTable(
+            name = "FRIENDS",
+            joinColumns = @JoinColumn(name = "FIRST"),
+            inverseJoinColumns = @JoinColumn(name = "SECOND"))
+    private List<SopraUser> friendsList = new ArrayList<>();
+	@ManyToMany
+    @JoinTable(
+            name = "FRIENDSREQUESTS",
+            joinColumns = @JoinColumn(name = "FIRST"),
+            inverseJoinColumns = @JoinColumn(name = "SECOND"))
+    private List<SopraUser> friendRequestsList = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "sender")
+	private List<Message> sendMessageList = new ArrayList<>();
+	@ManyToMany(mappedBy = "receivers")
+	private List<Message> receivedMessageList = new ArrayList<>();
+	
     @ManyToMany(mappedBy = "sopraUsers")
     private List<LearningGroup> learningGroups = new ArrayList<>();
 
@@ -174,5 +192,37 @@ public class SopraUser {
 
 	public void setLinkToPicture(String linkToPicture) {
 		this.linkToPicture = linkToPicture;
+	}
+
+	public List<SopraUser> getFriendsList() {
+		return friendsList;
+	}
+
+	public void setFriendsList(List<SopraUser> friendsList) {
+		this.friendsList = friendsList;
+	}
+
+	public List<SopraUser> getFriendRequestsList() {
+		return friendRequestsList;
+	}
+
+	public void setFriendRequestsList(List<SopraUser> friendRequestsList) {
+		this.friendRequestsList = friendRequestsList;
+	}
+
+	public List<Message> getSendMessageList() {
+		return sendMessageList;
+	}
+
+	public void setSendMessageList(List<Message> sendMessageList) {
+		this.sendMessageList = sendMessageList;
+	}
+
+	public List<Message> getReceivedMessageList() {
+		return receivedMessageList;
+	}
+
+	public void setReceivedMessageList(List<Message> receivedMessageList) {
+		this.receivedMessageList = receivedMessageList;
 	}
 }

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+<meta charset="utf-8"/>
+<title>Bootply snippet - Bootstrap Wysiwyg Editor</title>
+<meta name="generator" content="Bootply" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="description"
+	content="Use bootstrap-wysiwyg with Bootstrap 3." />
+<link
+	href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"
+	rel="stylesheet"/>
+    <link rel="stylesheet" href="bootstrap.css" />
+<!-- include libraries(jQuery, bootstrap) -->
+<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet"/>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script> 
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script> 
+<script>
+//<![CDATA[
+function OnPick(){
+	var value = document.getElementById("lgs").value;
+	$("#selectedlgs").append('<option onclick="OnDePick()" value="'+value+'">'+value+'</option>');
+    $('#lgs').find('[value='+value+']').remove();
+	 'Selected: ' +value;	
+	activatedButton();
+}
+function OnDePick(){
+	var value = document.getElementById("selectedlgs").value;
+	$("#lgs").append('<option onclick="OnPick()" value="'+value+'">'+value+'</option>');
+    $('#selectedlgs').find('[value='+value+']').remove();
+	document.getElementById('d').innerHTML= 'Deselected: ' +value;
+	activatedButton();
+}
+function OnNumber(){
+	activatedButton();
+}
+
+function activatedButton(){
+	var arr = [];
+	$("#selectedlgs > option").each(function(){
+	   arr.push(this.value);
+	});
+	if(arr.length==0){
+		document.getElementById("button").disabled=true;
+	}else {
+		document.getElementById("button").disabled=false;
+		document.getElementById("button").value = arr.toString();
+	}
+}
+
+
+//]]>
+</script>
+
+</head>
+
+
+<body>
+<th:block th:include="fragments/navbar::nav-In"/>
+<h1>Suchen:</h1>
+<form name="form-login" th:action="@{/friends/search}" method="post">
+	  <input type="text" name="search" />
+      <button class="btn btn-default btn-xs" type="submit"  aria-hidden="true" title="Search">
+          <i class="material-icons">search</i>
+      </button>
+</form>
+<table>
+<tr th:each="c,iterationStatus  : ${search}">
+		<td  class="content" th:utext="${c.getEmail()}"/> 
+		<td  class="content" th:utext="${c.getUsername()}"/> 
+		<td  class="content" th:utext="${c.getName()}"/> 
+		<td >
+            <form name="form-login" th:action="@{/friends}" method="post">
+                <button class="btn btn-default btn-xs" type="submit" th:name="info" th:value="${c.getEmail() + '-add'}" aria-hidden="true" title="Remove">
+                    <i class="material-icons">add</i>
+                </button>
+            </form>
+        </td>
+</tr>
+</table>
+
+<h1>Freundeanfragen:</h1>
+<table>
+<tr th:each="c,iterationStatus  : ${current.getFriendRequestsList()}">
+		<td  class="content" th:utext="${c.getEmail()}"/> 
+		<td  class="content" th:utext="${c.getUsername()}"/> 
+		<td  class="content" th:utext="${c.getName()}"/> 
+		<td >
+            <form name="form-login" th:action="@{/friends}" method="post">
+                <button class="btn btn-default btn-xs" type="submit" th:name="info" th:value="${c.getEmail() + '-remove'}" aria-hidden="true" title="Remove">
+                    <i class="material-icons">delete</i>
+                </button>
+            </form>
+        </td>
+</tr>
+</table>
+</body>
+</html>
