@@ -122,13 +122,15 @@ public class PostController {
         	Post p = postRepository.getOne(id);
         	p.setHeading(post.getHeading());
         	p.setText(post.getText());
-//        	p.setFile(file);
 	        p.setEditDate();
 	        p.setEditUser(current);
 	        if(f!=null){
 	        	post.setFile(f);
 	        }
         	postRepository.save(p);
+        }
+        if(f!=null){
+        	f.delete();
         }
         return "redirect:/learninggroup/home?name=" + name;
     }
@@ -149,6 +151,7 @@ public class PostController {
          catch (IOException ex) {
              ex.printStackTrace();
          }
+         f.delete();
     } 
     
     @RequestMapping(value = "/learninggroup/comment{name}", method = RequestMethod.GET)
