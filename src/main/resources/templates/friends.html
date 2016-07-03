@@ -62,7 +62,7 @@ function activatedButton(){
 <h1>Suchen:</h1>
 <form name="form-login" th:action="@{/friends/search}" method="post">
 	  <input type="text" name="search" />
-      <button class="btn btn-default btn-xs" type="submit"  aria-hidden="true" title="Search">
+      <button class="btn btn-default btn-xs" type="submit"  aria-hidden="true" title="Suche">
           <i class="material-icons">search</i>
       </button>
 </form>
@@ -73,7 +73,7 @@ function activatedButton(){
 		<td  class="content" th:utext="${c.getName()}"/> 
 		<td >
             <form name="form-login" th:action="@{/friends}" method="post">
-                <button class="btn btn-default btn-xs" type="submit" th:name="info" th:value="${c.getEmail() + '-add'}" aria-hidden="true" title="Remove">
+                <button class="btn btn-default btn-xs" type="submit" th:name="info" th:value="${c.getEmail() + '-add'}" aria-hidden="true" title="Senden">
                     <i class="material-icons">add</i>
                 </button>
             </form>
@@ -89,7 +89,29 @@ function activatedButton(){
 		<td  class="content" th:utext="${c.getName()}"/> 
 		<td >
             <form name="form-login" th:action="@{/friends}" method="post">
-                <button class="btn btn-default btn-xs" type="submit" th:name="info" th:value="${c.getEmail() + '-remove'}" aria-hidden="true" title="Remove">
+                <button class="btn btn-default btn-xs" type="submit" th:name="info" th:value="${c.getEmail() + '-deny'}" aria-hidden="true" title="Lösche">
+                    <i class="material-icons">delete</i>
+                </button>
+            </form>
+        </td>
+        <td >
+            <form name="form-login" th:action="@{/friends}" method="post">
+                <button class="btn btn-default btn-xs" type="submit" th:name="info" th:value="${c.getEmail() + '-confirm'}" aria-hidden="true" title="Hinzufügen">
+                    <i class="material-icons">add</i>
+                </button>
+            </form>
+        </td>
+</tr>
+</table>
+<h1>Freunde:</h1>
+<table>
+<tr th:each="c,iterationStatus  : ${current.getFriendsListALL()}">
+		<td  class="content" th:utext="${c.getEmail()}"/> 
+		<td  class="content" th:utext="${c.getUsername()}"/> 
+		<td  class="content" th:utext="${c.getName()}"/> 
+		<td >
+            <form name="form-login" th:action="@{/friends}" method="post">
+                <button class="btn btn-default btn-xs" type="submit" th:name="info" th:value="${c.getEmail() + '-remove'}" aria-hidden="true" title="Entferne">
                     <i class="material-icons">delete</i>
                 </button>
             </form>

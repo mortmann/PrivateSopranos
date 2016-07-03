@@ -43,6 +43,7 @@ public class FriendsController {
         SopraUser loginUser = sopraUserRepository.findByEmail(user.getUsername());
     	model.addAttribute("current", loginUser);
     	model.addAttribute("search",request.getSession().getAttribute("search"));
+    	request.getSession().removeAttribute("search");
     	return "/friends";
     }
     @RequestMapping(value="/friends" , method = RequestMethod.POST)
@@ -53,13 +54,32 @@ public class FriendsController {
         switch(info.split("-")[1]){
         	case "remove":
         		loginUser.getFriendsList().remove(sopraUserRepository.findByEmail(email));
+        		SopraUser su = sopraUserRepository.findByEmail(email);
+        		su.getFriendsList().remove(loginUser);
+        		sopraUserRepository.save(su);
         		sopraUserRepository.save(loginUser);
         		attr.addAttribute("remove", "successful");
         		return "redirect:/friends";
-        	case "add":
-        		loginUser.getFriendsList().add(sopraUserRepository.findByEmail(email));
+        	case "deny":
+        		loginUser.getFriendRequestsList().remove(sopraUserRepository.findByEmail(email));
         		sopraUserRepository.save(loginUser);
+        		attr.addAttribute("deny", "successful");
+        		return "redirect:/friends";
+        	 
+        	case "add":
+        		SopraUser f = sopraUserRepository.findByEmail(email);
+        		f.getFriendRequestsList().add(loginUser);
+        		sopraUserRepository.save(f);
         		attr.addAttribute("add", "successful");
+        		return "redirect:/friends";
+        	case "confirm":
+        		loginUser.getFriendRequestsList().remove(sopraUserRepository.findByEmail(email));
+        		loginUser.getFriendsList().add(sopraUserRepository.findByEmail(email));
+//        		SopraUser a = sopraUserRepository.findByEmail(email);
+//        		a.getFriendRequestsList().remove(loginUser);
+//        		sopraUserRepository.save(a);
+        		sopraUserRepository.save(loginUser);
+        		attr.addAttribute("confirm", "successful");
         		return "redirect:/friends";	
         }
         
@@ -71,20 +91,13 @@ public class FriendsController {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SopraUser loginUser = sopraUserRepository.findByEmail(user.getUsername());
         ArrayList<SopraUser> su = new ArrayList<>();
-        SopraUser s = new SopraUser();
-        s.setName(search);
-        s.setUsername(search);
-        s.setEmail(search);
-        ExampleMatcher matcher = ExampleMatcher.matching().withMatcher("name", match -> match.ignoreCase().contains());
-        su.addAll(sopraUserRepository.findAll(Example.of(s, matcher)));
-        matcher = ExampleMatcher.matching().withMatcher("username", match -> match.ignoreCase().contains());
-		su.addAll(sopraUserRepository.findAll(Example.of(s, matcher)));
-        matcher = ExampleMatcher.matching().withMatcher("email", match -> match.ignoreCase().contains());
-		su.addAll(sopraUserRepository.findAll(Example.of(s, matcher)));
-        System.out.println(su.size());
-        su.removeAll(loginUser.getFriendsList());
+        search= "%"+search+"%";
+        su.addAll(sopraUserRepository.findAllIgnoreCaseByEmailLike(search));
+		su.addAll(sopraUserRepository.findAllIgnoreCaseByNameLike(search));
+		su.addAll(sopraUserRepository.findAllIgnoreCaseByUsernameLike(search));
+        su.removeAll(loginUser.getFriendsListALL());
         su.remove(loginUser);
-        System.out.println(su.size());
+        su.removeAll(loginUser.getFriendRequestsListALL());
         request.getSession().setAttribute("search", su);
     	model.addAttribute("current", loginUser);
     	return "redirect:/friends";

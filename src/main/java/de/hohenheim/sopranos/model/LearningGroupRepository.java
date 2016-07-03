@@ -1,5 +1,7 @@
 package de.hohenheim.sopranos.model;
 
+import java.util.ArrayList;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -10,5 +12,5 @@ public interface LearningGroupRepository extends JpaRepository<LearningGroup, In
     public LearningGroup findBySopraHost(SopraUser sopraHost);
 
     public LearningGroup findByName(String name);
-
+    public ArrayList<LearningGroup> findAllIgnoreCaseByNameLike(String name);
 }

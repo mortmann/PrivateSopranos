@@ -28,18 +28,27 @@ public class SopraUser {
     
     private Integer rankpoints = 10;
 
-	@ManyToMany
-    @JoinTable(
-            name = "FRIENDS",
-            joinColumns = @JoinColumn(name = "FIRST"),
-            inverseJoinColumns = @JoinColumn(name = "SECOND"))
-    private List<SopraUser> friendsList = new ArrayList<>();
-	@ManyToMany
+
+	
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name="FRIENDS", 
+			joinColumns = @JoinColumn(name = "FIRST"),
+            inverseJoinColumns = @JoinColumn(name = "SECOND"),uniqueConstraints=
+                    @UniqueConstraint(columnNames={"FIRST", "SECOND"}))
+	private List<SopraUser> friendsList = new ArrayList<>();
+
+	@ManyToMany(mappedBy = "friendsList", cascade = CascadeType.ALL)
+	private List<SopraUser> friendsListTwo = new ArrayList<>();
+	
+	@ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "FRIENDSREQUESTS",
             joinColumns = @JoinColumn(name = "FIRST"),
-            inverseJoinColumns = @JoinColumn(name = "SECOND"))
+            inverseJoinColumns = @JoinColumn(name = "SECOND"),uniqueConstraints=
+                    @UniqueConstraint(columnNames={"FIRST", "SECOND"}))
     private List<SopraUser> friendRequestsList = new ArrayList<>();
+	@ManyToMany(mappedBy = "friendsList", cascade = CascadeType.ALL)
+	private List<SopraUser> friendRequestsListTwo = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "sender")
 	private List<Message> sendMessageList = new ArrayList<>();
@@ -224,5 +233,34 @@ public class SopraUser {
 
 	public void setReceivedMessageList(List<Message> receivedMessageList) {
 		this.receivedMessageList = receivedMessageList;
+	}
+
+	public List<SopraUser> getFriendsListTwo() {
+		return friendsListTwo;
+	}
+
+	public void setFriendsListTwo(List<SopraUser> friendsListTwo) {
+		this.friendsListTwo = friendsListTwo;
+	}
+
+	public List<SopraUser> getFriendRequestsListTwo() {
+		return friendRequestsListTwo;
+	}
+
+	public void setFriendRequestsListTwo(List<SopraUser> friendRequestsListTwo) {
+		this.friendRequestsListTwo = friendRequestsListTwo;
+	}
+	
+	public List<SopraUser> getFriendRequestsListALL(){
+		ArrayList<SopraUser> s = new ArrayList<>();
+		s.addAll(getFriendRequestsList());
+		s.addAll(getFriendRequestsListTwo());
+		return s;
+	}
+	public List<SopraUser> getFriendsListALL(){
+		ArrayList<SopraUser> s = new ArrayList<>();
+		s.addAll(getFriendsList());
+		s.addAll(getFriendsListTwo());
+		return s;
 	}
 }
