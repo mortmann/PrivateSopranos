@@ -42,25 +42,18 @@
 <body>
 <th:block th:include="fragments/navbar::nav-In"/>
 
-<form class="form-horizontal" enctype="multipart/form-data" th:object="${post}" th:action="@{/learninggroup/post?name=} + ${name}" method="post">
+<form class="form-horizontal" enctype="multipart/form-data" th:action="@{/learninggroup/post?name=} + ${name}" method="post">
 	<label for="heading" class="cols-sm-2 control-label">"Überschrift"</label>
-	<input id="heading" class="form-control" th:value="${post.getHeading()}" th:field="*{heading}"></input>    
-    <textarea id="editor" name="editor" th:value="${post.getText()}" th:field="*{text}" class="summernote form-control" rows="10"
+	<input id="heading" class="form-control" th:value="${post.getHeading()}" th:name="heading"></input>    
+    <textarea id="editor" name="editor" th:value="${post.getText()}" th:name="content" class="summernote form-control" rows="10"
               placeholder="Enter the product long description..."></textarea>
-
     <div th:if="${edit}==false" class="form-group">
         <button class="btn btn-primary btn-lg btn-block login-button" type="submit" th:value="-1" th:name="info">Post</button>
     </div>
-    
     <div th:if="${edit}" class="form-group">
         <button class="btn btn-primary btn-lg btn-block login-button" type="submit" th:value="${post.getId()}" th:name="info" >Speichere Änderungen</button>
     </div>
-    
-</form>
-    
-<form th:action="@{/post/uploadfile?name=} + ${name}" method="POST" enctype="multipart/form-data">
-	<input id="input-1" name="file" type="file" class="file"/>
-    <input type="submit" value="Upload"/> 
+    <input id="input-1" th:name="file" type="file" class="file"/>
 </form>
 
 </body>

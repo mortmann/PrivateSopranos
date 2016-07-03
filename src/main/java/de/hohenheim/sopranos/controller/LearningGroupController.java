@@ -220,25 +220,25 @@ public class LearningGroupController {
     	attr.addAttribute("name", name);
     	LearningGroup lg = learningGroupRepository.findByName(name);
     	if(lg.isHost(sopraUserRepository.findByEmail(email))){
-    		return "redirect:/learninggroup/home?deleted=error";
+    		return "redirect:/learninggroup/home?erro=notfound";
     	}
 		switch (extra) {
 		case "ban":
 			lg.banSopraUser(sopraUserRepository.findByEmail(email));
             learningGroupRepository.save(lg);
-	        return "redirect:/learninggroup/home?deleted=successful";
+	        return "redirect:/learninggroup/home?ban=successful";
 		case "block":
 			lg.lockSopraUser(sopraUserRepository.findByEmail(email));
             learningGroupRepository.save(lg);
-    		return "redirect:/learninggroup/home?deleted=successful";
+    		return "redirect:/learninggroup/home?block=successful";
 		case "unban":
 			lg.unbanSopraUser(sopraUserRepository.findByEmail(email));
             learningGroupRepository.save(lg);
-	        return "redirect:/learninggroup/home?deleted=successful";
+	        return "redirect:/learninggroup/home?unban=successful";
 		case "unblock":
 			lg.unlockSopraUser(sopraUserRepository.findByEmail(email));
             learningGroupRepository.save(lg);
-    		return "redirect:/learninggroup/home?deleted=successful";
+    		return "redirect:/learninggroup/home?unblock=successful";
 		}
 		return "redirect:/error";
     }

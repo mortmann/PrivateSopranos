@@ -3,19 +3,18 @@ package de.hohenheim.sopranos.controller;
 import de.hohenheim.sopranos.model.*;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.sql.Date;
-import java.text.DateFormat;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import javax.servlet.http.HttpServletRequest;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
@@ -49,6 +48,7 @@ public class PostController {
 
     @RequestMapping(value = "/learninggroup/post", method = RequestMethod.GET)
     public String post(@RequestParam("name") String name, Model model,@ModelAttribute("post") Post post,@ModelAttribute("edit") String edit, RedirectAttributes attr) {
+
     	post =(Post)model.asMap().get("post");
     	if(post==null){
     		post = new Post();
@@ -61,8 +61,8 @@ public class PostController {
 
         if (lg.getGrayList().contains(current) || lg.getBlackList().contains(current))
             return "redirect:/learninggroup/home?name=" + name;
-        
-        model.addAttribute("post", post);
+    	
+    	model.addAttribute("post", post);
         model.addAttribute("name", name);
         attr.addAttribute("name", name);
         model.addAttribute("edit", Boolean.parseBoolean(edit));
@@ -71,26 +71,51 @@ public class PostController {
 
     @RequestMapping(value = "/learninggroup/post", method = RequestMethod.POST)
     public String postPOST(@RequestParam("name")String name, HttpServletRequest request,
-    		String info, Post post, Model model, RedirectAttributes attr) {
+    		String info, String heading, String content, @RequestParam("file") MultipartFile file, Model model, RedirectAttributes attr) {
     	int id = Integer.parseInt(info);
-    	
+    	Post post = new Post();
+		post.setHeading(heading);
+		post.setText(content);
+
     	String text =  post.getText();
     	if(post.getHeading() == null ||post.getHeading().isEmpty()|| post.getHeading().trim() == "" || text == null || text.isEmpty() || text.trim() == "" || text.equals("<p><br></p>")){
     		attr.addFlashAttribute("post",post);
     		attr.addAttribute("name", name);
     		attr.addAttribute("error", "missing");
-    		return "learninggroup/post";
+    		return "redirect:/learninggroup/post";
     	}
     	
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SopraUser current = sopraUserRepository.findByEmail(user.getUsername());
         LearningGroup lg = learningGroupRepository.findByName(name);
-        File file = (File) request.getSession().getAttribute("file");
-        System.out.println("file " + file.getName());
+//        File file = (File) request.getSession().getAttribute("file");
+        File f = null;
+        if(file!=null && file.getSize()>0){
+			try {
+				String s = file.getOriginalFilename();
+				f = new File(s);
+				f.createNewFile(); 
+	           
+	            FileOutputStream fos;
+				fos = new FileOutputStream(f);
+	            fos.write(file.getBytes());
+	            fos.close(); 
+	           
+			} catch (Exception e ) {
+				attr.addFlashAttribute("post",post);
+	    		attr.addAttribute("name", name);
+				attr.addAttribute("error","upload");
+				return "redirect:/learninggroup/post";
+			} 
+        } 
+        
         if(id==-1){
-	        post.setLearningGroup(lg);
+        	post.setLearningGroup(lg);
 	        post.setSopraUser(current);
 	        post.setCreateDate();
+	        if(f!=null){
+	        	post.setFile(f);
+	        }
 	        post = postRepository.save(post);
 	        
         } else {
@@ -100,33 +125,31 @@ public class PostController {
 //        	p.setFile(file);
 	        p.setEditDate();
 	        p.setEditUser(current);
+	        if(f!=null){
+	        	post.setFile(f);
+	        }
         	postRepository.save(p);
         }
         return "redirect:/learninggroup/home?name=" + name;
     }
-//    @RequestMapping(value = "/post/uploadfile", method = RequestMethod.GET)
-//    public String uploadFile(Model m){
-//    	
-//		return "/post/uploadfile";
-//    }
-    @RequestMapping(value = "/post/uploadfile", method = RequestMethod.POST)
+    @RequestMapping(value = "/learninggroup/post/download", method = RequestMethod.GET)
     @ResponseBody
-    public String uploadFilePost(@RequestParam("name")String name,
-        @RequestParam("file") MultipartFile file,HttpServletRequest request
-        , RedirectAttributes attr) {
-    	attr.addAttribute("name", name);
-      System.out.println("click " + file.getSize());
-    try {
-    	  request.getSession().setAttribute("file", file);
-      }
-      
-      catch (Exception e) {
-    	attr.addAttribute("error", "file");
-        return "/post/uploadfile";
-      }
-    attr.addAttribute("file", "successful");
-    return "/post/uploadfile";
-    } // method uploadFile
+    public void getFile(String info,HttpServletRequest request, 
+            HttpServletResponse response) {
+    	int id = Integer.valueOf(info);
+    	 File f = postRepository.getOne(id).getFile();
+    	 System.out.println(f.length());
+         response.setContentType("application/pdf");
+         response.addHeader("Content-Disposition", "attachment; filename="+f.getName());
+         try
+         {
+             Files.copy(f.toPath(), response.getOutputStream());
+             response.getOutputStream().flush();
+         } 
+         catch (IOException ex) {
+             ex.printStackTrace();
+         }
+    } 
     
     @RequestMapping(value = "/learninggroup/comment{name}", method = RequestMethod.GET)
     public String comment(@RequestParam("name") String name, HttpServletRequest request,Model model,@ModelAttribute("postid") String id,@ModelAttribute("comment") Comment comment,@ModelAttribute("edit") String edit, RedirectAttributes attr) {
@@ -142,7 +165,6 @@ public class PostController {
         model.addAttribute("post",post);
         System.out.println("getCommentList" + post.getCommentList());
         request.getSession().setAttribute("post", post);
-        System.out.println("---ID " + post.getId());
         attr.addAttribute("name", name);
         model.addAttribute("edit", Boolean.parseBoolean(edit));
         return "learninggroup/comment"; 
