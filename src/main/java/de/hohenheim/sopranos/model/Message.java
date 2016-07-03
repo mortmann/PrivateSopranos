@@ -1,58 +1,65 @@
 package de.hohenheim.sopranos.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.*;
+
 @Entity
-public class Message extends DateClass{
-	@Id
-	@GeneratedValue
-	private int id;
-	
-	@ManyToOne
-	private SopraUser sender;
-	
-	@ManyToMany
-	@JoinTable(
-            name = "MESSAGERECEIVERS",
-            joinColumns = @JoinColumn(name = "MESSAGE_ID"),
-            inverseJoinColumns = @JoinColumn(name = "RECEIVER_ID"))
-	private List<SopraUser> receivers = new ArrayList<>();
-	
-    @Column(length = 10000000)
-    private String message;
+public class Message extends DateClass {
 
-	public int getId() {
-		return id;
-	}
+    @Id
+    @GeneratedValue
+    Integer id;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    @Column(length = 10000)
+    String message;
 
-	public SopraUser getSender() {
-		return sender;
-	}
+    @ManyToOne
+    SopraUser sender;
 
-	public void setSender(SopraUser sender) {
-		this.sender = sender;
-	}
+    @ManyToOne
+    SopraUser receiver;
 
-	public List<SopraUser> getReceivers() {
-		return receivers;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setReceivers(List<SopraUser> receivers) {
-		this.receivers = receivers;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public String getMessage() {
-		return message;
-	}
+    public String getMessage() {
+        return message;
+    }
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
-	
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public SopraUser getSender() {
+        return sender;
+    }
+
+    public void setSender(SopraUser sender) {
+        this.sender = sender;
+    }
+
+    public SopraUser getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(SopraUser receiver) {
+        this.receiver = receiver;
+    }
+
+    public static List<String> splitString(String rec) {
+
+        rec = rec.toLowerCase();
+        rec = rec.replaceAll("\\s", "");
+        List<String> recz = Arrays.asList(rec.split(","));
+        return recz;
+
+    }
 }

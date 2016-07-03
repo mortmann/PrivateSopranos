@@ -52,7 +52,7 @@ public class SopraUser {
 	
 	@OneToMany(mappedBy = "sender")
 	private List<Message> sendMessageList = new ArrayList<>();
-	@ManyToMany(mappedBy = "receivers")
+	@OneToMany(mappedBy = "receiver")
 	private List<Message> receivedMessageList = new ArrayList<>();
 	
     @ManyToMany(mappedBy = "sopraUsers")
