@@ -75,7 +75,19 @@ public class SopraUser {
     @OneToMany(mappedBy = "generated")
     private List<Quiz> quizList = new ArrayList<>(); 
      
-    public SopraUser() {
+    @OneToMany(mappedBy = "sopraUser")
+    private List<UserEvent> userEventList = new ArrayList<>();
+    
+    
+    public List<UserEvent> getUserEventList() {
+		return userEventList;
+	}
+
+	public void setUserEventList(List<UserEvent> userEventList) {
+		this.userEventList = userEventList;
+	}
+
+	public SopraUser() {
     	createDate = new Date(System.currentTimeMillis());
     }
 

@@ -59,7 +59,8 @@ public class IndexController {
     	all.addAll(loginUser.getCommentList());
     	all.addAll(loginUser.getQuestList());
     	all.addAll(loginUser.getQuizList());
-    	//TODO add here "something like Done Questions" or so
+    	all.addAll(loginUser.getUserEventList());
+    	
     	Collections.sort(all, 
                 (o1, o2) -> o1.getCreateDate().compareTo(o2.getCreateDate()));
     	Collections.reverse(all);

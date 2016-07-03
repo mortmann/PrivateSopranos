@@ -58,6 +58,7 @@ public class Post extends DateClass{
     }
 
     public void setText(String text) {
+    	setCreateDate();
         this.text = text;
     }
 

@@ -28,6 +28,10 @@ public class LearningGroupController {
     SopraUserRepository sopraUserRepository;
     @Autowired
     PostRepository postRepository;
+    @Autowired
+    UserEventRepository userEventRepository;
+    
+    
     @RequestMapping(value = "/learninggroup/create", method = RequestMethod.GET)
     public String create(Model model) {
 
@@ -107,6 +111,17 @@ public class LearningGroupController {
 	        }
         	attr.addAttribute("join", "successful");
         	lg.getSopraUsers().add(loginUser);
+        	
+        	UserEvent ue = new UserEvent();
+        	ue.setSopraUser(loginUser);
+        	ue.setText("Joined");
+        	ue.setLg(lg);
+        	ue.setCreateDate();
+        	System.out.println(ue.getCreateDate());
+        	ue = userEventRepository.save(ue);
+        	loginUser.getUserEventList().add(ue);
+        	sopraUserRepository.save(loginUser);
+        	
         	learningGroupRepository.save(lg);
         }
         Post p =new Post();
