@@ -84,9 +84,11 @@ public class LearningGroup {
     }
 
     public void setPassword(String password) {
-        if (!password.isEmpty())
+        if (password == null || password.isEmpty()){
+        	freeForAll = true;
+        } else {
             freeForAll = false;
-
+        }
         this.password = password;
     }
 
