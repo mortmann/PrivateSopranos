@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta
+	content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'
+	name='viewport' />
+<title>Lerngruppe erstellen</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+	integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+	crossorigin="anonymous" />
+
+<!-- Optional theme -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
+	integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r"
+	crossorigin="anonymous" />
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+	integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+	crossorigin="anonymous"></script>
+<!-- Website Font style -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css" />
+<!-- Google Fonts -->
+<link href='https://fonts.googleapis.com/css?family=Passion+One'
+	rel='stylesheet' type='text/css' />
+<link href='https://fonts.googleapis.com/css?family=Oxygen'
+	rel='stylesheet' type='text/css' />
+</head>
+<body>
+	<table>
+		<tr th:each="question,iterationStatus1: ${questions}">
+			<td>
+				<label class="content" th:utext="${question.getQuestText()}"></label>
+				<table>
+					<tr th:each="answer,iterationStatus2  : ${question.getAnswers()}">
+						<td th:if="${question.getAnswers().length} > 1">	
+							<label class="checkbox-inline" th:utext="${answer}">Option 1</label>
+							<label>Deine Antwort</label>
+							<input th:if="${correct[__${iterationStatus1.index}__]}" id="checkbox" class="styled"  type="checkbox" th:checked="${quiz.getAnswersBoolean()[__${iterationStatus1.index}__][__${iterationStatus2.index}__]}" th:disabled="true"></input>
+							<input th:if="${correct[__${iterationStatus1.index}__]==false}" id="checkboxError" class="styled" type="checkbox"  th:checked="${quiz.getAnswersBoolean()[__${iterationStatus1.index}__][__${iterationStatus2.index}__]}" th:disabled="true"></input>
+							<label>Richtige Antwort</label>
+							<input th:if="${correct[__${iterationStatus1.index}__]}"  id="checkbox" class="styled" type="checkbox" th:checked="${question.getSolutions()[__${iterationStatus2.index}__]} " th:disabled="true"></input>
+							<input th:if="${correct[__${iterationStatus1.index}__]==false}" id="checkboxError" class="styled" type="checkbox"  th:checked="${question.getSolutions()[__${iterationStatus2.index}__]} " th:disabled="true"></input>
+						</td>
+						<td th:if="${question.getAnswers().length} == 1">	
+							<textarea class="checkbox-inline" th:id="${'answertext'+__${iterationStatus2.index}__} " th:value="${question.getAnswertext()[__${iterationStatus2.index}__]})" Placeholder="Ihre Lösung:" th:disabled="true"></textarea>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>	
+	
+	<div class="section">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<ul class="pager">
+							<li><button th:name="direction" type="submit" th:value="'prev'">← Prev</button></li>
+							<li><button th:name="direction" type="submit" th:value="'next'">Next →</button></li>
+					</ul>
+					<div class="progress">
+						<div class="progress-bar" role="progressbar" th:utext="${percentage +'%'}" th:style="${'width: '+ percentage +'%;'}">
+							</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

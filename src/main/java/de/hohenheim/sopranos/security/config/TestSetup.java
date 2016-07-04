@@ -1,10 +1,7 @@
 package de.hohenheim.sopranos.security.config;
 
 
-import de.hohenheim.sopranos.model.LearningGroup;
-import de.hohenheim.sopranos.model.LearningGroupRepository;
-import de.hohenheim.sopranos.model.SopraUser;
-import de.hohenheim.sopranos.model.SopraUserRepository;
+import de.hohenheim.sopranos.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -38,6 +35,8 @@ public class TestSetup implements ApplicationListener<ContextRefreshedEvent> {
     @Autowired
     LearningGroupRepository learningGroupRepository;
 
+    @Autowired
+    MessageRepository messageRepository;
     /**
      * Handle an application event.
      *
@@ -74,6 +73,13 @@ public class TestSetup implements ApplicationListener<ContextRefreshedEvent> {
         s.setSopraHost(user1);
         learningGroupRepository.save(s);
 
+        Message a = new Message();
+        a.setTitle("Titel");
+        a.setReceiver(user1);
+        a.setSender(user2);
+        a.setMessage("Dies ist eine TestMsg");
+        a.setId(55);
+        messageRepository.save(a);
     }
 
 

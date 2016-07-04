@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+<meta charset="utf-8"/>
+<title>Bootply snippet - Bootstrap Wysiwyg Editor</title>
+<meta name="generator" content="Bootply" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="description"
+	content="Use bootstrap-wysiwyg with Bootstrap 3." />
+<link
+	href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"
+	rel="stylesheet"/>
+
+<!-- include libraries(jQuery, bootstrap) -->
+<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet"/>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script> 
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script> 
+
+
+</head>
+
+
+<body>
+<th:block th:include="fragments/navbar::nav-In"/>
+<h1>Ranking</h1>
+<table>
+	<tr>
+        <th>EMAIL </th>
+        <th>NAME </th>
+        <th>USERNAME </th>
+        <th>BEITRAGANZAHL </th>
+    </tr>
+	<tr th:each="user,iterationStatus  : ${users}">
+		<td  class="content" th:utext="__${iterationStatus.index +1}__ +'.'"/>
+		<td  class="content" th:utext="${user.getEmail()}"/>
+		<td  class="content" th:utext="${user.getName()}"/> 
+		<td  class="content" th:utext="${user.getUsername()}"/>
+		<td  class="content" th:utext="${user.getRankpoints()}"/> 
+	</tr>
+</table>
+
+
+</body>
+</html>

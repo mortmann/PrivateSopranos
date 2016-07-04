@@ -2,6 +2,12 @@ package de.hohenheim.sopranos.model;
 
 import javax.persistence.*;
 
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,10 +26,12 @@ public class Post extends DateClass{
 
     private String heading;
 
-    private int rating;
-    private int ratingCount;
-
-
+    private float rating=0;
+    private int ratingCount=0;
+    
+    private File file;
+    @Column(length = 10000000)
+    private byte[] filedata;
     @ManyToOne
     private LearningGroup learningGroup;
 
@@ -50,6 +58,7 @@ public class Post extends DateClass{
     }
 
     public void setText(String text) {
+    	setCreateDate();
         this.text = text;
     }
 
@@ -81,15 +90,6 @@ public class Post extends DateClass{
         this.heading = heading;
     }
 
-    public int getRating() {
-        return rating;
-    }
-
-    public void setRating(int rating) {
-        this.ratingCount++;
-        this.rating = rating / ratingCount;
-    }
-
     public int getRatingCount() {
         return ratingCount;
     }
@@ -97,5 +97,52 @@ public class Post extends DateClass{
     public void setRatingCount(int ratingCount) {
         this.ratingCount = ratingCount;
     }
+
+	public File getFile() {
+		try {
+			file.createNewFile();
+			FileOutputStream fos = new FileOutputStream(file.getPath());
+			fos.write(filedata);
+			fos.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return file;
+	}
+
+	public void setFile(File file) {
+		this.file = file;
+		try {
+			filedata = Files.readAllBytes(file.toPath());
+		} catch (IOException e) {
+			e.printStackTrace(); 
+		}
+	}
+
+	public void addRating(Float valueOf) {
+		valueOf+=valueOf;
+		ratingCount++;
+	}
+
+	public float getRating() {
+		if(rating==0 || ratingCount==0){
+			return 0;
+		}
+		return rating/ratingCount;
+	}
+
+	public void setRating(float rating) {
+		this.rating = rating;
+	}
+
+	public byte[] getFiledata() {
+		return filedata;
+	}
+
+	public void setFiledata(byte[] filedata) {
+		this.filedata = filedata;
+	}
+
+
 
 }

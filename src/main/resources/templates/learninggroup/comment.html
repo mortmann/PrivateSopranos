@@ -51,6 +51,12 @@
 		<td  class="content" th:utext="${post.getHeading()}"/>
 		<td  class="content" th:utext="${post.getText()}"/> 
 		<td  class="content" th:utext="${post.getSopraUser().getEmail()}"/>
+		<td  class="content" th:if="${post.getFile()!=null}" >
+			<div th:utext="${post.getFile().getName()}"></div>
+			<form name="form-login" th:action="@{/learninggroup/post/download}" method="get">
+	        	<button class="btn btn-default" type="submit" th:name="info" th:value="${post.getId()}" aria-hidden="true">Download</button>
+	        </form>
+		</td>
 		<td  class="content" th:if="${post.getSopraUser()}==${loginUser} or ${isHost}">
 		<form name="form-login" th:action="@{/learninggroup/home?name=} + ${name}" method="post">
         	<button class="btn btn-default" type="submit" th:name="info" th:value="${'edit-' + post.getId()}" aria-hidden="true">EDIT</button>

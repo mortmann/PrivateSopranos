@@ -21,11 +21,40 @@ public class SopraUser {
     private Date createDate;
     @Column(unique = true)
     private String username;
-
+    
     private String courseOfStudys;
 
-    private Integer rankpoints;
+    private String linkToPicture;
+    
+    private Integer rankpoints = 10;
 
+
+	
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name="FRIENDS", 
+			joinColumns = @JoinColumn(name = "FIRST"),
+            inverseJoinColumns = @JoinColumn(name = "SECOND"),uniqueConstraints=
+                    @UniqueConstraint(columnNames={"FIRST", "SECOND"}))
+	private List<SopraUser> friendsList = new ArrayList<>();
+
+	@ManyToMany(mappedBy = "friendsList", cascade = CascadeType.ALL)
+	private List<SopraUser> friendsListTwo = new ArrayList<>();
+	
+	@ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "FRIENDSREQUESTS",
+            joinColumns = @JoinColumn(name = "FIRST"),
+            inverseJoinColumns = @JoinColumn(name = "SECOND"),uniqueConstraints=
+                    @UniqueConstraint(columnNames={"FIRST", "SECOND"}))
+    private List<SopraUser> friendRequestsList = new ArrayList<>();
+	@ManyToMany(mappedBy = "friendsList", cascade = CascadeType.ALL)
+	private List<SopraUser> friendRequestsListTwo = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "sender")
+	private List<Message> sendMessageList = new ArrayList<>();
+	@OneToMany(mappedBy = "receiver")
+	private List<Message> receivedMessageList = new ArrayList<>();
+	
     @ManyToMany(mappedBy = "sopraUsers")
     private List<LearningGroup> learningGroups = new ArrayList<>();
 
@@ -43,8 +72,22 @@ public class SopraUser {
 
     @OneToMany(mappedBy = "sopraUser")
     private List<Comment> commentList = new ArrayList<>();
+    @OneToMany(mappedBy = "generated")
+    private List<Quiz> quizList = new ArrayList<>(); 
+     
+    @OneToMany(mappedBy = "sopraUser")
+    private List<UserEvent> userEventList = new ArrayList<>();
+    
+    
+    public List<UserEvent> getUserEventList() {
+		return userEventList;
+	}
 
-    public SopraUser() {
+	public void setUserEventList(List<UserEvent> userEventList) {
+		this.userEventList = userEventList;
+	}
+
+	public SopraUser() {
     	createDate = new Date(System.currentTimeMillis());
     }
 
@@ -91,7 +134,12 @@ public class SopraUser {
     public Integer getRankpoints() {
         return rankpoints;
     }
-
+    public void increaseRankpoints(){
+    	rankpoints++;
+    }
+	public void decreaseRankpoints(){
+		rankpoints--;
+	}
     public void setRankpoints(Integer rankpoints) {
         this.rankpoints = rankpoints;
     }
@@ -144,10 +192,87 @@ public class SopraUser {
 		return createDate;
 	}
 
+	public List<Quiz> getQuizList() {
+		return quizList;
+	}
+
+	public void setQuizList(List<Quiz> quizList) {
+		this.quizList = quizList;
+	}
+
 	public void setCreateDate() {
 		this.createDate = new Date(System.currentTimeMillis());
 	}
 	public String getCreateDateString() {
 		return DateFormat.getInstance().format(getCreateDate());
+	}
+
+	public String getLinkToPicture() {
+		return linkToPicture;
+	}
+
+	public void setLinkToPicture(String linkToPicture) {
+		this.linkToPicture = linkToPicture;
+	}
+
+	public List<SopraUser> getFriendsList() {
+		return friendsList;
+	}
+
+	public void setFriendsList(List<SopraUser> friendsList) {
+		this.friendsList = friendsList;
+	}
+
+	public List<SopraUser> getFriendRequestsList() {
+		return friendRequestsList;
+	}
+
+	public void setFriendRequestsList(List<SopraUser> friendRequestsList) {
+		this.friendRequestsList = friendRequestsList;
+	}
+
+	public List<Message> getSendMessageList() {
+		return sendMessageList;
+	}
+
+	public void setSendMessageList(List<Message> sendMessageList) {
+		this.sendMessageList = sendMessageList;
+	}
+
+	public List<Message> getReceivedMessageList() {
+		return receivedMessageList;
+	}
+
+	public void setReceivedMessageList(List<Message> receivedMessageList) {
+		this.receivedMessageList = receivedMessageList;
+	}
+
+	public List<SopraUser> getFriendsListTwo() {
+		return friendsListTwo;
+	}
+
+	public void setFriendsListTwo(List<SopraUser> friendsListTwo) {
+		this.friendsListTwo = friendsListTwo;
+	}
+
+	public List<SopraUser> getFriendRequestsListTwo() {
+		return friendRequestsListTwo;
+	}
+
+	public void setFriendRequestsListTwo(List<SopraUser> friendRequestsListTwo) {
+		this.friendRequestsListTwo = friendRequestsListTwo;
+	}
+	
+	public List<SopraUser> getFriendRequestsListALL(){
+		ArrayList<SopraUser> s = new ArrayList<>();
+		s.addAll(getFriendRequestsList());
+		s.addAll(getFriendRequestsListTwo());
+		return s;
+	}
+	public List<SopraUser> getFriendsListALL(){
+		ArrayList<SopraUser> s = new ArrayList<>();
+		s.addAll(getFriendsList());
+		s.addAll(getFriendsListTwo());
+		return s;
 	}
 }

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,6 +28,10 @@ public class LearningGroupController {
     SopraUserRepository sopraUserRepository;
     @Autowired
     PostRepository postRepository;
+    @Autowired
+    UserEventRepository userEventRepository;
+    
+    
     @RequestMapping(value = "/learninggroup/create", method = RequestMethod.GET)
     public String create(Model model) {
 
@@ -51,7 +57,19 @@ public class LearningGroupController {
         learningGroupRepository.save(lg);
         return "redirect:/learninggroup/home?name=" + lg.getName() +"&created";
     }
-
+    @RequestMapping(value = "/learninggroup/ranklist{name}", method = RequestMethod.GET)
+    public String ranklist(@RequestParam("name") String name,Model model, RedirectAttributes attr) {
+    	LearningGroup lg = learningGroupRepository.findByName(name);
+    	ArrayList<SopraUser> us = new ArrayList<>();
+    	us.addAll(lg.getSopraUsers());
+    	us.sort((x,y)->x.getRankpoints().compareTo(y.getRankpoints()));
+    	
+    	model.addAttribute("users", us);
+    	attr.addAttribute("name", name);
+    	model.addAttribute("name",name);
+        return "learninggroup/ranklist";
+    }
+     
     @RequestMapping(value = "/learninggroup/mygroups", method = RequestMethod.GET)
     public String myGroups(Model model) { 
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -83,13 +101,37 @@ public class LearningGroupController {
                 return "redirect:/index";
             }
 	        if (lg.getFreeForAll() == false) {
-	            return "redirect:/learninggroup/login?name=" + name;
+	        	if(lg.isFreeForFriends() == true){
+	        		if(lg.getSopraHost().getFriendsListALL().contains(loginUser) == false){
+	        			return "redirect:/learninggroup/login?name=" + name;
+	        		}
+	        	} else {
+	        		return "redirect:/learninggroup/login?name=" + name;
+	        	}
 	        }
-
         	attr.addAttribute("join", "successful");
         	lg.getSopraUsers().add(loginUser);
+        	
+        	UserEvent ue = new UserEvent();
+        	ue.setSopraUser(loginUser);
+        	ue.setText("Joined");
+        	ue.setLg(lg);
+        	ue.setCreateDate();
+        	System.out.println(ue.getCreateDate());
+        	ue = userEventRepository.save(ue);
+        	loginUser.getUserEventList().add(ue);
+        	sopraUserRepository.save(loginUser);
+        	
         	learningGroupRepository.save(lg);
         }
+        Post p =new Post();
+        p.setText("BLINDTEXT _____-_");
+        p.setHeading("POOOOOOOOOOOOOST");
+        p.setSopraUser(loginUser);
+        p.setLearningGroup(lg);
+        p = postRepository.save(p);
+//        lg.getPostList().add(p);
+        
         attr.addAttribute("name", name);
     	model.addAttribute("name",name);
     	model.addAttribute("loginUser",loginUser);
@@ -101,9 +143,9 @@ public class LearningGroupController {
     public String postEDIT(@RequestParam("name")
                                          String name, String info, Model model, RedirectAttributes attr) {
     	String[] is = info.split("-");
-    	Post p = postRepository.getOne(Integer.valueOf(is[1]));
+    	Post p = postRepository.getOne(Integer.valueOf(is[0]));
 
-    	switch(is[0]){
+    	switch(is[1]){
     		case "delete":
     	    	//delete
         		postRepository.delete(p);
@@ -122,6 +164,13 @@ public class LearningGroupController {
     			attr.addAttribute("name", name);
     			attr.addFlashAttribute("edit", false); 
     			return "redirect:/learninggroup/comment";
+    		case "rating":
+    			//change 
+    			System.out.println(info);
+    			p.addRating(Float.valueOf(is[2]));
+    			attr.addAttribute("rating", "successful");
+    			attr.addAttribute("name", name);
+    			return "redirect:/learninggroup/home";
     	}
     	return "redirect:/error";
     }
@@ -191,25 +240,25 @@ public class LearningGroupController {
     	attr.addAttribute("name", name);
     	LearningGroup lg = learningGroupRepository.findByName(name);
     	if(lg.isHost(sopraUserRepository.findByEmail(email))){
-    		return "redirect:/learninggroup/home?deleted=error";
+    		return "redirect:/learninggroup/home?erro=notfound";
     	}
 		switch (extra) {
 		case "ban":
 			lg.banSopraUser(sopraUserRepository.findByEmail(email));
             learningGroupRepository.save(lg);
-	        return "redirect:/learninggroup/home?deleted=successful";
+	        return "redirect:/learninggroup/home?ban=successful";
 		case "block":
 			lg.lockSopraUser(sopraUserRepository.findByEmail(email));
             learningGroupRepository.save(lg);
-    		return "redirect:/learninggroup/home?deleted=successful";
+    		return "redirect:/learninggroup/home?block=successful";
 		case "unban":
 			lg.unbanSopraUser(sopraUserRepository.findByEmail(email));
             learningGroupRepository.save(lg);
-	        return "redirect:/learninggroup/home?deleted=successful";
+	        return "redirect:/learninggroup/home?unban=successful";
 		case "unblock":
 			lg.unlockSopraUser(sopraUserRepository.findByEmail(email));
             learningGroupRepository.save(lg);
-    		return "redirect:/learninggroup/home?deleted=successful";
+    		return "redirect:/learninggroup/home?unblock=successful";
 		}
 		return "redirect:/error";
     }
@@ -231,8 +280,9 @@ public class LearningGroupController {
     	testmc = questionRepository.save(testmc);
     	lg.getQuestList().add(testmc);
     	
-    	model.addAttribute("questions", lg.getQuestList());
-    	model.addAttribute("Rating", new Rating());
+    	model.addAttribute("quizquestions", lg.getQuestList());
+    	model.addAttribute("nonquizquestions", lg.getNotReleasedQuestionList());
+
     	model.addAttribute("name", name);
     	model.addAttribute("isHost", lg.isHost(loginUser));
     	model.addAttribute("loginUser",loginUser);
@@ -241,15 +291,11 @@ public class LearningGroupController {
     }
     @RequestMapping(value = "/learninggroup/questionlist{name}", method = RequestMethod.POST)
     public String allquestionPOST(@RequestParam("name")
-                                         String name, String info,Rating rating, Model model, RedirectAttributes attr) {
+                                         String name, String info, Model model, RedirectAttributes attr) {
     	String[] is = null;
-    	if(info != null){
-    		is=info.split("-");
-    	} else {
-    		is=rating.getTest().split("-");
-    	}
-    	
+		is=info.split("-");    	
     	Question p = questionRepository.getOne(Integer.valueOf(is[0]));
+    	LearningGroup lg = learningGroupRepository.findByName(name);
 
     	switch(is[1]){
     		case "delete":
@@ -273,10 +319,24 @@ public class LearningGroupController {
     			return "redirect:/question/comment";
     		case "rating":
     			//change 
+    			System.out.println(info);
+    			p.addRating(Float.valueOf(is[2]));
+    			//up for discussion -- how good rated/how many it have to rate it so it 
+    			//can be up for quiz
+    			if(p.getRating()>2.5f && p.getRatingCount()>=Math.min(lg.getUserCount(), 5)){
+    				lg.getNotReleasedQuestionList().remove(p);
+        			lg.getQuestList().add(p);
+    			}
     			attr.addAttribute("rating", "successful");
     			attr.addAttribute("name", name);
     			return "redirect:/learninggroup/questionlist";	
-    	}
+    		case "addquiz":
+    			lg.getNotReleasedQuestionList().remove(p);
+    			lg.getQuestList().add(p);
+    			attr.addAttribute("adding", "successful");
+    			attr.addAttribute("name", name);
+    			return "redirect:/learninggroup/questionlist";	
+    	} 
     	return "redirect:/error";
     }
     

@@ -1,0 +1,14 @@
+.bgr{
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: initial;
+}
+
+.bgr.network1 {
+    background-image: url("../img/network1.jpg");
+}
+
+.bgr.city {
+    background-image: url("../img/city.jpg")
+}

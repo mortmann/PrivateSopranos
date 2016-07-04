@@ -21,7 +21,8 @@ public class LearningGroup {
 
     private  String password;
 
-    private Boolean freeForAll = true;
+    private boolean freeForAll = true;
+    private boolean freeForFriends = false;
 
     private Date createDate;
 
@@ -29,8 +30,10 @@ public class LearningGroup {
     @OneToOne
     private SopraUser sopraHost;
 
-    @OneToMany
+    @OneToMany(mappedBy = "learningGroup")
     private  List<Question> questList = new ArrayList<>();
+    @OneToMany(mappedBy = "learningGroup")
+    private  List<Question> notReleasedQuestionList = new ArrayList<>();
 
     @OneToMany(mappedBy = "learningGroup")
     private  List<Post> postList = new ArrayList<>();
@@ -198,5 +201,21 @@ public class LearningGroup {
 	}
 	public String getCreateDateString() {
 		return DateFormat.getInstance().format(getCreateDate());
+	}
+
+	public List<Question> getNotReleasedQuestionList() {
+		return notReleasedQuestionList;
+	}
+
+	public void setNotReleasedQuestionList(List<Question> notReleasedQuestionList) {
+		this.notReleasedQuestionList = notReleasedQuestionList;
+	}
+
+	public boolean isFreeForFriends() {
+		return freeForFriends;
+	}
+
+	public void setFreeForFriends(boolean freeForFriends) {
+		this.freeForFriends = freeForFriends;
 	}
 }

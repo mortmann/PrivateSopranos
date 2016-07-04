@@ -7,16 +7,14 @@
     <title>Post</title>
     <meta name="generator" content="Bootply"/>
     <meta name="description"
-          content="Use bootstrap-wysiwyg with Bootstrap 3."/>
-    <link
-            href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"
-            rel="stylesheet"/>
+          content="Post."/>
+        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet"/>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"/>
 
     <!-- include libraries(jQuery, bootstrap) -->
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet"/>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
-
     <!-- include summernote css/js-->
     <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.1/summernote.css" rel="stylesheet"/>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.1/summernote.js"></script>
@@ -44,20 +42,19 @@
 <body>
 <th:block th:include="fragments/navbar::nav-In"/>
 
-<form class="form-horizontal" th:object="${post}" th:action="@{/learninggroup/post?name=} + ${name}" method="post">
+<form class="form-horizontal" enctype="multipart/form-data" th:action="@{/learninggroup/post?name=} + ${name}" method="post">
 	<label for="heading" class="cols-sm-2 control-label">"Überschrift"</label>
-	<input id="heading" class="form-control" th:value="${post.getHeading()}" th:field="*{heading}"></input>    
-    <textarea id="editor" name="editor" th:value="${post.getText()}" th:field="*{text}" class="summernote form-control" rows="10"
+	<input id="heading" class="form-control" th:value="${post.getHeading()}" th:name="heading"></input>    
+    <textarea id="editor" name="editor" th:value="${post.getText()}" th:name="content" class="summernote form-control" rows="10"
               placeholder="Enter the product long description..."></textarea>
-
     <div th:if="${edit}==false" class="form-group">
         <button class="btn btn-primary btn-lg btn-block login-button" type="submit" th:value="-1" th:name="info">Post</button>
     </div>
     <div th:if="${edit}" class="form-group">
         <button class="btn btn-primary btn-lg btn-block login-button" type="submit" th:value="${post.getId()}" th:name="info" >Speichere Änderungen</button>
     </div>
+    <input id="input-1" th:name="file" type="file" class="file"/>
 </form>
-
 
 </body>
 </html>
