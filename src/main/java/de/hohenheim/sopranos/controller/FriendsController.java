@@ -1,12 +1,14 @@
 package de.hohenheim.sopranos.controller;
 
 
+import de.hohenheim.sopranos.model.DateClass;
 import de.hohenheim.sopranos.model.LearningGroupRepository;
 import de.hohenheim.sopranos.model.PostRepository;
 import de.hohenheim.sopranos.model.SopraUser;
 import de.hohenheim.sopranos.model.SopraUserRepository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,6 +23,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
@@ -102,6 +105,22 @@ public class FriendsController {
     	model.addAttribute("current", loginUser);
     	return "redirect:/friends";
     }
-
+    @RequestMapping(value="/activity{name}" , method = RequestMethod.POST)
+    public String friendsActivity(@RequestParam("name") String name,HttpServletRequest request,String search,Model model, RedirectAttributes attr) {
+        SopraUser sopraUser = sopraUserRepository.findByEmail(name);
+    	ArrayList<DateClass> all = new ArrayList<>();
+    	all.addAll(sopraUser.getPostList());
+    	all.addAll(sopraUser.getCommentList());
+    	all.addAll(sopraUser.getQuestList());
+    	all.addAll(sopraUser.getQuizList());
+    	all.addAll(sopraUser.getUserEventList());
+    	Collections.sort(all, 
+                (o1, o2) -> o1.getCreateDate().compareTo(o2.getCreateDate()));
+    	Collections.reverse(all);
+    	System.out.println(all.size());
+    	model.addAttribute("activities", all.toArray()); 
+    	attr.addFlashAttribute("name", name);
+    	return "/activity";
+    }
 }
 
