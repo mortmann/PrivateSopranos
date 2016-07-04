@@ -110,7 +110,11 @@ function PictureUpdate(){
                     </div>
                 </div>
             </div>
-
+			 <form name="form-login" th:action="@{/remove}" method="post">
+			    <button class="btn btn-default btn-xs" type="submit" th:name="info" th:value="delete" aria-hidden="true" title="Löschen">
+			        Profil Löschen
+			    </button>
+			</form>
             <footer class="footer">
                 <div class="container">
                     <nav class="pull-left">

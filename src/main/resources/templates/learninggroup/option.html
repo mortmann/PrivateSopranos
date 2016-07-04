@@ -79,5 +79,11 @@
         </div>
     </div>
 </div>
+ <form name="form-login" th:action="@{/learninggroup/option?name=} + ${name}" method="post">
+    <button class="btn btn-default btn-xs" type="submit" th:name="info" th:value="delete" aria-hidden="true" title="Löschen">
+        Löschen
+    </button>
+</form>
+
 </body>
 </html>

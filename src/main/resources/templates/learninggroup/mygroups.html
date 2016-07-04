@@ -48,6 +48,14 @@
         <td><a type="submit" class="btn btn-default" th:href="@{/learninggroup/home(name=${group.getName()})}">HOME</a></td>
         <td th:text="${group.getName()}"></td>
         <td th:text="${group.getDescription()}"></td>
+        <td>
+					<form name="form-login"
+						th:action="@{/learninggroup/mygroups}" method="post">
+						<button class="btn btn-default btn-xs" type="submit"
+							th:name="info" th:value="${group.getName()}" aria-hidden="true"
+							title="Entfernen">Entfernen</button>
+					</form>
+				</td>
     </tr>
     </tbody>
 </table>

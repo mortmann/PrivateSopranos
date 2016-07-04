@@ -28,7 +28,7 @@ public class SopraUser {
     
     private Integer rankpoints = 10;
 
-
+    private boolean deleted=false;
 	
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name="FRIENDS", 
@@ -274,5 +274,13 @@ public class SopraUser {
 		s.addAll(getFriendsList());
 		s.addAll(getFriendsListTwo());
 		return s;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 }

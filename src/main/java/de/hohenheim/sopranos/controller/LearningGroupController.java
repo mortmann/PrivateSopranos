@@ -77,7 +77,16 @@ public class LearningGroupController {
         model.addAttribute("groups", host.getLearningGroups());
         return "/learninggroup/mygroups";
     }
-
+    @RequestMapping(value = "/learninggroup/mygroups", method = RequestMethod.POST)
+    public String myGroupsPOST(Model model,String info, RedirectAttributes attr) { 
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        SopraUser host = sopraUserRepository.findByEmail(user.getUsername());
+    	LearningGroup lg = learningGroupRepository.findByName(info);
+    	lg.getSopraUsers().remove(host);
+    	learningGroupRepository.save(lg);
+    	attr.addAttribute("remove", "successful");
+        return "redirect:/learninggroup/mygroups";
+    }
     @RequestMapping(value = "/learninggroup/join")
     public String join(Model model) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -206,8 +215,13 @@ public class LearningGroupController {
         return "/learninggroup/option";
     }
     @RequestMapping(value = "/learninggroup/option{name}", method = RequestMethod.POST)
-    public String lgOptionPost(@RequestParam("name") String name, LearningGroup group,Model model, RedirectAttributes attr) {
+    public String lgOptionPost(@RequestParam("name") String name,String info, LearningGroup group,Model model, RedirectAttributes attr) {
     	LearningGroup lg = learningGroupRepository.findByName(name);
+    	if(info!=null && info.contains("delete")){
+    		learningGroupRepository.delete(learningGroupRepository.findByName(name));
+    		attr.addAttribute("delete", "successful");
+    		return "redirect:/home";
+    	}
     	lg.setDescription(group.getDescription());
     	lg.setPassword(group.getPassword());
         learningGroupRepository.save(lg);

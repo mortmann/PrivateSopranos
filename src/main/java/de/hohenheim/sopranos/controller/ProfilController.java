@@ -36,6 +36,13 @@ public class ProfilController {
         attr.addAttribute("edit", "successful");
         return "/profil/edit";
     }
-    
+    @RequestMapping(value = "/remove", method = RequestMethod.POST)
+    public String removeuser(RedirectAttributes attr) {
+    	User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        SopraUser loginUser = sopraUserRepository.findByEmail(user.getUsername());
+        loginUser.setDeleted(true);
+        sopraUserRepository.save(loginUser);
+        return "redirect:/logout";
+    }
 }
  
