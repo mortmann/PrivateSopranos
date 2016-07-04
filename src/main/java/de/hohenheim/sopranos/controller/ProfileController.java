@@ -12,19 +12,19 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import de.hohenheim.sopranos.model.SopraUser;
 import de.hohenheim.sopranos.model.SopraUserRepository;
 @Controller
-public class ProfilController {
+public class ProfileController {
 	
 	@Autowired
     SopraUserRepository sopraUserRepository;
-    @RequestMapping(value = "/profil/edit", method = RequestMethod.GET)
+    @RequestMapping(value = "/profile/edit", method = RequestMethod.GET)
     public String editUserGet(Model model, RedirectAttributes attr) {
     	User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SopraUser loginUser = sopraUserRepository.findByEmail(user.getUsername());
         model.addAttribute("user", loginUser);
-        return "/profil/edit";
+        return "/profile/edit";
     }
     
-    @RequestMapping(value = "/profil/edit", method = RequestMethod.POST)
+    @RequestMapping(value = "/profile/edit", method = RequestMethod.POST)
     public String editUserPost(Model model,SopraUser su, RedirectAttributes attr) {
     	User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SopraUser loginUser = sopraUserRepository.findByEmail(user.getUsername());
@@ -34,13 +34,7 @@ public class ProfilController {
         sopraUserRepository.save(loginUser);
         model.addAttribute("user", loginUser);
         attr.addAttribute("edit", "successful");
-        return "redirect:/home";
+        return "/profile/edit";
     }
-    @RequestMapping(value = "/remove", method = RequestMethod.POST)
-    public String removeuser(RedirectAttributes attr) {
-    	User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        SopraUser loginUser = sopraUserRepository.findByEmail(user.getUsername());
-        sopraUserRepository.delete(loginUser);
-        return "redirect:/logout";
-    }
+    
 }
