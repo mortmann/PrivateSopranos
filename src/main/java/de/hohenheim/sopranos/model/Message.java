@@ -13,8 +13,12 @@ public class Message extends DateClass {
     @GeneratedValue
     Integer id;
 
+    String title;
+
     @Column(length = 10000)
     String message;
+
+    Boolean opened = false;
 
     @ManyToOne
     SopraUser sender;
@@ -30,12 +34,28 @@ public class Message extends DateClass {
         this.id = id;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public String getMessage() {
         return message;
     }
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public Boolean getOpened() {
+        return opened;
+    }
+
+    public void setOpened(Boolean opened) {
+        this.opened = opened;
     }
 
     public SopraUser getSender() {
