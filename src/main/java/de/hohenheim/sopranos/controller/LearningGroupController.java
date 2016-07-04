@@ -13,6 +13,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by MortmannMKII v2 on 08.06.2016.
@@ -30,8 +33,11 @@ public class LearningGroupController {
     PostRepository postRepository;
     @Autowired
     UserEventRepository userEventRepository;
-    
-    
+    @Autowired
+    QuizDuelRepository quizDuelRepository;
+    @Autowired
+    QuizRepository quizRepository;
+
     @RequestMapping(value = "/learninggroup/create", method = RequestMethod.GET)
     public String create(Model model) {
 
@@ -377,6 +383,128 @@ public class LearningGroupController {
     			return "redirect:/learninggroup/questionlist";	
     	} 
     	return "redirect:/error";
+    }
+    @RequestMapping(value = "/learninggroup/quizduel{name}", method = RequestMethod.GET)
+    public String quizduel(@RequestParam("name")
+                                         String name, Model model, RedirectAttributes attr) {
+    	LearningGroup lg = learningGroupRepository.findByName(name);
+    	User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        SopraUser loginUser = sopraUserRepository.findByEmail(user.getUsername());
+    	if(lg.getSopraUsers().contains(loginUser)==false){
+    		attr.addAttribute("name", name);
+    		return "redirect:/learninggroup/home";
+    	}
+    	System.out.println("wat de fuck");
+
+    	List<SopraUser> users =  lg.getSopraUsers();
+    	users.removeAll(lg.getGrayList());
+    	users.remove(loginUser);
+    	List<SopraUser> temp = new ArrayList<>();
+    	for (QuizDuel qd : loginUser.getChallengedList()) {
+    		if(qd.isDone() == false){
+	    		temp.add(qd.getChallenged());
+	    		temp.add(qd.getChallenger());
+    		}
+		}
+    	for (QuizDuel qd : loginUser.getChallengerList()) {
+    		if(qd.isDone() == false){
+	    		temp.add(qd.getChallenged());
+	    		temp.add(qd.getChallenger());
+    		}
+		}
+//    	users.removeAll(quizDuelRepository.findALLChallangedByChallengerAndLearningGroup(loginUser, lg));
+//    	users.removeAll(quizDuelRepository.findALLChallangerByChallengedAndLearningGroup(loginUser, lg));
+
+    	users.removeAll(temp);
+    	
+    	model.addAttribute("users",users);
+    	model.addAttribute("challenges",quizDuelRepository.findALLByChallenged(loginUser));
+    	model.addAttribute("name", name);
+    	return "/learninggroup/quizduel";
+    }
+    @RequestMapping(value = "/learninggroup/quizduel{name}", method = RequestMethod.POST)
+    public String quizduelPOST(@RequestParam("name")
+                                         String name, String info,String count, Model model, RedirectAttributes attr) {
+    	LearningGroup lg = learningGroupRepository.findByName(name);
+    	User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        SopraUser loginUser = sopraUserRepository.findByEmail(user.getUsername());
+    	if(lg.getSopraUsers().contains(loginUser)==false){
+    		attr.addAttribute("name", name);
+    		return "redirect:/learninggroup/home";
+    	}
+    	SopraUser other = sopraUserRepository.findByEmail(info.split("-")[0]);
+    	switch(info.split("-")[1]){
+    		case "challenge":
+    		QuizDuel qd = new QuizDuel();
+    		qd.setChallenger(loginUser);
+    		qd.setChallenged(other);
+    		qd.setLearningGroup(lg);
+    		int questionCount = 1;//Integer.valueOf(count);
+        	Random r = new Random();
+        	ArrayList<Question> al = new ArrayList<>();
+        	ArrayList<Question> qs = new ArrayList<>();
+	    	qs.addAll(lg.getQuestList());
+			qs.removeIf(x->x.getSopraUser().getEmail().equals(loginUser.getEmail()));
+			qs.removeIf(x->x.getSopraUser().getEmail().equals(other.getEmail()));
+	    	if(qs.isEmpty() || qs.size()<questionCount){
+	    		attr.addAttribute("error", "questioncount");
+	    		attr.addAttribute("name", "name");
+	    		return "redirect:/learninggroup/quizduel";
+	    	}
+	    	for (int i = 0; i < questionCount; i++) {
+	    		int id = r.nextInt((int)qs.size());
+	        	if(id == 0){
+	        		id++;
+	        	}
+	        	al.add(qs.get(id-1));
+			}
+	    	//id start at 1
+    		Quiz q = new Quiz();	
+	    	q.setQuestList(al);
+	    	q.setGenerated(loginUser);
+	    	q.setEditDate();
+	    	q = quizRepository.save(q);
+	    	q.setPartOfDuel(true);
+	    	q.setCreateDate();
+	    	qd.setChallengerQuiz(q);
+	    	
+	    	Quiz q2 = new Quiz();
+	    	q2.setQuestList(al);
+	    	q2.setCreateDate();
+	    	q2.setGenerated(other);
+	    	q2 = quizRepository.save(q2);
+	    	q2.setPartOfDuel(true);
+	    	qd.setChallengedQuiz(q2);
+	    	quizDuelRepository.save(qd);
+	    	attr.addAttribute("id", qd.getChallengerQuiz().getQuizId());
+			attr.addAttribute("number", 1);
+			return "redirect:/question/answer";
+    		case "deny":
+    			QuizDuel qdd = quizDuelRepository.findByChallengerAndLearningGroup(sopraUserRepository.findByEmail(info.split("-")[0]), lg);
+    			quizDuelRepository.delete(qdd);
+    			attr.addAttribute("deny", "successful");
+    			return "redirect:/learninggroup/quizduel";	
+    		case "accept":
+    			QuizDuel qda = quizDuelRepository.findByChallengerAndLearningGroup(sopraUserRepository.findByEmail(info.split("-")[0]), lg);
+    			qda.getChallengedQuiz().setEditDate(); 
+    			quizRepository.save(qda.getChallengedQuiz());
+    			attr.addAttribute("id", qda.getChallengedQuiz().getQuizId());
+    			attr.addAttribute("number", 1);
+    			return "redirect:/question/answer";	
+    	}
+    	return "/learninggroup/quizduel";
+    }
+    @RequestMapping(value = "/learninggroup/quizduelend{id,name}", method = RequestMethod.GET)
+    public String quizduelEnd(@RequestParam("name")
+                                         String name, @RequestParam("id") String id,HttpServletRequest request, Model model, RedirectAttributes attr) {
+    	System.out.println("wat de fuck");
+    	LearningGroup lg = learningGroupRepository.findByName(name);
+    	User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        SopraUser loginUser = sopraUserRepository.findByEmail(user.getUsername());
+    	QuizDuel qd = quizDuelRepository.getOne(Integer.valueOf(id));    	
+    	model.addAttribute("isChallenger", qd.IsChallenger(loginUser));
+        model.addAttribute("quizduel",qd );
+        return "/learninggroup/quizduelend";
     }
     
     

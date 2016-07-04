@@ -82,8 +82,8 @@
 			<label  class="content" th:utext="${a.getText()}"> </label>
 		</td>
 		<td th:if="${a instanceof T(de.hohenheim.sopranos.model.Quiz)}" >
-			<label  class="content" th:utext="QUIZ GEMACHT"> </label>
-			<label  class="content" th:utext="${a.getPoints}"></label>
+			<label  class="content" >QUIZ GEMACHT</label>
+			<label  class="content" th:utext="${a.getPoints()}"></label>
 		</td>
 		<td th:if="${a instanceof T(de.hohenheim.sopranos.model.UserEvent)}" >
 			<div th:if="${a.getText().contains('Joined')}">

@@ -35,6 +35,9 @@ public class QuestionContoller {
     QuizRepository quizRepository;
     @Autowired
     LearningGroupRepository learningGroupRepository;
+    @Autowired
+    QuizDuelRepository quizDuelRepository;
+    
     @RequestMapping(value = "/question/create{name}")
     public String create(@RequestParam("name") String name, HttpServletRequest request,Model model, RedirectAttributes attr,@ModelAttribute("question") String question,@ModelAttribute("Answer") Answer answers,@ModelAttribute("amountcount") String amountstring) {
         request.getSession().setAttribute("group", learningGroupRepository.findByName(name));
@@ -147,24 +150,8 @@ public class QuestionContoller {
     	ArrayList<Question> qs = new ArrayList<>();
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SopraUser current = sopraUserRepository.findByEmail(user.getUsername());
-        
-//__________________________________________________________________________
-        LearningGroup group=learningGroupRepository.findByName("BLACK");
-    	// setup for test so there is always a question
-    	String st = "Was is das richtige?";
-    	Question testmc = new Question();
-    	testmc.setQuestText(st);
-    	String[] astrs =  {"a","b","c","d"};
-    	testmc.setAnswers(astrs);
-    	boolean[] b = {true,false,false,false};
-    	testmc.setSolutions(b);
-    	qs.add(testmc);
-//    	group = (LearningGroup) request.getSession().getAttribute("group");
-    	testmc.setLearningGroup(group);
-    	testmc = questionRepository.save(testmc);
-    	group.getQuestList().add(testmc);
-    	group = learningGroupRepository.save(group);
-//__________________________________________________________________________   
+        LearningGroup group= null;
+
     	System.out.println(info);
     	String[] grs = info.split(",");
     	System.out.println(grs.length);
@@ -209,14 +196,15 @@ public class QuestionContoller {
     	
     }
     @RequestMapping(value = "/question/end{id}", method = RequestMethod.GET)
-    public String quizEND(@RequestParam("id") String id,Model model, RedirectAttributes attr) {
+    public String quizEND(@RequestParam("id") String id,HttpServletRequest request,Model model, RedirectAttributes attr) {
     	Quiz quiz =quizRepository.getOne(Integer.parseInt(id));
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SopraUser current = sopraUserRepository.findByEmail(user.getUsername());
         if(quiz.getGenerated().getEmail().equals(current.getEmail())==false){
+        	System.out.println(quiz.getGenerated().getEmail() + " " + current.getEmail());
         	return "redirect:/home";
         }
-    	
+        quiz.setDone(true);
     	boolean[] correct = new boolean[quiz.getQuestList().size()];
 	    for (int i =0; i< quiz.getQuestList().size();i++) {
 	    	Question q = quiz.getQuestList().get(i);
@@ -230,6 +218,7 @@ public class QuestionContoller {
 		}
 	    int points= 0;
 	    for (boolean b : correct) {
+	    	
 			if(b){
 				points++;
 				current.increaseRankpoints();
@@ -240,6 +229,15 @@ public class QuestionContoller {
 		}	    
 	    quiz.setPoints(points);
 	    quizRepository.save(quiz);
+	    if(quiz.isPartOfDuel()){
+	    	request.getSession().setAttribute("quiz", quiz);
+	    	attr.addAttribute("id", quizDuelRepository.findByChallengerQuizOrChallengedQuiz(quiz,quiz).getQuizId());
+	    	attr.addAttribute("name", quizDuelRepository.findByChallengerQuizOrChallengedQuiz(quiz,quiz).getLearningGroup().getName());
+	    	return "redirect:/learninggroup/quizduelend";
+	    }
+	    
+	    
+	    
 	    model.addAttribute("questions", quiz.getQuestList());
 	    model.addAttribute("quiz", quiz);
 	    model.addAttribute("correct", correct);

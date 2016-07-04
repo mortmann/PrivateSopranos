@@ -78,6 +78,12 @@ public class SopraUser {
     @OneToMany(mappedBy = "sopraUser")
     private List<UserEvent> userEventList = new ArrayList<>();
     
+    @OneToMany(mappedBy = "challenger")
+    private List<QuizDuel> challengerList = new ArrayList<>();
+    @OneToMany(mappedBy = "challenged")
+    private List<QuizDuel> challengedList = new ArrayList<>();
+    
+    
     
     public List<UserEvent> getUserEventList() {
 		return userEventList;
@@ -282,5 +288,21 @@ public class SopraUser {
 
 	public void setDeleted(boolean deleted) {
 		this.deleted = deleted;
+	}
+
+	public List<QuizDuel> getChallengerList() {
+		return challengerList;
+	}
+
+	public void setChallengerList(List<QuizDuel> challangerList) {
+		this.challengerList = challangerList;
+	}
+
+	public List<QuizDuel> getChallengedList() {
+		return challengedList;
+	}
+
+	public void setChallengedList(List<QuizDuel> challangedList) {
+		this.challengedList = challangedList;
 	}
 }

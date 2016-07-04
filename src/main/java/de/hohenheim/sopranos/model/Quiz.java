@@ -20,7 +20,8 @@ public class Quiz extends DateClass {
     private int points=0;
     private boolean[][] answers;
     private String[] answertext; 
-
+    private boolean isPartOfDuel = false;
+    private boolean done = false;
 	@ManyToMany
     @JoinTable(
             name = "QUIZQUESTIONS",
@@ -28,7 +29,7 @@ public class Quiz extends DateClass {
             inverseJoinColumns = @JoinColumn(name = "QUEST_ID"))
     private List<Question> questList = new ArrayList<>();
     
-    public List<Question> getQuestList() {
+    public List<Question> getQuestList() { 
 		return questList;
 	}
 
@@ -96,6 +97,22 @@ public class Quiz extends DateClass {
 
 	public void setPoints(int points) {
 		this.points = points;
+	}
+
+	public boolean isPartOfDuel() {
+		return isPartOfDuel;
+	}
+
+	public void setPartOfDuel(boolean isPartOfDuel) {
+		this.isPartOfDuel = isPartOfDuel;
+	}
+
+	public boolean isDone() {
+		return done;
+	}
+
+	public void setDone(boolean done) {
+		this.done = done;
 	}
 	
 	
