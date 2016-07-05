@@ -5,6 +5,7 @@ import de.hohenheim.sopranos.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -37,6 +38,8 @@ public class TestSetup implements ApplicationListener<ContextRefreshedEvent> {
 
     @Autowired
     MessageRepository messageRepository;
+    @Autowired
+	QuestionRepository questionRepository;
     /**
      * Handle an application event.
      *
@@ -62,10 +65,16 @@ public class TestSetup implements ApplicationListener<ContextRefreshedEvent> {
         user2.setPassword("hugo");
         sopraUserRepository.save(user2);
 
+        SopraUser user3 = new SopraUser();
+        user3.setEmail("kevin@aol.de");
+        user3.setPassword("alpha");
+        sopraUserRepository.save(user3);
+        
         LearningGroup l = new LearningGroup();
         l.setDescription("blaaa");
         l.setName("BLACK");
         l.setSopraHost(user1);
+        l.getSopraUsers().add(user2);
         learningGroupRepository.save(l);
         LearningGroup s = new LearningGroup();
         s.setDescription("blub");
@@ -73,6 +82,28 @@ public class TestSetup implements ApplicationListener<ContextRefreshedEvent> {
         s.setSopraHost(user1);
         learningGroupRepository.save(s);
 
+      //__________________________________________________________________________
+    	ArrayList<Question> al = new ArrayList<>();
+    	ArrayList<Question> qs = new ArrayList<>();
+        LearningGroup group = learningGroupRepository.findByName("BLACK");
+    	// setup for test so there is always a question
+    	String st = "Was is das richtige?";
+    	Question testmc = new Question();
+    	testmc.setSopraUser(user3);
+    	testmc.setQuestText(st);
+    	String[] astrs =  {"a","b","c","d"};
+    	testmc.setAnswers(astrs);
+    	boolean[] b = {true,false,false,false};
+    	testmc.setSolutions(b);
+    	qs.add(testmc);
+//    	group = (LearningGroup) request.getSession().getAttribute("group");
+    	testmc.setLearningGroup(group);
+    	testmc = questionRepository.save(testmc);
+    	group.getQuestList().add(testmc);
+    	group = learningGroupRepository.save(group);
+//__________________________________________________________________________   
+        
+        
         Message a = new Message();
         a.setTitle("Titel");
         a.setReceiver(user1);

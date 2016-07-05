@@ -4,11 +4,15 @@ package de.hohenheim.sopranos.controller;
 import de.hohenheim.sopranos.model.DateClass;
 import de.hohenheim.sopranos.model.LearningGroupRepository;
 import de.hohenheim.sopranos.model.PostRepository;
+import de.hohenheim.sopranos.model.QuizDuel;
 import de.hohenheim.sopranos.model.SopraUser;
 import de.hohenheim.sopranos.model.SopraUserRepository;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,6 +20,9 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 @Controller
@@ -63,9 +70,20 @@ public class IndexController {
     	
     	Collections.sort(all, 
                 (o1, o2) -> o1.getCreateDate().compareTo(o2.getCreateDate()));
-    	Collections.reverse(all);
+//    	Collections.reverse(all);
     	model.addAttribute("activities", all.toArray()); 
-        return "home";
+        return "home"; 
+    }
+    
+    @RequestMapping(value = "/myquizduels", method = RequestMethod.GET)
+    public String allquizduel(Model model, RedirectAttributes attr) {
+    	User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        SopraUser loginUser = sopraUserRepository.findByEmail(user.getUsername());
+        List<QuizDuel> qd = loginUser.getChallengedList();
+        qd.addAll(loginUser.getChallengerList());
+        
+    	model.addAttribute("duels",qd);
+		return "/myquizduels";
     }
 }
 
