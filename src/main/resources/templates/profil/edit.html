@@ -63,7 +63,8 @@ function PictureUpdate(){
 										<span class="input-group-addon">
 											<i class="material-icons">perm_identity</i>
 										</span>
-                                        <input type="text" placeholder="Name" class="form-control" name="name" id="name" th:value="${user.getName()}"/>
+                                        <input type="text" placeholder="Name" class="form-control" name="name" id="name"
+                                               th:value="${user.getName()}"/>
                                     </div>
                                     <p class="text-divider"></p>
 									<div class="input-group">
@@ -71,7 +72,8 @@ function PictureUpdate(){
 											<i class="material-icons">photo_camera</i>
 										</span>
 										<img src="" alt="" id="Profilbild" style="width:50px;height:50px;"/>
-                                        <input class="btn" type="file" name="linkToPicture" id="linkToPicture" onkeyup="PictureUpdate()" th:value="${user.getLinkToPicture()}"/>
+                                        <input class="btn" type="file" name="linkToPicture" id="linkToPicture" onkeyup="PictureUpdate()"
+                                               th:value="${user.getLinkToPicture()}"/>
 
                                     </div>
 
@@ -79,7 +81,8 @@ function PictureUpdate(){
 										<span class="input-group-addon">
 											<i class="material-icons">description</i>
 										</span>
-                                        <textarea class="form-control" name="courseOfStudys" placeholder="Studienfach" id="courseOfStudys" th:value="${user.getCourseOfStudys()}"></textarea>
+                                        <input type="text" class="form-control" name="courseOfStudys" placeholder="Studienfach" id="courseOfStudys"
+                                               th:value="${user.getCourseOfStudys()}"/>
                                     </div>
 
                                     <div class="input-group">
@@ -108,7 +111,7 @@ function PictureUpdate(){
                                     <p style="text-align:center">*Pflichtfelder</p>
                                 </div>
                                 <div class="footer text-center">
-                                    <button type="submit" class="btn btn-info btn-wd btn-lg">Speichern
+                                    <button type="submit" class="btn btn-raised btn-info btn-wd btn-lg">Speichern
                                     </button>
                                 </div>
                             </form>
