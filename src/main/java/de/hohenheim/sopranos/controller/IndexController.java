@@ -38,6 +38,11 @@ public class IndexController {
     @Autowired
     PostRepository postRepository;
 
+    @RequestMapping("/")
+    public String indexnothing(String username, Model model) {
+
+        return "index";
+    }
     @RequestMapping("/index")
     public String index(String username, Model model) {
 

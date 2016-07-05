@@ -33,7 +33,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     http.authorizeRequests()
         //Zuerst müssen Seiten konfiguriert werden, welche ohne Zugriffsrechte aufgerufen werden dürfen
         //(falls vorhanden)
-        .antMatchers("/login").permitAll().antMatchers("/register").permitAll().antMatchers("/index").permitAll().antMatchers("/h2-console").permitAll()
+        .antMatchers("/login").permitAll().antMatchers("/register").permitAll().antMatchers("/").permitAll().antMatchers("/index").permitAll().antMatchers("/h2-console").permitAll()
         //Jeder bisher nicht erwähnte Aufruf in der Anwendung muss authentifiziert sein. Bisher konfigurierte Ausnahmen
         //werden nicht überschrieben!
         .anyRequest().fullyAuthenticated().and()

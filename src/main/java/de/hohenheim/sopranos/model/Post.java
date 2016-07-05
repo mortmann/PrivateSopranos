@@ -41,9 +41,10 @@ public class Post extends DateClass{
     @OneToMany(mappedBy = "post")
     private List<Comment> commentList = new ArrayList<>();
 
+    public Post(){
+    	setCreateDate();
+    }
 
-
-    public Post() {}
 
     public Integer getId() {
         return id;

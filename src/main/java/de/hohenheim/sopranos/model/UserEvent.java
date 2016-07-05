@@ -16,7 +16,9 @@ public class UserEvent extends DateClass{
 	
 	@ManyToOne
 	private SopraUser sopraUser;
-
+	public UserEvent(){
+    	setCreateDate();
+    }
 	public int getId() {
 		return id;
 	}

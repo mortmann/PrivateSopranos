@@ -25,7 +25,9 @@ public class Message extends DateClass {
 
     @ManyToOne
     SopraUser receiver;
-
+    public Message(){
+    	setCreateDate();
+    }
     public Integer getId() {
         return id;
     }
