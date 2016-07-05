@@ -29,6 +29,10 @@ public class Quiz extends DateClass {
             inverseJoinColumns = @JoinColumn(name = "QUEST_ID"))
     private List<Question> questList = new ArrayList<>();
     
+	public Quiz(){
+		    	setCreateDate();
+	}
+	
     public List<Question> getQuestList() { 
 		return questList;
 	}

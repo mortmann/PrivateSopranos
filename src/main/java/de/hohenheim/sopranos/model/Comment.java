@@ -26,6 +26,9 @@ public class Comment extends DateClass{
     @ManyToOne
     private Post post;
 
+    public Comment(){
+    	setCreateDate();
+    }
 
     public Integer getCommId() {
         return commId;
