@@ -36,7 +36,7 @@ public class MessageController {
 
 
         else {
-
+ 
             model.addAttribute("msg", loginUser.getReceivedMessageList());
             model.addAttribute("mail", mail);
             attr.addAttribute("mail", mail);

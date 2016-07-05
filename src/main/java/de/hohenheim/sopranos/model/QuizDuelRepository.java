@@ -15,7 +15,7 @@ public interface QuizDuelRepository extends JpaRepository<QuizDuel, Integer> {
 //
       public ArrayList<QuizDuel> findALLByChallenged(SopraUser challenged);
 //    
-      public QuizDuel findByChallengerAndLearningGroup(SopraUser challenger,LearningGroup learningGroup);
+      public QuizDuel findByChallengerAndLearningGroupAndDone(SopraUser challenger,LearningGroup learningGroup,boolean done);
       public QuizDuel findByChallengerQuizOrChallengedQuiz(Quiz q,Quiz cq);
 
 }

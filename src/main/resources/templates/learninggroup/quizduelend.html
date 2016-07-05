@@ -39,7 +39,7 @@
 	<h1>Herausforder</h1>
 	<h2 th:if="${isChallenger}">DU</h2>
 	<h5 th:utext="${'Punkteanzahl ' + quizduel.getChallengerQuiz().getPoints() }"></h5>
-	<table>
+	<table th:if="${quizduel.getChallengerQuiz().isDone()}">
 		<tr th:each="question,iterationStatus1: ${quizduel.getChallengerQuiz().getQuestList()}">
 			<td>
 				<label class="content" th:utext="${question.getQuestText()}"></label>

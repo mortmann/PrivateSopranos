@@ -417,8 +417,11 @@ public class LearningGroupController {
 
     	users.removeAll(temp);
     	
+    	ArrayList<QuizDuel> temp2 = quizDuelRepository.findALLByChallenged(loginUser);
+    	temp2.removeIf(x->x.isDone());
+    	
     	model.addAttribute("users",users);
-    	model.addAttribute("challenges",quizDuelRepository.findALLByChallenged(loginUser));
+    	model.addAttribute("challenges",temp2);
     	model.addAttribute("name", name);
     	return "/learninggroup/quizduel";
     }
@@ -480,12 +483,12 @@ public class LearningGroupController {
 			attr.addAttribute("number", 1);
 			return "redirect:/question/answer";
     		case "deny":
-    			QuizDuel qdd = quizDuelRepository.findByChallengerAndLearningGroup(sopraUserRepository.findByEmail(info.split("-")[0]), lg);
+    			QuizDuel qdd = quizDuelRepository.findByChallengerAndLearningGroupAndDone(sopraUserRepository.findByEmail(info.split("-")[0]), lg,false);
     			quizDuelRepository.delete(qdd);
     			attr.addAttribute("deny", "successful");
     			return "redirect:/learninggroup/quizduel";	
     		case "accept":
-    			QuizDuel qda = quizDuelRepository.findByChallengerAndLearningGroup(sopraUserRepository.findByEmail(info.split("-")[0]), lg);
+    			QuizDuel qda = quizDuelRepository.findByChallengerAndLearningGroupAndDone(sopraUserRepository.findByEmail(info.split("-")[0]), lg,false);
     			qda.getChallengedQuiz().setEditDate(); 
     			quizRepository.save(qda.getChallengedQuiz());
     			attr.addAttribute("id", qda.getChallengedQuiz().getQuizId());
@@ -497,11 +500,12 @@ public class LearningGroupController {
     @RequestMapping(value = "/learninggroup/quizduelend{id,name}", method = RequestMethod.GET)
     public String quizduelEnd(@RequestParam("name")
                                          String name, @RequestParam("id") String id,HttpServletRequest request, Model model, RedirectAttributes attr) {
-    	System.out.println("wat de fuck");
     	LearningGroup lg = learningGroupRepository.findByName(name);
     	User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SopraUser loginUser = sopraUserRepository.findByEmail(user.getUsername());
     	QuizDuel qd = quizDuelRepository.getOne(Integer.valueOf(id));    	
+    	qd.isDone();
+    	quizDuelRepository.save(qd);
     	model.addAttribute("isChallenger", qd.IsChallenger(loginUser));
         model.addAttribute("quizduel",qd );
         return "/learninggroup/quizduelend";

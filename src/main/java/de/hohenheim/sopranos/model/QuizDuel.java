@@ -23,6 +23,7 @@ public class QuizDuel extends DateClass {
 	@ManyToOne
 	private LearningGroup learningGroup;
 	
+	private boolean done;
 	
 	public Integer getQuizId() {
 		return quizId;
@@ -64,7 +65,8 @@ public class QuizDuel extends DateClass {
 		return user == challenger;
 	}
 	public boolean isDone(){
-		return challengedQuiz.isDone() && challengerQuiz.isDone();
+		done = challengedQuiz.isDone() && challengerQuiz.isDone();
+		return done;
 	}
 	
 }
