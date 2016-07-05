@@ -201,7 +201,6 @@ public class QuestionContoller {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SopraUser current = sopraUserRepository.findByEmail(user.getUsername());
         if(quiz.getGenerated().getEmail().equals(current.getEmail())==false){
-        	System.out.println(quiz.getGenerated().getEmail() + " " + current.getEmail());
         	return "redirect:/home";
         }
         quiz.setDone(true);
@@ -248,6 +247,11 @@ public class QuestionContoller {
     @RequestMapping(value = "/question/next{id,number}", method = RequestMethod.GET)
     public String quizNextQuestion(@RequestParam("id") String id,@RequestParam("number") String number,Model model, RedirectAttributes attr) {
     	Quiz q =quizRepository.getOne(Integer.parseInt(id));
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        SopraUser current = sopraUserRepository.findByEmail(user.getUsername());
+    	if(q.getGenerated().getEmail().equals(current.getEmail())==false){
+        	return "redirect:/home";
+        }
     	if(Integer.parseInt(number) > q.getQuestList().size() || q.isDone()){
     		return "redirect:/question/end?id="+id;
     	}
@@ -259,6 +263,11 @@ public class QuestionContoller {
     @RequestMapping(value = "/question/answer{id,number}", method = RequestMethod.GET)
     public String answer(@RequestParam("id") String id,@RequestParam("number") String number,Model model, RedirectAttributes attr) {
     	Quiz quiz =quizRepository.getOne(Integer.parseInt(id));
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        SopraUser current = sopraUserRepository.findByEmail(user.getUsername());
+    	if(quiz.getGenerated().getEmail().equals(current.getEmail())==false){
+        	return "redirect:/home";
+        }
     	if( quiz.isDone()){
     		return "redirect:/question/end?id="+id;
     	}
