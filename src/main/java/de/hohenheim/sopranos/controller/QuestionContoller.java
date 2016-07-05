@@ -248,7 +248,7 @@ public class QuestionContoller {
     @RequestMapping(value = "/question/next{id,number}", method = RequestMethod.GET)
     public String quizNextQuestion(@RequestParam("id") String id,@RequestParam("number") String number,Model model, RedirectAttributes attr) {
     	Quiz q =quizRepository.getOne(Integer.parseInt(id));
-    	if(Integer.parseInt(number) > q.getQuestList().size()){
+    	if(Integer.parseInt(number) > q.getQuestList().size() || q.isDone()){
     		return "redirect:/question/end?id="+id;
     	}
         attr.addAttribute("id",id);
@@ -259,6 +259,9 @@ public class QuestionContoller {
     @RequestMapping(value = "/question/answer{id,number}", method = RequestMethod.GET)
     public String answer(@RequestParam("id") String id,@RequestParam("number") String number,Model model, RedirectAttributes attr) {
     	Quiz quiz =quizRepository.getOne(Integer.parseInt(id));
+    	if( quiz.isDone()){
+    		return "redirect:/question/end?id="+id;
+    	}
     	Question q = quiz.getQuestList().get(Integer.parseInt(number)-1);
     	Question mc = q;
     	model.addAttribute("question", mc.getQuestText()); 
