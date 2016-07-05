@@ -5,7 +5,6 @@ import de.hohenheim.sopranos.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -54,6 +53,10 @@ public class TestSetup implements ApplicationListener<ContextRefreshedEvent> {
         Collection<GrantedAuthority> authsHans = new ArrayList<>();
         authsHans.add(new SimpleGrantedAuthority("ROLE_USER"));
         userDetailsManager.createUser(new User("hans@aol.de", passwordEncoder.encode("hugo"), authsHans));
+
+        Collection<GrantedAuthority> authsKevin = new ArrayList<>();
+        authsKevin.add(new SimpleGrantedAuthority("ROLE_USER"));
+        userDetailsManager.createUser(new User("kevin@aol.de", passwordEncoder.encode("alpha"), authsKevin));
 
         SopraUser user1 = new SopraUser();
         user1.setEmail("admin@aol.de");

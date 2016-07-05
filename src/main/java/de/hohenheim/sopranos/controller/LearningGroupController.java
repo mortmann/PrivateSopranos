@@ -11,11 +11,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by MortmannMKII v2 on 08.06.2016.
@@ -97,7 +96,13 @@ public class LearningGroupController {
         SopraUser host = sopraUserRepository.findByEmail(user.getUsername());
     	LearningGroup lg = learningGroupRepository.findByName(info);
     	if(lg.isHost(host) == true){
-    		lg.setSopraHost(lg.getSopraUsers().get(1));
+			if (lg.getSopraUsers().size()>1){
+    			lg.setSopraHost(lg.getSopraUsers().get(1));
+			} else{
+				learningGroupRepository.delete(lg);
+				attr.addAttribute("delete", "successful");
+				return "redirect:/learninggroup/mygroups";
+			}
     	}
     	lg.getSopraUsers().remove(host);
     	learningGroupRepository.save(lg);
