@@ -5,7 +5,6 @@ import de.hohenheim.sopranos.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -40,6 +39,10 @@ public class TestSetup implements ApplicationListener<ContextRefreshedEvent> {
     MessageRepository messageRepository;
     @Autowired
 	QuestionRepository questionRepository;
+
+    @Autowired
+    PostRepository postRepository;
+
     /**
      * Handle an application event.
      *
@@ -76,6 +79,7 @@ public class TestSetup implements ApplicationListener<ContextRefreshedEvent> {
         l.setSopraHost(user1);
         l.getSopraUsers().add(user2);
         learningGroupRepository.save(l);
+
         LearningGroup s = new LearningGroup();
         s.setDescription("blub");
         s.setName("GRAY");
@@ -111,6 +115,20 @@ public class TestSetup implements ApplicationListener<ContextRefreshedEvent> {
         a.setMessage("Dies ist eine TestMsg");
         a.setId(55);
         messageRepository.save(a);
+
+        Post p =new Post();
+        p.setText("BLINDTEXT _____-_");
+        p.setHeading("POOOOOOOOOOOOOST");
+        p.setSopraUser(user1);
+        p.setLearningGroup(l);
+        postRepository.save(p);
+
+        Post p2 =new Post();
+        p2.setText("BLINDTEXT _____-_");
+        p2.setHeading("POOOOOOOOOOOOOST");
+        p2.setSopraUser(user1);
+        p2.setLearningGroup(s);
+        postRepository.save(p2);
     }
 
 
