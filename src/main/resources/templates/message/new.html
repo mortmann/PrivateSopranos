@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Inbox</title>
+    <title>Neue Nachricht</title>
 
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -18,7 +18,8 @@
     <link th:href="@{../css/jumbo.css}" rel="stylesheet" />
     <link th:href="@{../css/backgrounds.css}" rel="stylesheet" />
     <link th:href="@{../css/bootstrap.min.css}" rel="stylesheet" />
-    <link th:href="@{../css/material-kit.css}" rel="stylesheet"/>
+    <!--<link th:href="@{../css/material-kit.css}" rel="stylesheet"/>-->
+    <link th:href="@{../css/message_new.css}" rel="stylesheet"/>
 </head>
 
 <body class="bgr message1">
@@ -27,12 +28,10 @@
 <div class="container">
     <div class="jumbotron neo">
 
-
 <div class="container">
-
-        <div class="panel-heading">
-            <div class="panel-title text-center">
-                <h1 style="text-align:center">Neue Nachricht</h1>
+    <div class="panel-heading">
+        <div class="panel-title text-center">
+            <h1 style="text-align:center">Neue Nachricht</h1>
 
             </div>
         </div>
@@ -42,10 +41,12 @@
             </div>
 
             <div class="form-group">
-                <label for="receivers" class="cols-sm-2 control-label">Empfänger</label>
+                <label for="receivers">Empfänger</label>
                 <div class="cols-sm-10">
                     <div class="input-group">
-                        <!--<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>-->
+                        <span class="input-group-addon">
+											<i class="material-icons">account_box</i>
+										</span>
                         <input type="text" class="form-control" th:value="*{receivers}" name="receivers" id="receivers"
                                placeholder="Mehrere Empfänger durch Kommata trennen"/>
                     </div>
@@ -53,10 +54,12 @@
             </div>
 
             <div class="form-group">
-                <label for="title" class="cols-sm-2 control-label">Betreff</label>
+                <label for="title">&nbsp;&nbsp;Betreff</label>
                 <div class="cols-sm-10">
                     <div class="input-group">
-                        <!--<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>-->
+                        <span class="input-group-addon">
+											<i class="material-icons">email</i>
+										</span>
                         <input type="text" class="form-control" th:value="*{title}" name="title" id="title"
                                placeholder="Geben Sie ein Betreff an"/>
                     </div>
