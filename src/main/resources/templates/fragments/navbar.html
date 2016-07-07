@@ -10,10 +10,8 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
-    <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}" href="/static/css/font-awesome.min.css"/>
-
     <!-- CSS Files -->
-    <link th:href="@{css/bootstrap.min.css}" rel="stylesheet" />
+
     <link  th:href="@{css/material-kit.css}" rel="stylesheet"/>
 </head>
 <body>
@@ -65,6 +63,7 @@
 
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
+                    <li><a th:href="@{/message/inbox}"><i class="material-icons">mail_outline</i></a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Benutzer<b class="caret"></b></a>
                         <ul class="dropdown-menu">

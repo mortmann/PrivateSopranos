@@ -58,6 +58,10 @@ public class TestSetup implements ApplicationListener<ContextRefreshedEvent> {
         authsHans.add(new SimpleGrantedAuthority("ROLE_USER"));
         userDetailsManager.createUser(new User("hans@aol.de", passwordEncoder.encode("hugo"), authsHans));
 
+        Collection<GrantedAuthority> authsKevin = new ArrayList<>();
+        authsKevin.add(new SimpleGrantedAuthority("ROLE_USER"));
+        userDetailsManager.createUser(new User("kevin@aol.de", passwordEncoder.encode("alpha"), authsKevin));
+
         SopraUser user1 = new SopraUser();
         user1.setEmail("admin@aol.de");
         user1.setPassword("admin");

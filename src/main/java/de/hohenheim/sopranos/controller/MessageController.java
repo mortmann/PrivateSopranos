@@ -25,67 +25,51 @@ public class MessageController {
     MessageRepository messageRepository;
 
 
-    @RequestMapping(value = "/message/inbox{mail}", method = RequestMethod.GET)
-    public String inboxGet(@RequestParam("mail") String mail, Model model, RedirectAttributes attr) {
+    @RequestMapping(value = "/message/inbox", method = RequestMethod.GET)
+    public String inboxGet(Model model, RedirectAttributes attr) {
 
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SopraUser loginUser = sopraUserRepository.findByEmail(user.getUsername());
 
-        if (loginUser != sopraUserRepository.findByEmail(mail))
-            return "redirect:/message/inbox?error=niceTryGuy";
 
 
-        else {
- 
             model.addAttribute("msg", loginUser.getReceivedMessageList());
-            model.addAttribute("mail", mail);
-            attr.addAttribute("mail", mail);
 
             return "/message/inbox";
-        }
+
     }
 
-    @RequestMapping(value = "/message/inbox{mail}", method = RequestMethod.POST)
-    public String inboxPost(@RequestParam("mail") String mail, Model model, RedirectAttributes attr) {
+    @RequestMapping(value = "/message/inbox", method = RequestMethod.POST)
+    public String inboxPost( Model model, RedirectAttributes attr) {
 
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SopraUser loginUser = sopraUserRepository.findByEmail(user.getUsername());
         model.addAttribute("msg", loginUser.getReceivedMessageList());
-        model.addAttribute("mail", mail);
-        attr.addAttribute("mail", mail);
 
         return "redirect:/message/inbox";
     }
 
-    @RequestMapping(value = "/message/sent{mail}", method = RequestMethod.GET)
-    public String sentGet(@RequestParam("mail") String mail, Model model, RedirectAttributes attr) {
+    @RequestMapping(value = "/message/sent", method = RequestMethod.GET)
+    public String sentGet( Model model, RedirectAttributes attr) {
 
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SopraUser loginUser = sopraUserRepository.findByEmail(user.getUsername());
 
-        if (loginUser != sopraUserRepository.findByEmail(mail))
-            return "redirect:/message/sent?error=niceTryGuy";
 
-
-        else {
 
             model.addAttribute("msg", loginUser.getSendMessageList());
-            model.addAttribute("mail", mail);
-            attr.addAttribute("mail", mail);
 
             return "/message/sent";
-        }
+
     }
 
-    @RequestMapping(value = "/message/sent{mail}", method = RequestMethod.POST)
-    public String sentPost(@RequestParam("mail") String mail, Model model, RedirectAttributes attr) {
+    @RequestMapping(value = "/message/sent", method = RequestMethod.POST)
+    public String sentPost( Model model, RedirectAttributes attr) {
 
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SopraUser loginUser = sopraUserRepository.findByEmail(user.getUsername());
 
         model.addAttribute("msg", loginUser.getSendMessageList());
-        model.addAttribute("mail", mail);
-        attr.addAttribute("mail", mail);
 
         return "redirect:/message/sent";
     }
@@ -118,7 +102,7 @@ public class MessageController {
         }
 
 
-        return "redirect:/message/sent?mail=" + loginUser.getEmail();
+        return "redirect:/message/sent";
     }
 
     @RequestMapping(value = "/message/delete{id}", method = RequestMethod.GET)
@@ -146,7 +130,7 @@ public class MessageController {
 
         messageRepository.delete(msg);
 
-            return "redirect:/message/inbox?mail=" + loginUser.getEmail();
+            return "redirect:/message/inbox";
     }
 
     @RequestMapping(value = "/message/reply{id}", method = RequestMethod.GET)

@@ -33,7 +33,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     http.authorizeRequests()
         //Zuerst müssen Seiten konfiguriert werden, welche ohne Zugriffsrechte aufgerufen werden dürfen
         //(falls vorhanden)
-        .antMatchers("/login").permitAll().antMatchers("/register").permitAll().antMatchers("/").permitAll().antMatchers("/index").permitAll().antMatchers("/h2-console").permitAll()
+        .antMatchers("/", "/register", "/index", "/resources/**", "/static/**", "/fonts/**").permitAll()
         //Jeder bisher nicht erwähnte Aufruf in der Anwendung muss authentifiziert sein. Bisher konfigurierte Ausnahmen
         //werden nicht überschrieben!
         .anyRequest().fullyAuthenticated().and()
@@ -42,7 +42,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         //jeder darf sich ausloggen
         .logout().permitAll().and()
         //Sicherheit für /console ausgeschaltet
-        .csrf().ignoringAntMatchers("/console/**").disable();
+        .csrf().disable();
     //header security ausgeschalten, um h2 console zu erlauben
            http.headers().frameOptions().disable();
   }

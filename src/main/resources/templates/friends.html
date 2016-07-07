@@ -39,9 +39,9 @@
 </form>
 <table>
 <tr th:each="c,iterationStatus  : ${search}">
-		<td>  class="content" th:utext="${c.getEmail()}"</td>
-		<td>  class="content" th:utext="${c.getUsername()}"</td>
-		<td>  class="content" th:utext="${c.getName()}"</td>
+		<td  class="content" th:utext="${c.getEmail()}"/>
+		<td  class="content" th:utext="${c.getUsername()}"/>
+		<td  class="content" th:utext="${c.getName()}"/>
 		<td >
             <form name="form-login" th:action="@{/friends}" method="post">
                 <button class="btn btn-default btn-xs" type="submit" th:name="info" th:value="${c.getEmail() + '-add'}" aria-hidden="true" title="Senden">

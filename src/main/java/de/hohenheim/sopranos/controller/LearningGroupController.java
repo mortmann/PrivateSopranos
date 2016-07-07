@@ -96,7 +96,13 @@ public class LearningGroupController {
         SopraUser host = sopraUserRepository.findByEmail(user.getUsername());
     	LearningGroup lg = learningGroupRepository.findByName(info);
     	if(lg.isHost(host) == true){
-    		lg.setSopraHost(lg.getSopraUsers().get(1));
+			if (lg.getSopraUsers().size()>1){
+    			lg.setSopraHost(lg.getSopraUsers().get(1));
+			} else{
+				learningGroupRepository.delete(lg);
+				attr.addAttribute("delete", "successful");
+				return "redirect:/learninggroup/mygroups";
+			}
     	}
     	lg.getSopraUsers().remove(host);
     	learningGroupRepository.save(lg);

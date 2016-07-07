@@ -116,7 +116,7 @@
         <td class="content" th:utext="${user.getPostCount()}"/>
         <td th:if="${isHost and user!=host}">
             <form name="form-login" th:action="@{/learninggroup/users?name=} + ${name}" method="post">
-                <button class="btn btn-success btn-xs" type="submit" th:name="info" th:value="${user.getEmail() + '-unban'}" aria-hidden="true" title="Wieder hinzufügen" >
+                <button class="btn btn-success btn-xs" type="submit" th:name="info" th:value="${user.getEmail() + '-unban'}" aria-hidden="true" title="Entbannen" >
                     <i class="material-icons">add</i>
                 </button>
             </form>
