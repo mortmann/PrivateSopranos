@@ -42,7 +42,7 @@
 				<label class="content" th:utext="${question.getQuestText()}"></label>
 				<table>
 					<tr th:each="answer,iterationStatus2  : ${question.getAnswers()}">
-						<td th:if="${question.getAnswers().length} > 1">	
+						<td th:if="${question.getAnswers().length} > 1">
 							<label class="checkbox-inline" th:utext="${answer}">Option 1</label>
 							<label>Deine Antwort</label>
 							<input th:if="${correct[__${iterationStatus1.index}__]}" id="checkbox" class="styled"  type="checkbox" th:checked="${quiz.getAnswersBoolean()[__${iterationStatus1.index}__][__${iterationStatus2.index}__]}" th:disabled="true"></input>
@@ -51,15 +51,16 @@
 							<input th:if="${correct[__${iterationStatus1.index}__]}"  id="checkbox" class="styled" type="checkbox" th:checked="${question.getSolutions()[__${iterationStatus2.index}__]} " th:disabled="true"></input>
 							<input th:if="${correct[__${iterationStatus1.index}__]==false}" id="checkboxError" class="styled" type="checkbox"  th:checked="${question.getSolutions()[__${iterationStatus2.index}__]} " th:disabled="true"></input>
 						</td>
-						<td th:if="${question.getAnswers().length} == 1">	
-							<textarea class="checkbox-inline" th:id="${'answertext'+__${iterationStatus2.index}__} " th:value="${question.getAnswertext()[__${iterationStatus2.index}__]})" Placeholder="Ihre Lösung:" th:disabled="true"></textarea>
+						<td th:if="${question.getAnswers().length} == 1">
+							<textarea class="checkbox-inline" th:id="${'answertext'+__${iterationStatus2.index}__} " th:value="${question.getAnswertext()[__${iterationStatus2.index}__]}" Placeholder="Ihre Lösung:" th:disabled="true"></textarea>
+							<!-- Irgendwie muss man die Answertexte im Controller setten, damit diese hier abgerufen werden können-->
 						</td>
 					</tr>
 				</table>
 			</td>
 		</tr>
-	</table>	
-	
+	</table>
+
 	<div class="section">
 		<div class="container">
 			<div class="row">
