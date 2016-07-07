@@ -26,7 +26,7 @@
     var confirmPassword = $("#confirm").val();
 
     if (password != confirmPassword)
-        $("#divCheckPasswordMatch").html("Passwords do not match!");
+        $("#divCheckPasswordMatch").html("Passwörter stimmen nicht überein!");
     else
         $("#divCheckPasswordMatch").html("");
 }
@@ -53,7 +53,6 @@ function PictureUpdate(){
                                 </div>
                                 <p class="text-divider"></p>
 
-                                <div class="registrationFormAlert" id="divCheckPasswordMatch"> </div>
                                 <div th:if="${param.error}" class="alert alert-error">
                                     Bitte Pflichtfelder ausfüllen (ausgefüllt lassen)!
                                 </div>
@@ -72,8 +71,8 @@ function PictureUpdate(){
 											<i class="material-icons">photo_camera</i>
 										</span>
 										<img src="" alt="" id="Profilbild" style="width:50px;height:50px;"/>
-                                        <input class="btn" type="file" name="linkToPicture" id="linkToPicture" onkeyup="PictureUpdate()"
-                                               th:value="${user.getLinkToPicture()}"/>
+                                        <input class="btn" type="text" name="linkToPicture" id="linkToPicture" onkeyup="PictureUpdate()"
+                                               th:value="${user.getLinkToPicture()}" placeholder="Link zum Bild"/>
 
                                     </div>
 
@@ -98,7 +97,7 @@ function PictureUpdate(){
 											<i class="material-icons">lock_outline</i>
 										</span>
                                         <input type="password" class="form-control" name="password"
-                                               id="password" placeholder="Passwort*" onkeyup="checkPasswordMatch();"/>
+                                               id="password" placeholder="Passwort ändern" onkeyup="checkPasswordMatch();"/>
                                     </div>
 
                                     <div class="input-group">
@@ -106,11 +105,11 @@ function PictureUpdate(){
 											<i class="material-icons">lock</i>
 										</span>
                                         <input type="password" class="form-control" name="confirm"
-                                               id="confirm" placeholder="Passwort bestätigen*" onkeyup="checkPasswordMatch();"/>
+                                               id="confirm" placeholder="Passwort bestätigen" onkeyup="checkPasswordMatch();"/>
                                     </div>
-                                    <p style="text-align:center">*Pflichtfelder</p>
+                                    <div class="registrationFormAlert" style="text-align:center" id="divCheckPasswordMatch"></div>
                                 </div>
-                                <div class="footer text-center">
+                                <div class="footer text-center"><br />
                                     <button type="submit" class="btn btn-raised btn-info btn-wd btn-lg">Speichern
                                     </button>
                                 </div>

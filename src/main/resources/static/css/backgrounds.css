@@ -9,6 +9,10 @@
     background-image: url("../img/network1.jpg");
 }
 
+.bgr.message1 {
+    background-image: url("../img/message1.jpg");
+}
+
 .bgr.city {
     background-image: url("../img/city.jpg")
 }
