@@ -47,10 +47,14 @@
 <label class="content" th:utext="${question.getQuestText()}"></label>
 <table>
 	<tr th:each="answer,iterationStatus  : ${question.getAnswers()}">
-		<td>	
-			<label class="checkbox-inline" th:utext="${answer}">Option 1</label>
+		<td th:if="${question.isOpenQuestion()}">	
+			<label >Angegebene Musterlösung: </label>
+			<label th:utext="${answer}"></label>
 		</td>
-		<td>	
+		<td>
+			<label th:utext="${__${iterationStatus.index +1}__ + '.' }"></label>
+		</td>
+		<td th:if="${question.isOpenQuestion()==false}">	
 			<input type="checkbox" th:checked="${question.solutions[__${iterationStatus.index}__]}" th:disabled="true" ></input>
 			<label class="checkbox-inline" th:utext="${answer}">Option 1</label>
 		</td>

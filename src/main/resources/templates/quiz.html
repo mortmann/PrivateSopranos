@@ -35,9 +35,9 @@
 		<label id="questioncount">1-50 Fragen</label>
 	<h1>Typ der Fragen</h1>
 		<label>Offene</label>
-		<input type="checkbox" id="open" th:name="open" th:checked="true" onclick="OnCheckbox()"/>
+		<input type="checkbox" id="open" th:name="open" th:checked="true" onclick="OnCheckbox()" />
 		<label>Multiple Choice</label>
-		<input type="checkbox" id="closed" th:name="closed" th:checked="true" onclick="OnCheckbox()"/>
+		<input type="checkbox" id="closed" th:name="closed" th:checked="true" onclick="OnCheckbox()" />
 	<h1>Gruppen</h1>
 	<div id="d">
 	</div>
@@ -108,18 +108,14 @@
 		return String(n) === str&&n>0&&n<51;
 	}
 	function OnCheckbox(){
-		if(document.getElementById("open").checked==false){
-			document.getElementById("closed").checked=true;
-			document.getElementById("closed").disabled=true;
-		} else {
-			document.getElementById("closed").disabled=false;
-		}
-		if(document.getElementById("closed").checked==false){
+		if(document.getElementById("closed").checked==false ){
 			document.getElementById("open").checked=true;
-			document.getElementById("open").disabled=true;
-		} else {
-			document.getElementById("open").disabled=false;
-		}
+			return;
+		} 
+		if(document.getElementById("open").checked==false ){
+			document.getElementById("closed").checked=true;
+			return;
+		} 
 	}
 
 	//]]>

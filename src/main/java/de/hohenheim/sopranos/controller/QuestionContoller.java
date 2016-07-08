@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 @Transactional
@@ -66,6 +67,8 @@ public class QuestionContoller {
         group = learningGroupRepository.getOne(group.getLgId());
         attr.addFlashAttribute("question", question);
         attr.addFlashAttribute("Answer", answers);
+        attr.addFlashAttribute("amountcount", answers.getStrings().length);
+        
         attr.addAttribute("name", group.getName());
         if (st.length > 1) {
             int amount = Integer.parseInt(st[1]);
@@ -81,12 +84,16 @@ public class QuestionContoller {
                     return "redirect:/question/create";
             }
         }
+        if(question == null || question.trim().length()<9){
+        	attr.addAttribute("error", "noquestion");
+            return "redirect:/question/create";
+        }
         if (answers.getStrings().length == 0) {
             attr.addAttribute("error", "noanswer");
             return "redirect:/question/create";
         }
         for (String string : answers.getStrings()) {
-            if (string.isEmpty()) {
+            if (string.trim().isEmpty()) {
                 attr.addAttribute("error", "noanswer");
                 return "redirect:/question/create";
             }
@@ -126,8 +133,8 @@ public class QuestionContoller {
         group.getNotReleasedQuestionList().add(qc);
         learningGroupRepository.save(group);
 
-        System.out.println("group " + group.getQuestList().size());
-        return "redirect:/quiz";
+    	attr.addFlashAttribute("quest",qc);
+        return "redirect:/question/comment";
     }
 
     @RequestMapping(value = "/quiz", method = RequestMethod.GET)
@@ -154,9 +161,7 @@ public class QuestionContoller {
         SopraUser current = sopraUserRepository.findByEmail(user.getUsername());
         LearningGroup group = null;
 
-        System.out.println(info);
         String[] grs = info.split(",");
-        System.out.println(grs.length);
         for (String name : grs) {
             group = learningGroupRepository.findByName("name");
             if (group != null && learningGroupRepository.findByName(name) != null) {
@@ -168,12 +173,15 @@ public class QuestionContoller {
         if (qs.isEmpty()) {
             qs.addAll(questionRepository.findAll());
         }
-        if (closed == null) {
-            qs.removeIf(x -> x.getAnswers().length > 1);
-        }
+        System.out.println(qs.size());
         if (open == null) {
-            qs.removeIf(x -> x.getAnswers().length == 1);
+            qs.removeIf(x -> x.isOpenQuestion()==true);
         }
+        System.out.println(closed + " after closed " + qs.size());
+        if (closed == null) {
+            qs.removeIf(x -> x.isOpenQuestion()==false);
+        }
+        System.out.println(open + " after open "+qs.size());
         qs.removeIf(x -> x.getSopraUser().getEmail().equals(current.getEmail()));
         if (qs.isEmpty() || qs.size() < questionCount) {
             attr.addAttribute("error", "questioncount");
@@ -207,41 +215,45 @@ public class QuestionContoller {
             return "redirect:/home";
         }
         quiz.setDone(true);
+        ArrayList<Message> msgList = new ArrayList<>();
+        ArrayList<Integer> nrList = new ArrayList<>();
+
         boolean[] correct = new boolean[quiz.getQuestList().size()];
+        int points = 0;
         for (int i = 0; i < quiz.getQuestList().size(); i++) {
             Question q = quiz.getQuestList().get(i);
             boolean[] answer = quiz.getAnswersBoolean()[i];
-            if (answer.length > 1) {
+            if (q.isOpenQuestion()==false) {
+            	System.out.println("mc");
                 correct[i] = q.questioncorrected(answer);
+                if (correct[i] ) {
+                    points++;
+                    current.increaseRankpoints();
+                } else {
+                    points--;
+                    current.decreaseRankpoints();
+                }
             } else {
                 //what todo for openquestions?
-
                 //Als Nachricht an den Ersteller
-//                Message m = new Message();
-//                m.setCreateDate();
-//                m.setSender(current);
-//                m.setReceiver(q.getSopraUser());
-//                m.setTitle("Quizantwort auf Ihre Frage von " + current.getEmail());
-//                m.setMessage("Frage: " + q.getQuestText() + '\n' + "Antwort: " + q.getAnswers()[i] + '\n' + "Lösung: ");
-//                messageRepository.save(m);
-
-
-                System.out.println(quiz.getAnswertext()[i]);
+                Message m = new Message();
+                m.setCreateDate();
+//                m.setSender(current);// shouldnt this be anonymous? create a dummy User? 
+                m.setSender(sopraUserRepository.findByEmail("system@synapse.de"));
+                m.setReceiver(q.getSopraUser());
+                m.setTitle("Quizantwort auf einer Ihrer Fragen");
+                nrList.add(i);
+                msgList.add(m);
             }
         }
-        int points = 0;
-        for (boolean b : correct) {
-
-            if (b) {
-                points++;
-                current.increaseRankpoints();
-            } else {
-                points--;
-                current.decreaseRankpoints();
-            }
-        }
+        
         quiz.setPoints(points);
-        quizRepository.save(quiz);
+        quiz = quizRepository.save(quiz);
+        for (int i = 0; i < msgList.size(); i++) {
+        	Message m=msgList.get(i);
+            m.setMessage("Bitte bewerten sie die folgende Antwort objektiv. \n <a href='/question/correction?quizid="+quiz.getQuizId()+"&questionNR="+nrList.get(i)+"'>Bewerten!</a>");
+            messageRepository.save(m);
+		}
         if (quiz.isPartOfDuel()) {
             request.getSession().setAttribute("quiz", quiz);
             attr.addAttribute("id", quizDuelRepository.findByChallengerQuizOrChallengedQuiz(quiz, quiz).getQuizId());
@@ -301,11 +313,7 @@ public class QuestionContoller {
     @RequestMapping(value = "/question/answer{id,number}", method = RequestMethod.POST)
     public String answerPOST(@RequestParam("id") String id, @RequestParam("number") String number, Answer answer, Model model, String direction, RedirectAttributes attr) {
         Quiz quiz = quizRepository.getOne(Integer.parseInt(id));
-
-        //Eventuell hier Unterscheidung ob offene oder mc frage
         quiz.addAnswer(Integer.parseInt(number), answer);
-
-
         if (direction.contains("next")) {
             number = Integer.toString(Integer.parseInt(number) + 1);
         } else if (direction.contains("prev")) {
@@ -372,6 +380,31 @@ public class QuestionContoller {
         LearningGroup lg = (LearningGroup) request.getSession().getAttribute("group");
         return "redirect:/learninggroup/home?name=" + lg.getName();
     }
-
-
+    @RequestMapping(value = "/question/correction", method = RequestMethod.GET)
+    public String correction(@RequestParam("quizid") String quizID,@RequestParam("questionNR") String questionNumber, Model model, RedirectAttributes attr) {
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	    SopraUser current = sopraUserRepository.findByEmail(user.getUsername());
+	    
+    	Quiz q = quizRepository.getOne(Integer.valueOf(quizID));
+    	Question quest = q.getQuestList().get(Integer.valueOf(questionNumber));
+    	if(quest.getSopraUser().getEmail().equals(current.getEmail())==false){
+    		return "redirect:/home";
+    	}
+    	if(q.getAnswercorrected()[Integer.valueOf(questionNumber)]){
+    		return "redirect:/message/inbox";
+    	}
+    	model.addAttribute("quizid", quizID);
+    	model.addAttribute("questionNR", questionNumber);
+    	model.addAttribute("Question", quest);
+    	model.addAttribute("Answer", q.getAnswertext()[Integer.valueOf(questionNumber)]);
+    	return "/question/correction";
+    }
+    @RequestMapping(value = "/question/correction", method = RequestMethod.POST)
+    public String correctionPOST(@RequestParam("quizid") String quizID,@RequestParam("questionNR") String questionNumber,String info, Model model, RedirectAttributes attr) {
+    	Quiz q = quizRepository.getOne(Integer.valueOf(quizID));
+    	q.setSolution(Integer.valueOf(questionNumber), Boolean.parseBoolean(info));
+    	quizRepository.save(q);
+    	attr.addAttribute("correction", "successful");
+    	return "redirect:/message/inbox";
+    }
 }

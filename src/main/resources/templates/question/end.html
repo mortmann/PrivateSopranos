@@ -52,8 +52,9 @@
 							<input th:if="${correct[__${iterationStatus1.index}__]==false}" id="checkboxError" class="styled" type="checkbox"  th:checked="${question.getSolutions()[__${iterationStatus2.index}__]} " th:disabled="true"></input>
 						</td>
 						<td th:if="${question.getAnswers().length} == 1">
-							<textarea class="checkbox-inline" th:id="${'answertext'+__${iterationStatus2.index}__} " th:value="${question.getAnswertext()[__${iterationStatus2.index}__]}" Placeholder="Ihre Lösung:" th:disabled="true"></textarea>
-							<!-- Irgendwie muss man die Answertexte im Controller setten, damit diese hier abgerufen werden können-->
+							<textarea th:utext="${question.getAnswers()[__${iterationStatus2.index}__]}" Placeholder="Ihre Lösung:" th:disabled="true"></textarea>
+							<textarea th:utext="${quiz.getAnswertext()[__${iterationStatus2.index}__]}" Placeholder="Ihre Lösung:" th:disabled="true"></textarea>
+							
 						</td>
 					</tr>
 				</table>
@@ -66,7 +67,6 @@
 			<div class="row">
 				<div class="col-md-12">
 					<ul class="pager">
-							<li><button th:name="direction" type="submit" th:value="'prev'">← Prev</button></li>
 							<li><button th:name="direction" type="submit" th:value="'next'">Next →</button></li>
 					</ul>
 					<div class="progress">

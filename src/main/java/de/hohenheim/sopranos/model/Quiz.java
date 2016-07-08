@@ -20,7 +20,10 @@ public class Quiz extends DateClass {
     private int points=0;
     private boolean[][] answers;
     private String[] answertext; 
+    private boolean[] answercorrected; 
+    
     private boolean isPartOfDuel = false;
+
     private boolean done = false;
 	@ManyToMany
     @JoinTable(
@@ -80,10 +83,13 @@ public class Quiz extends DateClass {
 		if(answers==null){
 			answers=new boolean[questList.size()][];
 		}
-		if(answer.getBooleans().length>1){
+		if(answer.getStrings().length>1){
 			answers[number-1]=answer.getBooleans();
 		} else {
-			answertext[number-1] = answer.getAnswertext0();
+			answers=new boolean[1][1];
+
+			System.out.println("add answertext " + answer.getAnswertext0());
+			setAnswertext(number-1,answer.getAnswertext0());
 		}
 	}
 
@@ -91,10 +97,19 @@ public class Quiz extends DateClass {
 		return answertext;
 	}
 
-	public void setAnswertext(String[] answertext) {
-		this.answertext = answertext;
+	public void setAnswertext(int number,String answer) {
+		if(answercorrected==null){
+			answercorrected=new boolean[questList.size()];
+		}
+		if(answertext==null){
+			this.answertext = new String[questList.size()];
+			for (int i = 0; i < answers.length; i++) {
+				answertext[i] = new String();
+			}
+		}
+		this.answertext[number] = answer;
 	}
-
+	
 	public int getPoints() {
 		return points;
 	}
@@ -117,6 +132,33 @@ public class Quiz extends DateClass {
 
 	public void setDone(boolean done) {
 		this.done = done;
+	}
+
+	public void setSolution(int number, boolean answer) {
+		System.out.println(points + "p b" + number + " " + answer);
+		if(answer==true){
+			points++;
+		} else {
+			points--;
+		}
+		if(answercorrected==null){
+			answercorrected = new boolean[questList.size()];
+			answercorrected[number] = true;
+		}
+		System.out.println(points + "p");
+		answers[number][0] = answer;
+	}
+
+	public boolean[] getAnswercorrected() {
+		if(answercorrected==null){
+			answercorrected=new boolean[questList.size()];
+		}
+		return answercorrected;
+	}
+
+	public void setAnswercorrected(boolean[] answercorrected) {
+		
+		this.answercorrected = answercorrected;
 	}
 	
 	

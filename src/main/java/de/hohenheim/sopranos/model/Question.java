@@ -42,6 +42,10 @@ public class Question extends DateClass {
     @ManyToMany(mappedBy = "questList")
     private List<Quiz> quizList = new ArrayList<>();
 
+	private boolean openQuestion;
+	public Question(){
+		setCreateDate();
+	}
 
     public Integer getQuestId() {
         return questId;
@@ -111,6 +115,9 @@ public class Question extends DateClass {
 		return answers;
 	}
 	public void setAnswers(String[] answers) {
+		if(answers.length==1){
+			openQuestion=true;
+		}
 		this.answers = answers;
 	}
 	public boolean[] getSolutions() {
@@ -129,7 +136,15 @@ public class Question extends DateClass {
 
 	public List<Comment> getCommentList() {return commentList;}
 
-    public void setCommentList(List<Comment> commentList) {this.commentList = commentList;}
+    public boolean isOpenQuestion() {
+		return openQuestion;
+	}
+
+	public void setOpenQuestion(boolean openQuestion) {
+		this.openQuestion = openQuestion;
+	}
+
+	public void setCommentList(List<Comment> commentList) {this.commentList = commentList;}
     
     public boolean questioncorrected(boolean[] b){
     	for (int s = 0; s < getSolutions().length; s++) {

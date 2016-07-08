@@ -76,6 +76,15 @@ public class TestSetup implements ApplicationListener<ContextRefreshedEvent> {
         user3.setEmail("kevin@aol.de");
         user3.setPassword("alpha");
         sopraUserRepository.save(user3);
+
+        // this user is for systemmessages only
+        // DO NOT GIVE THIS USER AN LOGIN 
+        // BECAUSE IT IS NOT TO BE USED 
+        // BY ANYONE!
+        SopraUser user4 = new SopraUser();
+        user4.setEmail("system@synapse.de");
+        user4.setPassword("nopasswordneeded");
+        sopraUserRepository.save(user4);
         
         LearningGroup l = new LearningGroup();
         l.setDescription("blaaa");
@@ -110,7 +119,28 @@ public class TestSetup implements ApplicationListener<ContextRefreshedEvent> {
     	group.getQuestList().add(testmc);
     	group = learningGroupRepository.save(group);
 //__________________________________________________________________________   
-        
+        //__________________________________________________________________________
+      	al = new ArrayList<>();
+      	qs = new ArrayList<>();
+         
+      	// setup for test so there is always a question
+      	st = "Gebe das richtige an!";
+      	Question testmc2 = new Question();
+      	testmc2.setSopraUser(user3);
+      	testmc2.setQuestText(st);
+      	astrs = new String[1];
+      	astrs[0] =  "Das Richtige";
+      	testmc2.setAnswers(astrs);
+      	b = new boolean[1];
+      	b[0] = true;
+      	testmc2.setSolutions(b);
+      	qs.add(testmc2);
+//      	group = (LearningGroup) request.getSession().getAttribute("group");
+      	testmc2.setLearningGroup(group);
+      	testmc2 = questionRepository.save(testmc2);
+      	group.getQuestList().add(testmc2);
+      	group = learningGroupRepository.save(group);
+  //__________________________________________________________________________           
         
         Message a = new Message();
         a.setTitle("Titel");
