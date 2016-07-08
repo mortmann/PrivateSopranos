@@ -44,9 +44,13 @@
 		<td  class="content" th:utext="${c.getName()}"/>
 		<td >
             <form name="form-login" th:action="@{/friends}" method="post">
-                <button class="btn btn-default btn-xs" type="submit" th:name="info" th:value="${c.getEmail() + '-add'}" aria-hidden="true" title="Senden">
+                <button class="btn btn-default btn-xs" type="submit" th:name="info" th:value="${c.getEmail() + '-add'}"
+						aria-hidden="true" title="Senden">
                     <i class="material-icons">add</i>
                 </button>
+				<div th:if="${param.error}" class="alert alert-error">
+					<span style="color:#ff1d09">Freundesanfrage bereits versendet</span>
+				</div>
             </form>
         </td>
 </tr>
@@ -57,21 +61,24 @@
 <tr th:each="c,iterationStatus  : ${current.getFriendRequestsList()}">
 		<td  class="content" th:utext="${c.getEmail()}"/> 
 		<td  class="content" th:utext="${c.getUsername()}"/> 
-		<td  class="content" th:utext="${c.getName()}"/> 
+		<td  class="content" th:utext="${c.getName()}"/>
+		<td >
+			<form name="form-login" th:action="@{/friends}" method="post">
+				<button class="btn btn-default btn-xs" type="submit" th:name="info" th:value="${c.getEmail() + '-confirm'}"
+					aria-hidden="true" title="Hinzufügen">
+				<i class="material-icons">add</i>
+				</button>
+			</form>
+		</td>
 		<td >
             <form name="form-login" th:action="@{/friends}" method="post">
-                <button class="btn btn-default btn-xs" type="submit" th:name="info" th:value="${c.getEmail() + '-deny'}" aria-hidden="true" title="Lösche">
+                <button class="btn btn-default btn-xs" type="submit" th:name="info" th:value="${c.getEmail() + '-deny'}"
+						aria-hidden="true" title="Löschen">
                     <i class="material-icons">delete</i>
                 </button>
             </form>
         </td>
-        <td >
-            <form name="form-login" th:action="@{/friends}" method="post">
-                <button class="btn btn-default btn-xs" type="submit" th:name="info" th:value="${c.getEmail() + '-confirm'}" aria-hidden="true" title="Hinzufügen">
-                    <i class="material-icons">add</i>
-                </button>
-            </form>
-        </td>
+
 </tr>
 </table>
 <h5>Freunde:</h5>
@@ -82,7 +89,8 @@
 		<td  class="content" th:utext="${c.getName()}"/> 
 		<td >
             <form name="form-login" th:action="@{/friends}" method="post">
-                <button class="btn btn-default btn-xs" type="submit" th:name="info" th:value="${c.getEmail() + '-remove'}" aria-hidden="true" title="Entferne">
+                <button class="btn btn-default btn-xs" type="submit" th:name="info" th:value="${c.getEmail() + '-remove'}"
+						aria-hidden="true" title="Entfernen">
                     <i class="material-icons">delete</i>
                 </button>
             </form>
