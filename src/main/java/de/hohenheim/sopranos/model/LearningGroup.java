@@ -30,9 +30,9 @@ public class LearningGroup {
     @OneToOne
     private SopraUser sopraHost;
 
-    @OneToMany(mappedBy = "learningGroup")
+    @OneToMany(mappedBy = "released")
     private  List<Question> questList = new ArrayList<>();
-    @OneToMany(mappedBy = "learningGroup")
+    @OneToMany(mappedBy = "notReleased")
     private  List<Question> notReleasedQuestionList = new ArrayList<>();
 
     @OneToMany(mappedBy = "learningGroup")
