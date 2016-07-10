@@ -444,7 +444,7 @@ public class LearningGroupController {
 				qs.addAll(lg.getQuestList());
 				qs.removeIf(x->x.getSopraUser().getEmail().equals(loginUser.getEmail()));
 				qs.removeIf(x->x.getSopraUser().getEmail().equals(other.getEmail()));
-				qs.removeIf(x->x.isOpenQuestion()==false);
+				qs.removeIf(x->x.isOpenQuestion()==true);
 				if(qs.isEmpty() || qs.size()<questionCount){
 					attr.addAttribute("error", "questioncount");
 					attr.addAttribute("name", "name");
