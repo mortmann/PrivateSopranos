@@ -24,7 +24,7 @@ public class SopraUser {
     
     private String courseOfStudys;
 
-    private String linkToPicture;
+    private String linkToPicture = "http://i.imgur.com/ppZutz0.png";
     
     private Integer rankpoints = 10;
 

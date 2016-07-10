@@ -1,4 +1,7 @@
 package de.hohenheim.sopranos.controller;
+
+import de.hohenheim.sopranos.model.DateClass;
+import org.omg.CORBA.Request;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,42 +10,73 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import de.hohenheim.sopranos.model.SopraUser;
 import de.hohenheim.sopranos.model.SopraUserRepository;
+
+import java.util.ArrayList;
+import java.util.Collections;
+
 @Controller
 public class ProfilController {
-	
-	@Autowired
+
+    @Autowired
     SopraUserRepository sopraUserRepository;
+
     @RequestMapping(value = "/profil/edit", method = RequestMethod.GET)
     public String editUserGet(Model model, RedirectAttributes attr) {
-    	User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SopraUser loginUser = sopraUserRepository.findByEmail(user.getUsername());
         model.addAttribute("user", loginUser);
         return "/profil/edit";
     }
-    
+
     @RequestMapping(value = "/profil/edit", method = RequestMethod.POST)
-    public String editUserPost(Model model,SopraUser su, RedirectAttributes attr) {
-    	User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public String editUserPost(Model model, SopraUser su, RedirectAttributes attr) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SopraUser loginUser = sopraUserRepository.findByEmail(user.getUsername());
         loginUser.setUsername(su.getUsername());
         loginUser.setPassword(su.getPassword());
+        loginUser.setLinkToPicture(su.getLinkToPicture());
         loginUser.setName(su.getName());
+        loginUser.setCourseOfStudys(su.getCourseOfStudys());
         sopraUserRepository.save(loginUser);
         model.addAttribute("user", loginUser);
         attr.addAttribute("edit", "successful");
         return "/profil/edit";
     }
+
     @RequestMapping(value = "/remove", method = RequestMethod.POST)
     public String removeuser(RedirectAttributes attr) {
-    	User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SopraUser loginUser = sopraUserRepository.findByEmail(user.getUsername());
         loginUser.setDeleted(true);
         sopraUserRepository.save(loginUser);
         return "redirect:/logout";
     }
+
+    @RequestMapping(value = "/profil/user{e}", method = RequestMethod.GET)
+    public String profileGET(@RequestParam("e") String e, Model model) {
+        SopraUser profileUser = sopraUserRepository.findByEmail(e);
+
+
+        ArrayList<DateClass> all = new ArrayList<>();
+        all.addAll(profileUser.getPostList());
+        all.addAll(profileUser.getCommentList());
+        all.addAll(profileUser.getQuestList());
+        all.addAll(profileUser.getQuizList());
+        all.addAll(profileUser.getUserEventList());
+        Collections.sort(all,
+                (o1, o2) -> o1.getCreateDate().compareTo(o2.getCreateDate()));
+
+        model.addAttribute("activities", all.toArray());
+        model.addAttribute("profileUser", profileUser);
+
+
+        return "/profil/user";
+    }
+
 }
  

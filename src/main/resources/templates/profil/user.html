@@ -1,0 +1,83 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Profil</title>
+
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+
+    <!--     Fonts and icons     -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" th:href="@{../css/font-awesome.min.css}" />
+    <link rel="stylesheet" th:href="@{../css/icomoon.css}" />
+
+    <!-- CSS Files -->
+    <link th:href="@{../css/jumbo.css}" rel="stylesheet" />
+    <link th:href="@{../css/backgrounds.css}" rel="stylesheet" />
+    <link th:href="@{../css/bootstrap.min.css}" rel="stylesheet" />
+    <link th:href="@{../css/material-kit.css}" rel="stylesheet"/>
+
+
+</head>
+
+
+<body class="bgr message1">
+<th:block th:include="fragments/navbar::nav-In"/>
+
+
+<img th:src="${profileUser.getLinkToPicture()}" alt="user" style="width:240px;height:240px;"/>
+
+<div class="jumbotron neo ue">
+
+    <b><h2 class="ue">Aktivitätslog</h2></b>
+<div class="jumbotron neo">
+
+    <table>
+        <tr th:each="a,iterationStatus  : ${activities}">
+            <td th:if="${a instanceof T(de.hohenheim.sopranos.model.Question)}" >
+                <label class="content" th:utext="${a.getQuestText()}"></label>
+                <table>
+                    <tr th:each="answer,iterationStatus  : ${a.getAnswers()}">
+                        <td>
+                            <label class="checkbox-inline" th:utext="${answer}">Option 1</label>
+                        </td>
+                        <td>
+                            <input type="checkbox" th:checked="${a.solutions[__${iterationStatus.index}__]}" th:disabled="true" ></input>
+                            <label class="checkbox-inline" th:utext="${answer}">Option 1</label>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td th:if="${a instanceof T(de.hohenheim.sopranos.model.Comment)}" >
+                <label th:utext="${a.getText()}"></label>
+            </td>
+            <td th:if="${a instanceof T(de.hohenheim.sopranos.model.Post)}" >
+                <label  class="content" th:utext="${a.getHeading()}"></label>
+                <label  class="content" th:utext="${a.getText()}"> </label>
+            </td>
+            <td th:if="${a instanceof T(de.hohenheim.sopranos.model.Quiz)}" >
+                <label  class="content" >QUIZ GEMACHT</label>
+                <label  class="content" th:utext="${a.getPoints()}"></label>
+            </td>
+            <td th:if="${a instanceof T(de.hohenheim.sopranos.model.UserEvent)}" >
+                <div th:if="${a.getText().contains('Joined')}">
+                    <label  class="content" th:utext="'Ist der Gruppe ' + ${a.getLg().getName()} + ' beigetreten!' "> </label>
+                </div>
+            </td>
+            <td th:if="${a instanceof T(de.hohenheim.sopranos.model.UserEvent)}" >
+                <div th:if="${a.getText().contains('Joined')}">
+                    <label  class="content" th:utext="'Ist der Gruppe ' + ${a.getLg().getName()} + ' beigetreten!' "> </label>
+
+                </div>
+
+            </td>
+        </tr>
+    </table>
+</div>
+</div>
+</body>
+</html>

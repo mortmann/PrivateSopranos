@@ -66,7 +66,7 @@ function PictureUpdate(){
 										<span class="input-group-addon">
 											<i class="material-icons">photo_camera</i>
 										</span>
-										<img src="" alt="" id="Profilbild" style="width:50px;height:50px;"/>
+                                        <img th:src="${user.getLinkToPicture()}" id="profilbild" style="width:50px;height:50px;"/>
                                         <input class="btn" type="text" name="linkToPicture" id="linkToPicture" onkeyup="PictureUpdate()"
                                                th:value="${user.getLinkToPicture()}" placeholder="Link zum Bild"/>
 
