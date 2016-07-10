@@ -1,24 +1,23 @@
-
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Profil</title>
 
     <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'/>
 
     <!--     Fonts and icons     -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
-    <link rel="stylesheet" th:href="@{../css/font-awesome.min.css}" />
-    <link rel="stylesheet" th:href="@{../css/icomoon.css}" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" th:href="@{../css/font-awesome.min.css}"/>
+    <link rel="stylesheet" th:href="@{../css/icomoon.css}"/>
 
     <!-- CSS Files -->
-    <link th:href="@{../css/jumbo.css}" rel="stylesheet" />
-    <link th:href="@{../css/backgrounds.css}" rel="stylesheet" />
-    <link th:href="@{../css/bootstrap.min.css}" rel="stylesheet" />
+    <link th:href="@{../css/jumbo.css}" rel="stylesheet"/>
+    <link th:href="@{../css/backgrounds.css}" rel="stylesheet"/>
+    <link th:href="@{../css/bootstrap.min.css}" rel="stylesheet"/>
     <link th:href="@{../css/material-kit.css}" rel="stylesheet"/>
 
 
@@ -26,58 +25,123 @@
 
 
 <body class="bgr message1">
+
 <th:block th:include="fragments/navbar::nav-In"/>
 
 
 <img th:src="${profileUser.getLinkToPicture()}" alt="user" style="width:240px;height:240px;"/>
 
-<div class="jumbotron neo ue">
 
-    <b><h2 class="ue">Aktivitätslog</h2></b>
-<div class="jumbotron neo">
+<h5 th:utext="'Profilinformationen von ' + ${profileUser.getEmail()}"></h5>
+<table>
+    <tr>
+        <td th:if="${profileUser.getUsername() != null}">
+            <label class="content">Username: </label>
+        </td>
+        <td th:if="${profileUser.getUsername() != null}">
+            <label class="content" th:utext="${profileUser.getUsername()}">
+            </label></td>
+    </tr>
+    <tr>
+        <td th:if="${profileUser.getName() != null}">
+            <label class="content">Name: </label></td>
+        <td th:if="${profileUser.getName() != null}">
+            <label class="content" th:utext="${profileUser.getName()}">
+            </label></td>
+    </tr>
+    <tr>
+        <td th:if="${profileUser.getCourseOfStudys() != null}">
+            <label class="content">Studiengang: </label></td>
+        <td th:if="${profileUser.getCourseOfStudys() != null}">
+            <label class="content" th:utext="${profileUser.getCourseOfStudys()}">
+            </label></td>
+    </tr>
+    <tr>
+        <td>
+            <label class="content">Rangpunkte: </label></td>
+        <td>
+            <label class="content" th:utext="${profileUser.getRankpoints()}">
+            </label></td>
+    </tr>
+</table>
 
-    <table>
-        <tr th:each="a,iterationStatus  : ${activities}">
-            <td th:if="${a instanceof T(de.hohenheim.sopranos.model.Question)}" >
-                <label class="content" th:utext="${a.getQuestText()}"></label>
-                <table>
-                    <tr th:each="answer,iterationStatus  : ${a.getAnswers()}">
-                        <td>
-                            <label class="checkbox-inline" th:utext="${answer}">Option 1</label>
-                        </td>
-                        <td>
-                            <input type="checkbox" th:checked="${a.solutions[__${iterationStatus.index}__]}" th:disabled="true" ></input>
-                            <label class="checkbox-inline" th:utext="${answer}">Option 1</label>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-            <td th:if="${a instanceof T(de.hohenheim.sopranos.model.Comment)}" >
-                <label th:utext="${a.getText()}"></label>
-            </td>
-            <td th:if="${a instanceof T(de.hohenheim.sopranos.model.Post)}" >
-                <label  class="content" th:utext="${a.getHeading()}"></label>
-                <label  class="content" th:utext="${a.getText()}"> </label>
-            </td>
-            <td th:if="${a instanceof T(de.hohenheim.sopranos.model.Quiz)}" >
-                <label  class="content" >QUIZ GEMACHT</label>
-                <label  class="content" th:utext="${a.getPoints()}"></label>
-            </td>
-            <td th:if="${a instanceof T(de.hohenheim.sopranos.model.UserEvent)}" >
-                <div th:if="${a.getText().contains('Joined')}">
-                    <label  class="content" th:utext="'Ist der Gruppe ' + ${a.getLg().getName()} + ' beigetreten!' "> </label>
-                </div>
-            </td>
-            <td th:if="${a instanceof T(de.hohenheim.sopranos.model.UserEvent)}" >
-                <div th:if="${a.getText().contains('Joined')}">
-                    <label  class="content" th:utext="'Ist der Gruppe ' + ${a.getLg().getName()} + ' beigetreten!' "> </label>
 
-                </div>
+<h5 th:utext="'Lerngruppen von ' + ${profileUser.getEmail()}"></h5>
+<table>
+    <tr th:each="lg,iterationStatus  : ${learningGroups}">
+        <td><label class="content" th:utext="${lg.getName()}"></label></td>
+    </tr>
+</table>
 
-            </td>
-        </tr>
-    </table>
+
+
+<h5 th:utext="'Freunde von ' + ${profileUser.getEmail()}"></h5>
+<table>
+    <tr th:each="fr,iterationStatus  : ${friends}">
+
+        <td><img th:src="${fr.getLinkToPicture()}" id="profilbild" style="width:50px;height:50px;"/></td>
+        <td><label class="content" th:utext="${fr.getEmail()}"></label></td>
+        <td><label class="content" th:utext="${fr.getName()}"></label></td>
+    </tr>
+</table>
+
+<div class="container">
+    <div class="jumbotron neo ue">
+
+        <b><h2 class="ue" th:utext="'Aktivität von ' + ${profileUser.getEmail()}"></h2></b>
+
+        <div class="jumbotron neo">
+
+            <table>
+
+                <tr th:each="a,iterationStatus  : ${activities}">
+
+
+                    <td th:if="${a instanceof T(de.hohenheim.sopranos.model.Question)}">
+                        <label class="content"
+                               th:utext="${profileUser.getEmail()} + ' hat eine Frage erstellt:' "></label>
+                        <label class="content" th:utext="${a.getQuestText()}"></label>
+                        <table>
+                            <tr th:each="answer,iterationStatus  : ${a.getAnswers()}">
+                                <td>
+                                    <label class="content" th:utext="${answer}">Option 1</label>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td th:if="${a instanceof T(de.hohenheim.sopranos.model.Comment)}">
+                        <label class="content"
+                               th:utext="${profileUser.getEmail()} + ' hat etwas kommentiert:' "></label>
+                        <label th:utext="${a.getText()}"></label>
+                    </td>
+                    <td th:if="${a instanceof T(de.hohenheim.sopranos.model.Post)}">
+                        <label class="content"
+                               th:utext="${profileUser.getEmail()} + ' hat etwas in ' + ${a.getLearningGroup().getName()} + ' gepostet:' "></label>
+                        <br/>
+                        <label class="content" th:utext="${a.getHeading()}"></label>
+                        <br/>
+                        <label class="content" th:utext="${a.getText()}"> </label>
+                    </td>
+                    <td th:if="${a instanceof T(de.hohenheim.sopranos.model.Quiz)}">
+                        <label class="content"
+                               th:utext="${profileUser.getEmail()} + ' hat ein Quiz bearbeitet"></label>
+                        <label class="content" th:utext="${a.getPoints()}"></label>
+                    </td>
+                    <td th:if="${a instanceof T(de.hohenheim.sopranos.model.UserEvent)}">
+                        <div th:if="${a.getText().contains('Joined')}">
+                            <label class="content"
+                                   th:utext="${profileUser.getEmail()} + ' ist der Gruppe ' + ${a.getLg().getName()} + ' beigetreten!' "> </label>
+                        </div>
+                    </td>
+                </tr>
+
+            </table>
+
+        </div>
+
+
+    </div>
 </div>
-</div>
+
 </body>
 </html>

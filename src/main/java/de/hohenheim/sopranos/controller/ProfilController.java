@@ -1,6 +1,7 @@
 package de.hohenheim.sopranos.controller;
 
-import de.hohenheim.sopranos.model.DateClass;
+import ch.qos.logback.core.net.SyslogOutputStream;
+import de.hohenheim.sopranos.model.*;
 import org.omg.CORBA.Request;
 import org.springframework.stereotype.Controller;
 
@@ -13,11 +14,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import de.hohenheim.sopranos.model.SopraUser;
-import de.hohenheim.sopranos.model.SopraUserRepository;
-
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 @Controller
 public class ProfilController {
@@ -71,6 +71,31 @@ public class ProfilController {
         Collections.sort(all,
                 (o1, o2) -> o1.getCreateDate().compareTo(o2.getCreateDate()));
 
+        List<SopraUser> allFriends = profileUser.getFriendsListALL();
+        ArrayList<SopraUser> fewFriends = new ArrayList<>();
+
+        while (fewFriends.size() < 5 && fewFriends.size() < profileUser.getFriendsListALL().size()) {
+            int p = (int) Math.random() * allFriends.size();
+            fewFriends.add(allFriends.get(p));
+            allFriends.remove(p);
+
+        }
+
+        List<LearningGroup> allGroups =  profileUser.getLearningGroups();
+        List<LearningGroup> fewGroups = new ArrayList<>();
+
+        while (fewGroups.size() < 5 && fewGroups.size() < profileUser.getLearningGroups().size()) {
+            int t = (int) Math.random() * allGroups.size();
+            fewGroups.add(allGroups.get(t));
+            allGroups.remove(t);
+
+        }
+        System.out.println("nigga" + profileUser.getLearningGroups().size());
+        System.out.println("biggie" + fewGroups.size());
+        System.out.println("stinkin" + allGroups.size());
+
+        model.addAttribute("friends", fewFriends);
+        model.addAttribute("learningGroups", fewGroups);
         model.addAttribute("activities", all.toArray());
         model.addAttribute("profileUser", profileUser);
 

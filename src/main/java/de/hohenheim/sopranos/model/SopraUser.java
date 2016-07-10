@@ -19,7 +19,7 @@ public class SopraUser {
 
     private String name;
     private Date createDate;
-    @Column(unique = true)
+
     private String username;
     
     private String courseOfStudys;

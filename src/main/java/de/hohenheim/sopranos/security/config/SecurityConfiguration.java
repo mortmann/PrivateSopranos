@@ -56,8 +56,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
 
-        //wenn man die db neu auflegt:  auth.jdbcAuthentication().withDefaultSchema().dataSource(dataSource).passwordEncoder(passwordEncoder());
-        auth.jdbcAuthentication().dataSource(dataSource).passwordEncoder(passwordEncoder());
+        auth.jdbcAuthentication().withDefaultSchema().dataSource(dataSource).passwordEncoder(passwordEncoder());
+        //auth.jdbcAuthentication().dataSource(dataSource).passwordEncoder(passwordEncoder());
     }
 
     /**
