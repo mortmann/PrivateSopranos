@@ -2,19 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a31ca76c-0704-4442-aa8c-bd306fb92483" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/data/bsp.mv.db" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/data/synapsedb.trace.db" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.12/taskArtifacts/cache.properties.lock" afterPath="$PROJECT_DIR$/.gradle/2.12/taskArtifacts/cache.properties.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.12/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/2.12/taskArtifacts/fileHashes.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.12/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/.gradle/2.12/taskArtifacts/fileSnapshots.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.12/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/.gradle/2.12/taskArtifacts/taskArtifacts.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/synapsedb.mv.db" afterPath="$PROJECT_DIR$/data/synapsedb.mv.db" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/de/hohenheim/sopranos/controller/ProfilController.java" afterPath="$PROJECT_DIR$/src/main/java/de/hohenheim/sopranos/controller/ProfilController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/de/hohenheim/sopranos/model/SopraUser.java" afterPath="$PROJECT_DIR$/src/main/java/de/hohenheim/sopranos/model/SopraUser.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/de/hohenheim/sopranos/security/config/SecurityConfiguration.java" afterPath="$PROJECT_DIR$/src/main/java/de/hohenheim/sopranos/security/config/SecurityConfiguration.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/templates/home.html" afterPath="$PROJECT_DIR$/src/main/resources/templates/home.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/templates/profil/user.html" afterPath="$PROJECT_DIR$/src/main/resources/templates/profil/user.html" />
     </list>
     <ignored path="PrivateSopranos.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -113,7 +101,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ProfilController.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ProfilController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/de/hohenheim/sopranos/controller/ProfilController.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="697">
@@ -143,11 +131,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SecurityConfiguration.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="SecurityConfiguration.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/de/hohenheim/sopranos/security/config/SecurityConfiguration.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="799">
-              <caret line="58" column="8" selection-start-line="58" selection-start-column="8" selection-end-line="58" selection-end-column="8" />
+            <state relative-caret-position="318">
+              <caret line="59" column="8" selection-start-line="59" selection-start-column="8" selection-end-line="59" selection-end-column="8" />
               <folding />
             </state>
           </provider>
@@ -521,8 +509,8 @@
         <option value="$PROJECT_DIR$/src/main/resources/templates/profil/edit.html" />
         <option value="$PROJECT_DIR$/src/main/java/de/hohenheim/sopranos/model/Post.java" />
         <option value="$PROJECT_DIR$/src/main/resources/templates/profil/user.html" />
-        <option value="$PROJECT_DIR$/src/main/java/de/hohenheim/sopranos/controller/ProfilController.java" />
         <option value="$PROJECT_DIR$/src/main/java/de/hohenheim/sopranos/model/SopraUser.java" />
+        <option value="$PROJECT_DIR$/src/main/java/de/hohenheim/sopranos/controller/ProfilController.java" />
         <option value="$PROJECT_DIR$/src/main/java/de/hohenheim/sopranos/security/config/SecurityConfiguration.java" />
       </list>
     </option>
@@ -1810,18 +1798,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/de/hohenheim/sopranos/security/config/SecurityConfiguration.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="799">
-          <caret line="58" column="8" selection-start-line="58" selection-start-column="8" selection-end-line="58" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/de/hohenheim/sopranos/controller/ProfilController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="697">
           <caret line="94" column="33" selection-start-line="94" selection-start-column="33" selection-end-line="94" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/de/hohenheim/sopranos/security/config/SecurityConfiguration.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="318">
+          <caret line="59" column="8" selection-start-line="59" selection-start-column="8" selection-end-line="59" selection-end-column="8" />
           <folding />
         </state>
       </provider>
