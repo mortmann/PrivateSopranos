@@ -21,40 +21,40 @@ public class SopraUser {
     private Date createDate;
 
     private String username;
-    
+
     private String courseOfStudys;
 
     private String linkToPicture = "http://i.imgur.com/ppZutz0.png";
-    
+
     private Integer rankpoints = 10;
 
-    private boolean deleted=false;
-	
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name="FRIENDS", 
-			joinColumns = @JoinColumn(name = "FIRST"),
-            inverseJoinColumns = @JoinColumn(name = "SECOND"),uniqueConstraints=
-                    @UniqueConstraint(columnNames={"FIRST", "SECOND"}))
-	private List<SopraUser> friendsList = new ArrayList<>();
+    private static int deleteCount;
 
-	@ManyToMany(mappedBy = "friendsList", cascade = CascadeType.ALL)
-	private List<SopraUser> friendsListTwo = new ArrayList<>();
-	
-	@ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "FRIENDS",
+            joinColumns = @JoinColumn(name = "FIRST"),
+            inverseJoinColumns = @JoinColumn(name = "SECOND"), uniqueConstraints =
+    @UniqueConstraint(columnNames = {"FIRST", "SECOND"}))
+    private List<SopraUser> friendsList = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "friendsList", cascade = CascadeType.ALL)
+    private List<SopraUser> friendsListTwo = new ArrayList<>();
+
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "FRIENDSREQUESTS",
             joinColumns = @JoinColumn(name = "FIRST"),
-            inverseJoinColumns = @JoinColumn(name = "SECOND"),uniqueConstraints=
-                    @UniqueConstraint(columnNames={"FIRST", "SECOND"}))
+            inverseJoinColumns = @JoinColumn(name = "SECOND"), uniqueConstraints =
+    @UniqueConstraint(columnNames = {"FIRST", "SECOND"}))
     private List<SopraUser> friendRequestsList = new ArrayList<>();
-	@ManyToMany(mappedBy = "friendsList", cascade = CascadeType.ALL)
-	private List<SopraUser> friendRequestsListTwo = new ArrayList<>();
-	
-	@OneToMany(mappedBy = "sender")
-	private List<Message> sendMessageList = new ArrayList<>();
-	@OneToMany(mappedBy = "receiver")
-	private List<Message> receivedMessageList = new ArrayList<>();
-	
+    @ManyToMany(mappedBy = "friendsList", cascade = CascadeType.ALL)
+    private List<SopraUser> friendRequestsListTwo = new ArrayList<>();
+
+    @OneToMany(mappedBy = "sender")
+    private List<Message> sendMessageList = new ArrayList<>();
+    @OneToMany(mappedBy = "receiver")
+    private List<Message> receivedMessageList = new ArrayList<>();
+
     @ManyToMany(mappedBy = "sopraUsers")
     private List<LearningGroup> learningGroups = new ArrayList<>();
 
@@ -73,28 +73,27 @@ public class SopraUser {
     @OneToMany(mappedBy = "sopraUser")
     private List<Comment> commentList = new ArrayList<>();
     @OneToMany(mappedBy = "generated")
-    private List<Quiz> quizList = new ArrayList<>(); 
-     
+    private List<Quiz> quizList = new ArrayList<>();
+
     @OneToMany(mappedBy = "sopraUser")
     private List<UserEvent> userEventList = new ArrayList<>();
-    
+
     @OneToMany(mappedBy = "challenger")
     private List<QuizDuel> challengerList = new ArrayList<>();
     @OneToMany(mappedBy = "challenged")
     private List<QuizDuel> challengedList = new ArrayList<>();
-    
-    
-    
+
+
     public List<UserEvent> getUserEventList() {
-		return userEventList;
-	}
+        return userEventList;
+    }
 
-	public void setUserEventList(List<UserEvent> userEventList) {
-		this.userEventList = userEventList;
-	}
+    public void setUserEventList(List<UserEvent> userEventList) {
+        this.userEventList = userEventList;
+    }
 
-	public SopraUser() {
-    	createDate = new Date(System.currentTimeMillis());
+    public SopraUser() {
+        createDate = new Date(System.currentTimeMillis());
     }
 
     public String getEmail() {
@@ -140,12 +139,15 @@ public class SopraUser {
     public Integer getRankpoints() {
         return rankpoints;
     }
-    public void increaseRankpoints(){
-    	rankpoints++;
+
+    public void increaseRankpoints() {
+        rankpoints++;
     }
-	public void decreaseRankpoints(){
-		rankpoints--;
-	}
+
+    public void decreaseRankpoints() {
+        rankpoints--;
+    }
+
     public void setRankpoints(Integer rankpoints) {
         this.rankpoints = rankpoints;
     }
@@ -174,9 +176,13 @@ public class SopraUser {
         this.gray = gray;
     }
 
-    public List<Comment> getCommentList() {return commentList;}
+    public List<Comment> getCommentList() {
+        return commentList;
+    }
 
-    public void setCommentList(List<Comment> commentList) {this.commentList = commentList;}
+    public void setCommentList(List<Comment> commentList) {
+        this.commentList = commentList;
+    }
 
     public List<Post> getPostList() {
         return postList;
@@ -190,119 +196,135 @@ public class SopraUser {
         return postList.size();
     }
 
-    public List<Question> getQuestList() {return questList;}
+    public List<Question> getQuestList() {
+        return questList;
+    }
 
-    public void setQuestList(List<Question> questList) {this.questList = questList;}
+    public void setQuestList(List<Question> questList) {
+        this.questList = questList;
+    }
 
-	public Date getCreateDate() {
-		return createDate;
-	}
+    public Date getCreateDate() {
+        return createDate;
+    }
 
-	public List<Quiz> getQuizList() {
-		return quizList;
-	}
+    public List<Quiz> getQuizList() {
+        return quizList;
+    }
 
-	public void setQuizList(List<Quiz> quizList) {
-		this.quizList = quizList;
-	}
+    public void setQuizList(List<Quiz> quizList) {
+        this.quizList = quizList;
+    }
 
-	public void setCreateDate() {
-		this.createDate = new Date(System.currentTimeMillis());
-	}
-	public String getCreateDateString() {
-		return DateFormat.getInstance().format(getCreateDate());
-	}
+    public void setCreateDate() {
+        this.createDate = new Date(System.currentTimeMillis());
+    }
 
-	public String getLinkToPicture() {
-		return linkToPicture;
-	}
+    public String getCreateDateString() {
+        return DateFormat.getInstance().format(getCreateDate());
+    }
 
-	public void setLinkToPicture(String linkToPicture) {
-		this.linkToPicture = linkToPicture;
-	}
+    public String getLinkToPicture() {
+        return linkToPicture;
+    }
 
-	public List<SopraUser> getFriendsList() {
-		return friendsList;
-	}
+    public void setLinkToPicture(String linkToPicture) {
+        this.linkToPicture = linkToPicture;
+    }
 
-	public void setFriendsList(List<SopraUser> friendsList) {
-		this.friendsList = friendsList;
-	}
+    public List<SopraUser> getFriendsList() {
+        return friendsList;
+    }
 
-	public List<SopraUser> getFriendRequestsList() {
-		return friendRequestsList;
-	}
+    public void setFriendsList(List<SopraUser> friendsList) {
+        this.friendsList = friendsList;
+    }
 
-	public void setFriendRequestsList(List<SopraUser> friendRequestsList) {
-		this.friendRequestsList = friendRequestsList;
-	}
+    public List<SopraUser> getFriendRequestsList() {
+        return friendRequestsList;
+    }
 
-	public List<Message> getSendMessageList() {
-		return sendMessageList;
-	}
+    public void setFriendRequestsList(List<SopraUser> friendRequestsList) {
+        this.friendRequestsList = friendRequestsList;
+    }
 
-	public void setSendMessageList(List<Message> sendMessageList) {
-		this.sendMessageList = sendMessageList;
-	}
+    public List<Message> getSendMessageList() {
+        return sendMessageList;
+    }
 
-	public List<Message> getReceivedMessageList() {
-		return receivedMessageList;
-	}
+    public void setSendMessageList(List<Message> sendMessageList) {
+        this.sendMessageList = sendMessageList;
+    }
 
-	public void setReceivedMessageList(List<Message> receivedMessageList) {
-		this.receivedMessageList = receivedMessageList;
-	}
+    public List<Message> getReceivedMessageList() {
+        return receivedMessageList;
+    }
 
-	public List<SopraUser> getFriendsListTwo() {
-		return friendsListTwo;
-	}
+    public void setReceivedMessageList(List<Message> receivedMessageList) {
+        this.receivedMessageList = receivedMessageList;
+    }
 
-	public void setFriendsListTwo(List<SopraUser> friendsListTwo) {
-		this.friendsListTwo = friendsListTwo;
-	}
+    public List<SopraUser> getFriendsListTwo() {
+        return friendsListTwo;
+    }
 
-	public List<SopraUser> getFriendRequestsListTwo() {
-		return friendRequestsListTwo;
-	}
+    public void setFriendsListTwo(List<SopraUser> friendsListTwo) {
+        this.friendsListTwo = friendsListTwo;
+    }
 
-	public void setFriendRequestsListTwo(List<SopraUser> friendRequestsListTwo) {
-		this.friendRequestsListTwo = friendRequestsListTwo;
-	}
-	
-	public List<SopraUser> getFriendRequestsListALL(){
-		ArrayList<SopraUser> s = new ArrayList<>();
-		s.addAll(getFriendRequestsList());
-		s.addAll(getFriendRequestsListTwo());
-		return s;
-	}
-	public List<SopraUser> getFriendsListALL(){
-		ArrayList<SopraUser> s = new ArrayList<>();
-		s.addAll(getFriendsList());
-		s.addAll(getFriendsListTwo());
-		return s;
-	}
+    public List<SopraUser> getFriendRequestsListTwo() {
+        return friendRequestsListTwo;
+    }
 
-	public boolean isDeleted() {
-		return deleted;
-	}
+    public void setFriendRequestsListTwo(List<SopraUser> friendRequestsListTwo) {
+        this.friendRequestsListTwo = friendRequestsListTwo;
+    }
 
-	public void setDeleted(boolean deleted) {
-		this.deleted = deleted;
-	}
+    public List<SopraUser> getFriendRequestsListALL() {
+        ArrayList<SopraUser> s = new ArrayList<>();
+        s.addAll(getFriendRequestsList());
+        s.addAll(getFriendRequestsListTwo());
+        return s;
+    }
 
-	public List<QuizDuel> getChallengerList() {
-		return challengerList;
-	}
+    public List<SopraUser> getFriendsListALL() {
+        ArrayList<SopraUser> s = new ArrayList<>();
+        s.addAll(getFriendsList());
+        s.addAll(getFriendsListTwo());
+        return s;
+    }
 
-	public void setChallengerList(List<QuizDuel> challangerList) {
-		this.challengerList = challangerList;
-	}
+    public List<QuizDuel> getChallengerList() {
+        return challengerList;
+    }
 
-	public List<QuizDuel> getChallengedList() {
-		return challengedList;
-	}
+    public void setChallengerList(List<QuizDuel> challangerList) {
+        this.challengerList = challangerList;
+    }
 
-	public void setChallengedList(List<QuizDuel> challangedList) {
-		this.challengedList = challangedList;
-	}
+    public List<QuizDuel> getChallengedList() {
+        return challengedList;
+    }
+
+    public void setChallengedList(List<QuizDuel> challangedList) {
+        this.challengedList = challangedList;
+    }
+
+
+    //TODO
+    public void deleteSopraUser() {
+        String deleteMail = "deleteduser" + deleteCount + "@aol.de";
+        this.setEmail(deleteMail);
+        this.setLearningGroups(null);
+        this.setPassword("deleted");
+        this.setFriendsList(null);
+        this.setFriendsListTwo(null);
+        this.setFriendRequestsList(null);
+        this.setFriendRequestsListTwo(null);
+        this.setCourseOfStudys(null);
+        this.setLinkToPicture(null);
+
+
+
+    }
 }

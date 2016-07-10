@@ -48,13 +48,24 @@ public class ProfilController {
         return "/profil/edit";
     }
 
-    @RequestMapping(value = "/remove", method = RequestMethod.POST)
+    @RequestMapping(value = "/remove", method = RequestMethod.GET)
     public String removeuser(RedirectAttributes attr) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SopraUser loginUser = sopraUserRepository.findByEmail(user.getUsername());
-        loginUser.setDeleted(true);
+       //TODO
+        loginUser.deleteSopraUser();
         sopraUserRepository.save(loginUser);
         return "redirect:/logout";
+    }
+
+
+    @RequestMapping(value = "/profil/me", method = RequestMethod.GET)
+    public String profileME( Model model) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        SopraUser loginUser = sopraUserRepository.findByEmail(user.getUsername());
+
+
+        return "redirect:/profil/user?e=" + loginUser.getEmail();
     }
 
     @RequestMapping(value = "/profil/user{e}", method = RequestMethod.GET)
@@ -74,25 +85,26 @@ public class ProfilController {
         List<SopraUser> allFriends = profileUser.getFriendsListALL();
         ArrayList<SopraUser> fewFriends = new ArrayList<>();
 
-        while (fewFriends.size() < 5 && fewFriends.size() < profileUser.getFriendsListALL().size()) {
+        int sayz = profileUser.getFriendsListALL().size();
+        while (fewFriends.size() < 5 && fewFriends.size() < sayz) {
             int p = (int) Math.random() * allFriends.size();
             fewFriends.add(allFriends.get(p));
             allFriends.remove(p);
 
         }
 
-        List<LearningGroup> allGroups =  profileUser.getLearningGroups();
+        List<LearningGroup> allGroups = profileUser.getLearningGroups();
         List<LearningGroup> fewGroups = new ArrayList<>();
 
-        while (fewGroups.size() < 5 && fewGroups.size() < profileUser.getLearningGroups().size()) {
+        int size = profileUser.getLearningGroups().size();
+
+        while (fewGroups.size() < 5 && fewGroups.size() < size) {
             int t = (int) Math.random() * allGroups.size();
+
             fewGroups.add(allGroups.get(t));
             allGroups.remove(t);
 
         }
-        System.out.println("nigga" + profileUser.getLearningGroups().size());
-        System.out.println("biggie" + fewGroups.size());
-        System.out.println("stinkin" + allGroups.size());
 
         model.addAttribute("friends", fewFriends);
         model.addAttribute("learningGroups", fewGroups);
@@ -102,6 +114,7 @@ public class ProfilController {
 
         return "/profil/user";
     }
+
 
 }
  
