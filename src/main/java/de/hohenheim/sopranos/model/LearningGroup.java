@@ -190,7 +190,8 @@ public class LearningGroup {
 
     public void unlockSopraUser(SopraUser user) {
         if (grayList.contains(user)) {
-            sopraUsers.add(user);
+//            sopraUsers.add(user);
+            grayList.remove(user);
             user.getGray().remove(this);
         }
     }
