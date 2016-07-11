@@ -78,7 +78,7 @@
     <textarea id="editor" name="editor" th:value="${comment.getText()}" th:field="*{text}" class="summernote form-control" rows="10"
               placeholder=""></textarea>
     <div th:if="${edit}==false" class="form-group">
-        <button class="btn btn-primary btn-lg btn-block login-button" type="submit" th:value="-1" th:name="info">Post</button>
+        <button class="btn btn-primary btn-block login-button" type="submit" th:value="-1" th:name="info">Post</button>
     </div>
 </form>
 

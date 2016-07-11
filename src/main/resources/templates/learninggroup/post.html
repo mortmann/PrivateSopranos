@@ -25,6 +25,7 @@
                 height: 300,
                 onKeyup: function (e) {
                     $("#product_desc_l").html($(this).code());
+                    $('.summernote').summernote('fontsize', 14);
                 }
             });
         });
@@ -48,10 +49,10 @@
     <textarea id="editor" name="editor" th:utext="${post.getText()}" th:name="content" class="summernote form-control" rows="10"
               placeholder="Ihren Inhalt hier:"></textarea>
     <div th:if="${edit}==false" class="form-group">
-        <button class="btn btn-primary btn-lg btn-block login-button" type="submit" th:value="-1" th:name="info">Post</button>
+        <button class="btn btn-primary btn-block login-button" type="submit" th:value="-1" th:name="info">Post</button>
     </div>
     <div th:if="${edit}" class="form-group">
-        <button class="btn btn-primary btn-lg btn-block login-button" type="submit" th:value="${post.getId()}" th:name="info" >Speichere Änderungen</button>
+        <button class="btn btn-primary btn-block login-button" type="submit" th:value="${post.getId()}" th:name="info" >Speichere Änderungen</button>
     </div>
     <input id="input-1" th:name="file" type="file" class="file"/>
 </form>
