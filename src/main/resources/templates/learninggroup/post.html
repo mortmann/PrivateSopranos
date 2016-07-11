@@ -45,8 +45,8 @@
 <form class="form-horizontal" enctype="multipart/form-data" th:action="@{/learninggroup/post?name=} + ${name}" method="post">
 	<label for="heading" class="cols-sm-2 control-label">"Überschrift"</label>
 	<input id="heading" class="form-control" th:value="${post.getHeading()}" th:name="heading"></input>    
-    <textarea id="editor" name="editor" th:value="${post.getText()}" th:name="content" class="summernote form-control" rows="10"
-              placeholder="Enter the product long description..."></textarea>
+    <textarea id="editor" name="editor" th:utext="${post.getText()}" th:name="content" class="summernote form-control" rows="10"
+              placeholder="Ihren Inhalt hier:"></textarea>
     <div th:if="${edit}==false" class="form-group">
         <button class="btn btn-primary btn-lg btn-block login-button" type="submit" th:value="-1" th:name="info">Post</button>
     </div>

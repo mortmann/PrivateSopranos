@@ -183,8 +183,7 @@ public class LearningGroupController {
 				return "redirect:/learninggroup/home";
 			case "edit":
 				//change
-				attr.addFlashAttribute("post",p);
-				request.getSession().setAttribute("editpost", p);
+				request.getSession().setAttribute("postid", p.getId());
 				attr.addAttribute("name", name);
 				attr.addFlashAttribute("edit", true);
 				return "redirect:/learninggroup/post";
