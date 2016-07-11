@@ -86,7 +86,7 @@ public class Quiz extends DateClass {
 		if(questList.get(number-1).isOpenQuestion()==false){
 			answers[number-1]=answer.getBooleans();
 		} else {
-			answers=new boolean[1][1];
+			answers[number-1]=new boolean[1];
 
 			System.out.println("add answertext " + answer.getAnswertext0());
 			setAnswertext(number-1,answer.getAnswertext0());

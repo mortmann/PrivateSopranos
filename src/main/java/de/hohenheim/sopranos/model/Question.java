@@ -161,7 +161,7 @@ public class Question extends DateClass {
     }
 
     public boolean questioncorrected(boolean[] b) {
-        for (int s = 0; s < getSolutions().length; s++) {
+        for (int s = 0; s < answers.length; s++) {
             if (b[s] != getSolutions()[s]) {
                 return false;
             }
