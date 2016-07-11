@@ -38,11 +38,11 @@
         <th>Name</th>
         <th>Beschreibung</th>
     </tr>
-    <!--   <button type="submit" class="btn btn-primary btn-lg btn-block login-button">Erstelle Gruppe</button> -->
+    <!--   <button type="submit" class="btn btn-primary btn-block login-button">Erstelle Gruppe</button> -->
     </thead>
     <tbody>
     <tr th:each="group,iterationStatus  : ${groups}">
-        <td><a type="submit" class="btn btn-raised btn-info btn-sm" th:href="@{/learninggroup/home(name=${group.getName()})}">gehe zu</a></td>
+        <td><a type="submit" class="btn btn-raised btn-info btn-lg" th:href="@{/learninggroup/home(name=${group.getName()})}">gehe zu</a></td>
         <td th:text="${group.getName()}"></td>
         <td th:text="${group.getDescription()}"></td>
         <td>

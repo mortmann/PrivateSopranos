@@ -144,8 +144,8 @@
                     <li><a th:href="@{/home}">Home</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li th:if="${loggedin==false}"><a th:href="@{/register}"><i class="material-icons">perm_identity</i>Registrieren</a></li>
-                    <li th:if="${loggedin==false}"><a th:href="@{/login}"><i class="material-icons">power_settings_new</i>Anmelden</a></li>
+                    <li th:if="${loggedin==false || loggedin==null}"><a th:href="@{/register}"><i class="material-icons">perm_identity</i>Registrieren</a></li>
+                    <li th:if="${loggedin==false || loggedin==null}"><a th:href="@{/login}"><i class="material-icons">power_settings_new</i>Anmelden</a></li>
                     <li th:if="${loggedin}"><a th:href="@{/logout}"><i class="material-icons">power_settings_new</i>Abmelden</a></li>
                 </ul>
             </div>
