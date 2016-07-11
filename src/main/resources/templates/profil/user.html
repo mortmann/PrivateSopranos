@@ -29,7 +29,7 @@
     <!--  Plugin for the Datepicker, full documentation here: http://www.eyecon.ro/bootstrap-datepicker/ -->
     <script th:src="@{../js/bootstrap-datepicker.js}" type="text/javascript"></script>
     <!-- Control Center for Material Kit: activating the ripples, parallax effects, scripts from the example pages etc -->
-    <script  th:src="@{../js/material-kit.js}" type="text/javascript"></script>
+    <script th:src="@{../js/material-kit.js}" type="text/javascript"></script>
 
 
 </head>
@@ -40,89 +40,87 @@
 <th:block th:include="fragments/navbar::nav-In"/>
 
 
-
 <div class="container">
     <div class="row">
         <div class="col-md-5">
             <div>
 
                 <div class="wello" style="text-align: center">
-                <img class="img-thumbnail" th:src="${profileUser.getLinkToPicture()}" alt="user" style="width:240px;height:240px;"/>
+                    <img class="img-thumbnail" th:src="${profileUser.getLinkToPicture()}" alt="user"
+                         style="width:240px;height:240px;"/>
                 </div>
-                    <div class="wello">
-                            <h5 th:utext="'Profilinformationen von ' + ${profileUser.getEmail()}"></h5>
-                <table>
-                <tr>
-                    <td th:if="${profileUser.getUsername() != null}">
-                        <label class="content">Username: </label>
-                    </td>
-                    <td th:if="${profileUser.getUsername() != null}">
-                        <label class="content" th:utext="${profileUser.getUsername()}">
-                        </label></td>
-                </tr>
-                <tr>
-                    <td th:if="${profileUser.getName() != null}">
-                        <label class="content">Name: </label></td>
-                    <td th:if="${profileUser.getName() != null}">
-                        <label class="content" th:utext="${profileUser.getName()}">
-                        </label></td>
-                </tr>
-                <tr>
-                    <td th:if="${profileUser.getCourseOfStudys() != null}">
-                        <label class="content">Studiengang: </label></td>
-                    <td th:if="${profileUser.getCourseOfStudys() != null}">
-                        <label class="content" th:utext="${profileUser.getCourseOfStudys()}">
-                        </label></td>
-                </tr>
-                <tr>
-                    <td>
-                        <label class="content">Rangpunkte: </label></td>
-                    <td>
-                        <label class="content" th:utext="${profileUser.getRankpoints()}">
-                        </label></td>
-                </tr>
-            </table>
-                        </div>
-                        <div class="wello">
-            <h5>Deine Lerngruppen</h5>
-            <table>
-                <tr th:each="lg,iterationStatus  : ${learningGroups}">
-                    <td><label class="content" th:utext="${lg.getName()}"></label></td>
-                </tr>
-            </table>
+                <div class="wello">
+                    <h5 th:utext="'Profilinformationen von ' + ${profileUser.getEmail()}"></h5>
+                    <table>
+                        <tr>
+                            <td th:if="${profileUser.getUsername() != null}">
+                                <label class="content">Username: </label>
+                            </td>
+                            <td th:if="${profileUser.getUsername() != null}">
+                                <label class="content" th:utext="${profileUser.getUsername()}">
+                                </label></td>
+                        </tr>
+                        <tr>
+                            <td th:if="${profileUser.getName() != null}">
+                                <label class="content">Name: </label></td>
+                            <td th:if="${profileUser.getName() != null}">
+                                <label class="content" th:utext="${profileUser.getName()}">
+                                </label></td>
+                        </tr>
+                        <tr>
+                            <td th:if="${profileUser.getCourseOfStudys() != null}">
+                                <label class="content">Studiengang: </label></td>
+                            <td th:if="${profileUser.getCourseOfStudys() != null}">
+                                <label class="content" th:utext="${profileUser.getCourseOfStudys()}">
+                                </label></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="content">Rangpunkte: </label></td>
+                            <td>
+                                <label class="content" th:utext="${profileUser.getRankpoints()}">
+                                </label></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="wello">
+                    <h5 th:utext="'Lerngruppen von ' + ${profileUser.getEmail()}"></h5>
+                    <table>
+                        <tr th:each="lg,iterationStatus  : ${learningGroups}">
+                            <td><label class="content" th:utext="${lg.getName()}"></label></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="wello">
+                    <h5 th:utext="'Freunde von ' + ${profileUser.getEmail()}"></h5>
+                    <table>
+                        <tr th:each="fr,iterationStatus  : ${friends}">
+
+                            <td><img th:src="${fr.getLinkToPicture()}" id="profilbild" style="width:50px;height:50px;"/>
+                            </td>
+                            <td><label class="content" th:utext="${fr.getEmail()}"></label></td>
+                            <td><label class="content" th:utext="${fr.getName()}"></label></td>
+                        </tr>
+                    </table>
+                </div>
             </div>
-
-                        <div class="wello">
-            <h5>Deine Freunde</h5>
-            <table>
-                <tr th:each="fr,iterationStatus  : ${friends}">
-
-                    <td><img th:src="${fr.getLinkToPicture()}" id="profilbild" style="width:50px;height:50px;"/></td>
-                    <td><label class="content" th:utext="${fr.getEmail()}"></label></td>
-                    <td><label class="content" th:utext="${fr.getName()}"></label></td>
-                </tr>
-            </table>
         </div>
-            </div>
-            </div>
-
-
-
 
 
         <div class="col-md-6 col-md-offset-1">
             <div>
-                <b><h2 class="eu">Deine letzten Aktivitäten</h2></b>
+                <b><h2 class="ue" th:utext="'Aktivität von ' + ${profileUser.getEmail()}"></h2></b>
             </div>
             <div>
 
-                    <table>
+                <table>
 
-                        <tr th:each="a,iterationStatus  : ${activities}">
+                    <tr th:each="a,iterationStatus  : ${activities}">
 
 
-                            <td th:if="${a instanceof T(de.hohenheim.sopranos.model.Question)}">
-                                <div class="wello">
+                        <td th:if="${a instanceof T(de.hohenheim.sopranos.model.Question)}">
+                            <div class="wello">
                                 <label class="content"
                                        th:utext="${profileUser.getEmail()} + ' hat eine Frage erstellt:' "></label>
                                 <label class="content" th:utext="${a.getQuestText()}"></label>
@@ -133,45 +131,44 @@
                                         </td>
                                     </tr>
                                 </table>
-                                    </div>
-                            </td>
-                            <td th:if="${a instanceof T(de.hohenheim.sopranos.model.Comment)}">
-                                <div class="wello">
+                            </div>
+                        </td>
+                        <td th:if="${a instanceof T(de.hohenheim.sopranos.model.Comment)}">
+                            <div class="wello">
                                 <label class="content"
                                        th:utext="${profileUser.getEmail()} + ' hat etwas kommentiert:' "></label>
                                 <label th:utext="${a.getText()}"></label>
-                                    </div>
-                            </td>
-                            <td th:if="${a instanceof T(de.hohenheim.sopranos.model.Post)}">
-                                <div class="wello">
+                            </div>
+                        </td>
+                        <td th:if="${a instanceof T(de.hohenheim.sopranos.model.Post)}">
+                            <div class="wello">
                                 <label class="content"
                                        th:utext="${profileUser.getEmail()} + ' hat etwas in ' + ${a.getLearningGroup().getName()} + ' gepostet:' "></label>
                                 <br/>
                                 <label class="content" th:utext="${a.getHeading()}"></label>
                                 <br/>
                                 <label class="content" th:utext="${a.getText()}"> </label>
-                                    </div>
-                            </td>
-                            <td th:if="${a instanceof T(de.hohenheim.sopranos.model.Quiz)}">
-                                <div class="wello">
+                            </div>
+                        </td>
+                        <td th:if="${a instanceof T(de.hohenheim.sopranos.model.Quiz)}">
+                            <div class="wello">
                                 <label class="content"
                                        th:utext="${profileUser.getEmail()} + ' hat ein Quiz bearbeitet'"></label>
                                 <label class="content" th:utext="${a.getPoints()}"></label>
-                                </div>
-                            </td>
-                            <td th:if="${a instanceof T(de.hohenheim.sopranos.model.UserEvent)}">
-                                <div th:if="${a.getText().contains('Joined')}">
-                                    <div class="wello">
+                            </div>
+                        </td>
+                        <td th:if="${a instanceof T(de.hohenheim.sopranos.model.UserEvent)}">
+                            <div th:if="${a.getText().contains('Joined')}">
+                                <div class="wello">
                                     <label class="content"
                                            th:utext="${profileUser.getEmail()} + ' ist der Gruppe ' + ${a.getLg().getName()} + ' beigetreten!' "> </label>
 
-                                    </div>
-                                    </div>
-                            </td>
-                        </tr>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
 
-                    </table>
-
+                </table>
 
 
             </div>
@@ -179,9 +176,6 @@
         </div>
     </div>
 </div>
-
-
-
 
 
 </body>

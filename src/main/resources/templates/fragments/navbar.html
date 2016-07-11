@@ -2,17 +2,17 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Nav</title>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'/>
 
     <!--     Fonts and icons     -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"/>
     <!-- CSS Files -->
 
-    <link  th:href="@{css/material-kit.css}" rel="stylesheet"/>
+    <link th:href="@{css/material-kit.css}" rel="stylesheet"/>
 </head>
 <body>
 
@@ -21,7 +21,8 @@
     <nav class="navbar navbar-transparent" role="navigation">
         <div class="container-fluid">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <button type="button" class="navbar-toggle" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -54,11 +55,12 @@
                                     cursor:pointer;
                                     overflow: hidden;
                                     outline:none;
-                                }</style>
-                        <button class="button">
-                            <i class="material-icons">search</i>
+                                }
+                            </style>
+                            <button class="button">
+                                <i class="material-icons">search</i>
                             </button>
-                            </div>
+                        </div>
                     </form>
 
                 </ul>
@@ -70,6 +72,8 @@
                             <li><a th:href="@{/profil/me}">Profil</a></li>
                             <li class="divider"></li>
                             <li><a th:href="@{/friends}">Freunde</a></li>
+                            <li class="divider"></li>
+                            <li><a th:href="@{/profil/edit}">Einstellungen</a></li>
                         </ul>
                     </li>
                     <li><a th:href="@{/logout}"><i class="material-icons">power_settings_new</i>Abmelden</a></li>
@@ -85,7 +89,8 @@
     <nav class="navbar navbar-transparent" role="navigation">
         <div class="container-fluid">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <button type="button" class="navbar-toggle" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -108,7 +113,8 @@
                                     cursor:pointer;
                                     overflow: hidden;
                                     outline:none;
-                                }</style>
+                                }
+                            </style>
                             <button class="button">
                                 <i class="material-icons">search</i>
                             </button>
@@ -126,11 +132,12 @@
 </th:block>
 
 <th:block th:fragment="nav-index">
-	
+
     <nav class="navbar navbar-transparent" role="navigation">
         <div class="container-fluid">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <button type="button" class="navbar-toggle" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -144,9 +151,12 @@
                     <li><a th:href="@{/home}">Home</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li th:if="${loggedin==false || loggedin==null}"><a th:href="@{/register}"><i class="material-icons">perm_identity</i>Registrieren</a></li>
-                    <li th:if="${loggedin==false || loggedin==null}"><a th:href="@{/login}"><i class="material-icons">power_settings_new</i>Anmelden</a></li>
-                    <li th:if="${loggedin}"><a th:href="@{/logout}"><i class="material-icons">power_settings_new</i>Abmelden</a></li>
+                    <li th:if="${loggedin==false || loggedin==null}"><a th:href="@{/register}"><i
+                            class="material-icons">perm_identity</i>Registrieren</a></li>
+                    <li th:if="${loggedin==false || loggedin==null}"><a th:href="@{/login}"><i class="material-icons">power_settings_new</i>Anmelden</a>
+                    </li>
+                    <li th:if="${loggedin}"><a th:href="@{/logout}"><i class="material-icons">power_settings_new</i>Abmelden</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -159,7 +169,8 @@
     <nav class="navbar navbar-transparent" role="navigation">
         <div class="container-fluid">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <button type="button" class="navbar-toggle" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -192,7 +203,8 @@
                                     cursor:pointer;
                                     overflow: hidden;
                                     outline:none;
-                                }</style>
+                                }
+                            </style>
                             <button class="button">
                                 <i class="material-icons">search</i>
                             </button>
@@ -221,12 +233,12 @@
 </body>
 
 <!--   Core JS Files   -->
-<script  th:src="@{/js/jquery.min.js}" type="text/javascript"></script>
+<script th:src="@{/js/jquery.min.js}" type="text/javascript"></script>
 <script th:src="@{/js/bootstrap.min.js}" type="text/javascript"></script>
-<script  th:src="@{/js/material.min.js}" type="text/javascript"></script>
+<script th:src="@{/js/material.min.js}" type="text/javascript"></script>
 
 <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
-<script  th:src="@{/js/nouislider.min.js}" type="text/javascript"></script>
+<script th:src="@{/js/nouislider.min.js}" type="text/javascript"></script>
 
 <!--  Plugin for the Datepicker, full documentation here: http://www.eyecon.ro/bootstrap-datepicker/ -->
 <script th:src="@{/js/bootstrap-datepicker.js}" type="text/javascript"></script>
