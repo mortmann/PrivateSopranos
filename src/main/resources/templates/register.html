@@ -58,7 +58,7 @@
 										<span class="input-group-addon">
 											<i class="material-icons">perm_identity</i>
 										</span>
-                                        <input type="text" class="form-control" name="name" id="name" placeholder="Name"  th:value="${SopraUser.name}"/>
+                                        <input type="text" maxlength="255" class="form-control" name="name" id="name" placeholder="Name"  th:value="${SopraUser.name}"/>
                                     </div>
 
                                     <div class="input-group">
@@ -72,7 +72,7 @@
 										<span class="input-group-addon">
 											<i class="material-icons">person_pin</i>
 										</span>
-                                        <input type="text" class="form-control" name="username" id="username" th:value="${SopraUser.username}"
+                                        <input type="text" maxlength="255" class="form-control" name="username" id="username" th:value="${SopraUser.username}"
                                                placeholder="Benutzername"/>
                                     </div>
 

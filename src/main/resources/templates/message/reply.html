@@ -46,7 +46,7 @@
                         <span class="input-group-addon">
 											<i class="material-icons">account_box</i>
 										</span>
-                        <input type="text" class="form-control" th:value=" ${msg.getSender().getEmail()}"
+                        <input type="text" maxlength="255" class="form-control" th:value=" ${msg.getSender().getEmail()}"
                                name="receivers" id="receivers"
                                placeholder="Mehrere Empfänger durch Kommata trennen"/>
                     </div>
@@ -60,7 +60,7 @@
                         <span class="input-group-addon">
 											<i class="material-icons">email</i>
 										</span>
-                        <input type="text" class="form-control" th:value="'RE: ' + ${msg.getTitle()}" name="title"
+                        <input type="text" maxlength="255" class="form-control" th:value="'RE: ' + ${msg.getTitle()}" name="title"
                                id="title"
                                placeholder="Geben Sie ein Betreff an"/>
                     </div>

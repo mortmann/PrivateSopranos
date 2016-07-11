@@ -41,7 +41,7 @@
 	<div class="jumbotron neo">
 		<b><h2 class="ue">Suche</h2></b>
 		<form th:action="@{/search}" method="post">
-			<input type="text" name="info" />
+			<input type="text" maxlength="255" name="info" />
 			<button type="submit" class="btn btn-default btn-raised btn-sm">Suche</button>
 		</form>
 		<table class="table">

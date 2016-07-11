@@ -70,7 +70,7 @@
 										<span class="input-group-addon">
 											<i class="material-icons">perm_identity</i>
 										</span>
-                                        <input type="text" placeholder="Gruppenname*" class="form-control" name="name" id="name"
+                                        <input type="text" maxlength="255" placeholder="Gruppenname*" class="form-control" name="name" id="name"
                                                th:value="${name}"/>
                                     </div>
 
@@ -78,7 +78,7 @@
 										<span class="input-group-addon">
 											<i class="material-icons">description</i>
 										</span>
-                                        <input type="text" class="form-control" name="description" placeholder="Beschreibung" id="description"
+                                        <input type="text" maxlength="255" class="form-control" name="description" placeholder="Beschreibung" id="description"
                                                th:value="${description}"/>
                                     </div>
 

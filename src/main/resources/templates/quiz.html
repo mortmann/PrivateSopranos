@@ -31,7 +31,7 @@
 	<div class="jumbotron">
 	<form name="get" th:action="@{/quiz}" method="post">
 	<h1>Anzahl der Fragen</h1>
-		<input type="text" th:name="count"  id="number" pattern="[1-9]\d*" min="1" max="50" th:value="10" oninput="OnNumber()"/>
+		<input type="text" maxlength="255" th:name="count"  id="number" pattern="[1-9]\d*" min="1" max="50" th:value="10" oninput="OnNumber()"/>
 		<label id="questioncount">1-50 Fragen</label>
 	<h1>Typ der Fragen</h1>
 		<label>Offene</label>

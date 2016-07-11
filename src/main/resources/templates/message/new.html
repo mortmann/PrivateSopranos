@@ -46,7 +46,7 @@
                         <span class="input-group-addon">
 											<i class="material-icons">account_box</i>
 										</span>
-                        <input type="text" class="form-control" th:value="*{receivers}" name="receivers" id="receivers"
+                        <input type="text" maxlength="255" class="form-control" th:value="*{receivers}" name="receivers" id="receivers"
                                placeholder="Mehrere Empfänger durch Kommata trennen"/>
                     </div>
                 </div>
@@ -59,7 +59,7 @@
                         <span class="input-group-addon">
 											<i class="material-icons">email</i>
 										</span>
-                        <input type="text" class="form-control" th:value="*{title}" name="title" id="title"
+                        <input type="text" maxlength="255" class="form-control" th:value="*{title}" name="title" id="title"
                                placeholder="Geben Sie ein Betreff an"/>
                     </div>
                 </div>

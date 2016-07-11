@@ -76,7 +76,7 @@ function PictureUpdate(){
 										<span class="input-group-addon">
 											<i class="material-icons">description</i>
 										</span>
-                                        <input type="text" class="form-control" name="courseOfStudys" placeholder="Studienfach" id="courseOfStudys"
+                                        <input type="text" maxlength="255" class="form-control" name="courseOfStudys" placeholder="Studienfach" id="courseOfStudys"
                                                th:value="${user.getCourseOfStudys()}"/>
                                     </div>
 
@@ -84,7 +84,7 @@ function PictureUpdate(){
 										<span class="input-group-addon">
 											<i class="material-icons">person_pin</i>
 										</span>
-                                        <input type="text" class="form-control" name="username" id="username" placeholder="Benutzername"
+                                        <input type="text" maxlength="255" class="form-control" name="username" id="username" placeholder="Benutzername"
                                                th:value="${user.getUsername()}"/>
                                     </div>
 
