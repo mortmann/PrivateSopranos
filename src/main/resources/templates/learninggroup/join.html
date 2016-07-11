@@ -1,38 +1,36 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <title>Lerngruppe beitreten</title>
+
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
-    <title>Bootply snippet - Bootstrap Wysiwyg Editor</title>
-    <meta name="generator" content="Bootply" />
-    <meta name="description"
-          content="Use bootstrap-wysiwyg with Bootstrap 3." />
 
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
-          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"/>
-    <!-- Custom styles for this template -->
-    <link rel="stylesheet" href="@{/css/register.css"/>
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
-          integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
-            integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
-            crossorigin="anonymous"></script>
-    <!-- Website Font style -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"/>
+    <!--     Fonts and icons     -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" th:href="@{../css/font-awesome.min.css}" />
+    <link rel="stylesheet" th:href="@{../css/icomoon.css}" />
+
+    <!-- CSS Files -->
+    <link th:href="@{../css/jumbo.css}" rel="stylesheet" />
+    <link th:href="@{../css/backgrounds.css}" rel="stylesheet" />
+    <link th:href="@{../css/bootstrap.min.css}" rel="stylesheet" />
+    <link th:href="@{../css/material-kit.css}" rel="stylesheet"/>
 
 </head>
 
-<body>
-<th:block th:include="fragments/navbar::nav-In"/>
+<body class="bgr network1">
+<th:block th:include="/fragments/navbar::nav-In"/>
+<div class="container">
+    <div class="jumbotron neo">
 
-<h1>Gruppen-Liste</h1>
-<table class="table">
+        <b><h2 class="ue">Gruppen-Liste</h2></b>
+        <p class="text-divider"></p>
+        <div class="container">
+            <table class="table">
     <thead>
     <tr>
         <th>Gruppenbeitritt</th>
@@ -45,7 +43,7 @@
     </thead>
     <tbody>
     <tr th:each="group,iterationStatus  : ${groups}">
-        <td><a type="submit" class="btn btn-default btn-sm" th:href="@{/learninggroup/home(name=${group.getName()})}">Beitreten</a></td>
+        <td><a type="submit" class="btn btn-info btn-raised btn-lg" th:href="@{/learninggroup/home(name=${group.getName()})}">Beitreten</a></td>
         <td th:text="${group.getName()}"></td>
         <td th:text="${group.getDescription()}"></td>
         <td th:if="${group.getFreeForAll()}"><i class="fa fa-square-o" aria-hidden="true"></i></td>
@@ -54,6 +52,8 @@
     </tr>
     </tbody>
 </table>
-
+            </div>
+        </div>
+    </div>
 </body>
 </html>
