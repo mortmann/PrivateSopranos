@@ -43,26 +43,9 @@
                             <li><a th:href="@{/learninggroup/join}">Lerngruppe beitreten</a></li>
                         </ul>
                     </li>
-
-
-                    <form class="navbar-form navbar-left" role="search">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Suche"/>
-                            <style>
-                                button {
-                                    background-color: Transparent;
-                                    background-repeat:no-repeat;
-                                    border: none;
-                                    cursor:pointer;
-                                    overflow: hidden;
-                                    outline:none;
-                                }
-                            </style>
-                            <button class="button">
-                                <i class="material-icons">search</i>
-                            </button>
-                        </div>
-                    </form>
+                    <li class="navbar-left">
+                    <li><a th:href="@{/search}"><i class="material-icons">search</i></a></li>
+                    </li>
 
 
                 </ul>
