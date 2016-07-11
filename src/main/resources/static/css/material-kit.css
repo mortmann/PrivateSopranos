@@ -84,7 +84,7 @@ a .material-icons, a:hover .material-icons, a:focus .material-icons {
   border-radius: 3px;
   position: relative;
   padding: 12px 30px;
-  margin: 10px 1px;
+  margin: 1px 1px;
   font-size: 12px;
   font-weight: 400;
   text-transform: uppercase;
@@ -1250,7 +1250,7 @@ output {
 label {
   font-size: 14px;
   line-height: 1.42857;
-  color: #AAAAAA;
+  color: black;
   font-weight: 400;
 }
 
@@ -3355,4 +3355,8 @@ h2.title {
     margin-left: 10px;
     margin-right: 10px;
   }
+}
+
+.material-icons {
+  line-height: 0;
 }
