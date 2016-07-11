@@ -83,7 +83,7 @@ public class Quiz extends DateClass {
 		if(answers==null){
 			answers=new boolean[questList.size()][];
 		}
-		if(answer.getStrings().length>1){
+		if(questList.get(number-1).isOpenQuestion()==false){
 			answers[number-1]=answer.getBooleans();
 		} else {
 			answers=new boolean[1][1];

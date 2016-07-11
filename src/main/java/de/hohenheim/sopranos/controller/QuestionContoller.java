@@ -170,9 +170,6 @@ public class QuestionContoller {
             }
         }
 
-        if (qs.isEmpty()) {
-            qs.addAll(questionRepository.findAll());
-        }
         System.out.println(qs.size());
         if (open == null) {
             qs.removeIf(x -> x.isOpenQuestion() == true);
@@ -183,6 +180,10 @@ public class QuestionContoller {
         }
         System.out.println(open + " after open " + qs.size());
         qs.removeIf(x -> x.getSopraUser().getEmail().equals(current.getEmail()));
+
+        if (qs.isEmpty()) {
+            qs.addAll(questionRepository.findAll());
+        }
         if (qs.isEmpty() || qs.size() < questionCount) {
             attr.addAttribute("error", "questioncount");
             return "redirect:/quiz";
@@ -193,6 +194,7 @@ public class QuestionContoller {
                 id++;
             }
             al.add(qs.get(id - 1));
+            qs.remove(id-1);
         }
         //id start at 1
         Quiz q = new Quiz();

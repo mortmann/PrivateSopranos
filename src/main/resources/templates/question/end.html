@@ -67,7 +67,7 @@
 			<div class="row">
 				<div class="col-md-12">
 					<ul class="pager">
-							<li><button th:name="direction" type="submit" th:value="'next'">Next →</button></li>
+							<li><a th:href="@{/home}">EXIT →</a></li>
 					</ul>
 					<div class="progress">
 						<div class="progress-bar" role="progressbar" th:utext="${percentage +'%'}" th:style="${'width: '+ percentage +'%;'}">
