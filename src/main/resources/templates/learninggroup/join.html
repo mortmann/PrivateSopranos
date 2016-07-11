@@ -45,7 +45,7 @@
     </thead>
     <tbody>
     <tr th:each="group,iterationStatus  : ${groups}">
-        <td><a type="submit" class="btn btn-default" th:href="@{/learninggroup/home(name=${group.getName()})}">Beitreten</a></td>
+        <td><a type="submit" class="btn btn-default btn-sm" th:href="@{/learninggroup/home(name=${group.getName()})}">Beitreten</a></td>
         <td th:text="${group.getName()}"></td>
         <td th:text="${group.getDescription()}"></td>
         <td th:if="${group.getFreeForAll()}"><i class="fa fa-square-o" aria-hidden="true"></i></td>
