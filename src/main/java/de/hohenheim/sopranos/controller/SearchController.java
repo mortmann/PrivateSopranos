@@ -38,7 +38,7 @@ public class SearchController {
 	public String searchPOST(String info, Model model, RedirectAttributes attr) {
 		System.out.println("info " + info); 
 		ArrayList<LearningGroup> lgs = new ArrayList<LearningGroup>();
-		lgs.addAll(learningGroupRepository.findAllIgnoreCaseByNameLike("%"+info+"%"));
+		lgs.addAll(learningGroupRepository.findAllIgnoreCaseByNameLike("%"+info.toLowerCase()+"%"));
 		attr.addFlashAttribute("learningGroups", lgs);
 		return "redirect:/search";
 	}
