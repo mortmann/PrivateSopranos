@@ -67,9 +67,9 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Benutzer<b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">Profil</a></li>
+                            <li><a th:href="@{/profil/me}">Profil</a></li>
                             <li class="divider"></li>
-                            <li><a th:href="@{/profil/edit}">Einstellungen</a></li>
+                            <li><a th:href="@{/friends}">Freunde</a></li>
                         </ul>
                     </li>
                     <li><a th:href="@{/logout}"><i class="material-icons">power_settings_new</i>Abmelden</a></li>
@@ -145,6 +145,70 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li><a th:href="@{/register}"><i class="material-icons">perm_identity</i>Registrieren</a></li>
                     <li><a th:href="@{/login}"><i class="material-icons">power_settings_new</i>Anmelden</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+</th:block>
+
+<th:block th:fragment="nav-In-Input">
+
+    <nav class="navbar navbar-transparent" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" th:href="@{/home}"><i class="fa fa-connectdevelop"></i>Synapse</a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a th:href="@{/home}">Startseite</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Lerngruppen<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a th:href="@{/learninggroup/mygroups}">Meine Lerngruppen</a></li>
+                            <li class="divider"></li>
+                            <li><a th:href="@{/learninggroup/create}">Lerngruppe erstellen</a></li>
+                            <li><a th:href="@{/learninggroup/join}">Lerngruppe beitreten</a></li>
+                        </ul>
+                    </li>
+
+                    <form class="navbar-form navbar-left" role="search">
+                        <div class="form-group">
+                            <input type="text" class="form-search" placeholder="Suche"/>
+                            <style>
+                                button {
+                                    background-color: Transparent;
+                                    background-repeat:no-repeat;
+                                    border: none;
+                                    cursor:pointer;
+                                    overflow: hidden;
+                                    outline:none;
+                                }</style>
+                            <button class="button">
+                                <i class="material-icons">search</i>
+                            </button>
+                        </div>
+                    </form>
+
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a th:href="@{/message/inbox}"><i class="material-icons">mail_outline</i></a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Benutzer<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a th:href="@{/profil/me}">Profil</a></li>
+                            <li class="divider"></li>
+                            <li><a th:href="@{/friends}">Freunde</a></li>
+                        </ul>
+                    </li>
+                    <li><a th:href="@{/logout}"><i class="material-icons">power_settings_new</i>Abmelden</a></li>
                 </ul>
             </div>
         </div>

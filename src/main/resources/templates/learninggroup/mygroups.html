@@ -48,9 +48,10 @@
         <td>
 					<form name="form-login"
 						th:action="@{/learninggroup/mygroups}" method="post">
-						<button class="btn btn-raised btn-danger btn-sm" type="submit"
-							th:name="info" th:value="${group.getName()}" aria-hidden="true"
-							title="Entfernen">Entfernen</button>
+						<button class="btn btn-danger btn-sm" type="submit"
+							th:name="info" th:value="${group.getName()}" aria-hidden="true" title="Austreten">
+                            <i class="material-icons">close</i>
+                        </button>
 					</form>
 				</td>
     </tr>
