@@ -232,7 +232,7 @@ public class LearningGroupController {
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		SopraUser host = sopraUserRepository.findByEmail(user.getUsername());
 		LearningGroup lg = learningGroupRepository.findByName(name);
-		if(lg.getSopraUsers().contains(host)==false || lg.isHost(host)){
+		if(lg.getSopraUsers().contains(host)==false || lg.isHost(host)==false){
 			attr.addAttribute("name", name);
 			return "redirect:/learninggroup/home";
 		}

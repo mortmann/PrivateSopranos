@@ -33,44 +33,48 @@
         <b><h2 class="ue">Aktivitätslog</h2></b>
 
     </div>
-    <div class="jumbotron neo">
+
 
         <table>
 
             <tr th:each="a,iterationStatus  : ${activities}">
+
                 <td th:if="${a instanceof T(de.hohenheim.sopranos.model.Question)}">
+                    <div class="wello">
                     <label class="content">Frage erstellt:</label>
                     <label class="content" th:utext="${a.getQuestText()}"></label>
-                    <table>
-                        <tr th:each="answer,iterationStatus  : ${a.getAnswers()}">
-                            <td>
-                                <label class="content" th:utext="${answer}">Option 1</label>
-                            </td>
-                            <td>
-                                <input type="checkbox" th:checked="${a.solutions[__${iterationStatus.index}__]}"
-                                       th:disabled="true"></input>
-                                <label class="checkbox-inline" th:utext="${answer}">Option 1</label>
-                            </td>
-                        </tr>
-                    </table>
+                    </div>
                 </td>
+
+
                 <td th:if="${a instanceof T(de.hohenheim.sopranos.model.Comment)}">
-                    <label th:utext="${a.getText()}"></label>
+                    <div class="wello">   <label th:utext="${a.getText()}"></label></div>
                 </td>
+
+
                 <td th:if="${a instanceof T(de.hohenheim.sopranos.model.Post)}">
+                    <div class="wello">
                     <label class="content" th:utext="${a.getHeading()}"></label>
                     <label class="content" th:utext="${a.getText()}"> </label>
+                    </div>
                 </td>
+
+
                 <td th:if="${a instanceof T(de.hohenheim.sopranos.model.Quiz)}">
+                    <div class="wello">
                     <label class="content">QUIZ GEMACHT</label>
                     <label class="content" th:utext="${a.getPoints()}"></label>
+                    </div>
                 </td>
+
 
 
                 <td th:if="${a instanceof T(de.hohenheim.sopranos.model.UserEvent)}">
+                    <div class="wello">
                     <div th:if="${a.getText().contains('Joined')}">
                         <label class="content"
                                th:utext="'Du bist der Gruppe ' + ${a.getLg().getName()} + ' beigetreten!' "> </label>
+                    </div>
                     </div>
                 </td>
 
@@ -78,7 +82,7 @@
 
         </table>
 
-    </div>
+
 </div>
 
 
