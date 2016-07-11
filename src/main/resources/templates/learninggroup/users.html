@@ -47,7 +47,7 @@
     <tr th:each="user,iterationStatus  : ${users}">
         <td class="content" th:utext="${user.getName()}"/>
         <td class="content" th:utext="${user.getUsername()}"/>
-        <td class="content" th:utext="${user.getEmail()}"/>
+        <td><a th:href="@{/profil/user(e=${user.getEmail()})}" th:utext="${user.getEmail()}"></a></td>
         <td class="content" th:utext="${user.getPostCount()}"/>
         <td th:if="${isHost and user!=host}">
             <form name="form-login" th:action="@{/learninggroup/users?name=} + ${name}" method="post">
@@ -89,7 +89,7 @@
     <tr th:each="user,iterationStatus  : ${blockedusers}">
         <td class="content" th:utext="${user.getName()}"/>
         <td class="content" th:utext="${user.getUsername()}"/>
-        <td class="content" th:utext="${user.getEmail()}"/>
+        <td><a th:href="@{/profil/user(e=${user.getEmail()})}" th:utext="${user.getEmail()}"></a></td>
         <td th:if="${isHost and user!=host}">
             <form name="form-login" th:action="@{/learninggroup/users?name=} + ${name}" method="post">
                 <button class="btn btn-default btn-lg" type="submit" th:name="info" th:value="${user.getEmail() + '-unblock'}" aria-hidden="true" title="Entsperren" >
@@ -126,7 +126,7 @@
     <tr th:each="user,iterationStatus  : ${bannedusers}">
         <td class="content" th:utext="${user.getName()}"/>
         <td class="content" th:utext="${user.getUsername()}"/>
-        <td class="content" th:utext="${user.getEmail()}"/>
+        <td><a th:href="@{/profil/user(e=${user.getEmail()})}" th:utext="${user.getEmail()}"></a></td>
         <td th:if="${isHost and user!=host}">
             <form name="form-login" th:action="@{/learninggroup/users?name=} + ${name}" method="post">
                 <button class="btn btn-success btn-lg" type="submit" th:name="info" th:value="${user.getEmail() + '-unban'}" aria-hidden="true" title="Entbannen" >
