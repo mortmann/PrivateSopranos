@@ -99,7 +99,7 @@
 
                             <td><img th:src="${fr.getLinkToPicture()}" id="profilbild" style="width:50px;height:50px;"/>
                             </td>
-                            <td><label class="content" th:utext="${fr.getEmail()}"></label></td>
+                            <td><label class="content" th:utext="${fr.getEmail()}" th:href="@{/profil/user(e=${fr.getEmail()}}"> </label></td>
                             <td><label class="content" th:utext="${fr.getName()}"></label></td>
                         </tr>
                     </table>
