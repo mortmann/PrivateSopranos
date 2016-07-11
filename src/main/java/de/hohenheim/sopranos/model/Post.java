@@ -2,6 +2,7 @@ package de.hohenheim.sopranos.model;
 
 import javax.persistence.*;
 
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -14,6 +15,7 @@ import java.util.List;
 /**
  * Created by Burakhan on 07.06.2016.
  */
+@Transactional
 @Entity
 public class Post extends DateClass{
 

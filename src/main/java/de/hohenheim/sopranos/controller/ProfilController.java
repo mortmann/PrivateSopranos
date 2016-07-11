@@ -52,7 +52,7 @@ public class ProfilController {
     public String removeuser(RedirectAttributes attr) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SopraUser loginUser = sopraUserRepository.findByEmail(user.getUsername());
-       //TODO
+        //TODO
         loginUser.deleteSopraUser();
         sopraUserRepository.save(loginUser);
         return "redirect:/logout";
@@ -60,7 +60,7 @@ public class ProfilController {
 
 
     @RequestMapping(value = "/profil/me", method = RequestMethod.GET)
-    public String profileME( Model model) {
+    public String profileME(Model model) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SopraUser loginUser = sopraUserRepository.findByEmail(user.getUsername());
 
@@ -82,27 +82,31 @@ public class ProfilController {
         Collections.sort(all,
                 (o1, o2) -> o1.getCreateDate().compareTo(o2.getCreateDate()));
 
-        List<SopraUser> allFriends = profileUser.getFriendsListALL();
+        List<SopraUser> allFriends = new ArrayList<>();
+        allFriends = profileUser.getFriendsListALL();
         ArrayList<SopraUser> fewFriends = new ArrayList<>();
 
         int sayz = profileUser.getFriendsListALL().size();
         while (fewFriends.size() < 5 && fewFriends.size() < sayz) {
-            int p = (int) Math.random() * allFriends.size();
+            double y = Math.random() * allFriends.size();
+            int p = (int) y;
             fewFriends.add(allFriends.get(p));
             allFriends.remove(p);
 
         }
 
-        List<LearningGroup> allGroups = profileUser.getLearningGroups();
+        List<LearningGroup> allGroups = new ArrayList<>();
+        allGroups = profileUser.getLearningGroups();
         List<LearningGroup> fewGroups = new ArrayList<>();
 
         int size = profileUser.getLearningGroups().size();
 
         while (fewGroups.size() < 5 && fewGroups.size() < size) {
-            int t = (int) Math.random() * allGroups.size();
+            double t = Math.random() * allGroups.size();
+            int j = (int) t;
 
-            fewGroups.add(allGroups.get(t));
-            allGroups.remove(t);
+            fewGroups.add(allGroups.get(j));
+            allGroups.remove(j);
 
         }
 
