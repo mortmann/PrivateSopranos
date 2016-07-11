@@ -57,7 +57,6 @@ public class PostController {
     		post = postRepository.findOne(Integer.parseInt((String) request.getSession().getAttribute("postid")));
     		System.out.println(post);
     	}
-    	post = postRepository.getOne(post.getId());
     	if(post==null){
     		post = new Post();
     		post.setHeading("");

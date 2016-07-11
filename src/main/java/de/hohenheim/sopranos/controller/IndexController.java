@@ -46,11 +46,18 @@ public class IndexController {
 
     @RequestMapping("/signuppage")
     public String signUpPage(String username, Model model) {
+        model.addAttribute("loggedin",SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof User );
 
 
         return "signuppage";
     }
+    @RequestMapping("/login")
+    public String loginPage(String username, Model model) {
+        model.addAttribute("loggedin",SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof User );
 
+
+        return "login";
+    }
     @RequestMapping("/basistemplate")
     public String basisTemplate(String username, Model model) {
 
@@ -70,7 +77,9 @@ public class IndexController {
     	
     	Collections.sort(all, 
                 (o1, o2) -> o1.getCreateDate().compareTo(o2.getCreateDate()));
-//    	Collections.reverse(all);
+    	for (DateClass dateClass : all) {
+			System.out.println(dateClass.getPostDateString());
+		}
     	model.addAttribute("activities", all.toArray()); 
         return "home"; 
     }
