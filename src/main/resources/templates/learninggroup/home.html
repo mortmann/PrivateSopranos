@@ -89,7 +89,7 @@
 		</td>
 		<td  class="content" th:if="${text.getSopraUser()}==${loginUser} or ${isHost}">
 			<form name="form-login" th:action="@{/learninggroup/home?name=} + ${name}" method="post">
-				<button class="btn btn-default" type="submit" th:name="info" th:value="${text.getId() +'-edir'}" aria-hidden="true">Bearbeiten</button>
+				<button class="btn btn-default" type="submit" th:name="info" th:value="${text.getId() +'-edit'}" aria-hidden="true">Bearbeiten</button>
 			</form>
 		</td>
 		<td  class="content" th:if="${text.getSopraUser()}==${loginUser} or ${isHost}">

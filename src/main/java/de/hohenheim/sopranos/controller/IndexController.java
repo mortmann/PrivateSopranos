@@ -40,7 +40,7 @@ public class IndexController {
 
     @RequestMapping("/index")
     public String index(String username, Model model) {
-
+        model.addAttribute("loggedin",SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof User );
         return "index";
     }
 

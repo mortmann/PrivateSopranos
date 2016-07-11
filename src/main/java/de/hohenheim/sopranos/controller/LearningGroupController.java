@@ -2,9 +2,11 @@ package de.hohenheim.sopranos.controller;
 
 import de.hohenheim.sopranos.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,6 +21,8 @@ import java.util.Random;
 /**
  * Created by MortmannMKII v2 on 08.06.2016.
  */
+@Transactional
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 @Controller
 public class LearningGroupController {
 
@@ -165,8 +169,8 @@ public class LearningGroupController {
 		return "/learninggroup/home";
 	}
 	@RequestMapping(value = "/learninggroup/home{name}", method = RequestMethod.POST)
-	public String postEDIT(@RequestParam("name")
-								   String name, String info, Model model, RedirectAttributes attr) {
+	public String homePOST(@RequestParam("name")
+								   String name, String info, Model model,HttpServletRequest request, RedirectAttributes attr) {
 		String[] is = info.split("-");
 		Post p = postRepository.getOne(Integer.valueOf(is[0]));
 
@@ -180,6 +184,7 @@ public class LearningGroupController {
 			case "edit":
 				//change
 				attr.addFlashAttribute("post",p);
+				request.getSession().setAttribute("editpost", p);
 				attr.addAttribute("name", name);
 				attr.addFlashAttribute("edit", true);
 				return "redirect:/learninggroup/post";
@@ -188,6 +193,7 @@ public class LearningGroupController {
 				attr.addFlashAttribute("postid",p.getId());
 				attr.addAttribute("name", name);
 				attr.addFlashAttribute("edit", false);
+				System.out.println("comment !");
 				return "redirect:/learninggroup/comment";
 			case "rating":
 				//change

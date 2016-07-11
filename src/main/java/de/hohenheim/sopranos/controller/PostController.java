@@ -14,10 +14,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +32,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 /**
  * Created by Burakhan on 14.06.2016.
  */
+@Transactional
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 @Controller
 public class PostController {
 
@@ -47,9 +51,13 @@ public class PostController {
     
 
     @RequestMapping(value = "/learninggroup/post", method = RequestMethod.GET)
-    public String post(@RequestParam("name") String name, Model model,@ModelAttribute("post") Post post,@ModelAttribute("edit") String edit, RedirectAttributes attr) {
-
-    	post =(Post)model.asMap().get("post");
+    public String post(@RequestParam("name") String name,HttpServletRequest request, Model model,@ModelAttribute("edit") String edit, RedirectAttributes attr) {
+    	Post post = null;
+    	if( request.getSession().getAttribute("post") !=null){
+    		post = postRepository.findOne(Integer.parseInt((String) request.getSession().getAttribute("postid")));
+    		System.out.println(post);
+    	}
+    	post = postRepository.getOne(post.getId());
     	if(post==null){
     		post = new Post();
     		post.setHeading("");
@@ -61,7 +69,8 @@ public class PostController {
 
         if (lg.getGrayList().contains(current) || lg.getBlackList().contains(current))
             return "redirect:/learninggroup/home?name=" + name;
-    	
+
+        
     	model.addAttribute("post", post);
         model.addAttribute("name", name);
         attr.addAttribute("name", name);
@@ -138,11 +147,12 @@ public class PostController {
     @ResponseBody
     public void getFile(String info,HttpServletRequest request, 
             HttpServletResponse response) {
-    	int id = Integer.valueOf(info);
+    	 int id = Integer.valueOf(info);
     	 File f = postRepository.getOne(id).getFile();
-    	 System.out.println(f.length());
-         response.setContentType("application/pdf");
-         response.addHeader("Content-Disposition", "attachment; filename="+f.getName());
+    	 System.out.println(f.getName());
+    	 String name = f.getName().replaceAll(" ", "-");
+    	 System.out.println(name.replaceAll(" ", "-"));
+         response.addHeader("Content-Disposition", "attachment; filename="+name);
          try
          {
              Files.copy(f.toPath(), response.getOutputStream());
