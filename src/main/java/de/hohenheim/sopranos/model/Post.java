@@ -102,6 +102,9 @@ public class Post extends DateClass{
     }
 
 	public File getFile() {
+		if(file == null ){
+			return null;
+		}
 		try {
 			file.createNewFile();
 			FileOutputStream fos = new FileOutputStream(file.getPath());

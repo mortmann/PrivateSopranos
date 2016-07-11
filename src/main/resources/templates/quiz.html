@@ -20,7 +20,65 @@
 	<link th:href="@{css/backgrounds.css}" rel="stylesheet" />
 	<link th:href="@{css/bootstrap.min.css}" rel="stylesheet" />
 	<link th:href="@{css/material-kit.css}" rel="stylesheet"/>
+<script>
+//<![CDATA[
+	function OnPick(){
+		var value = document.getElementById("lgs").value;
+		$("#selectedlgs").append('<option onclick="OnDePick()" value="'+value+'">'+value+'</option>');
+		document.getElementById("lgs").remove(value);
+		document.getElementById('d').innerHTML= 'Selected: ' +value;
+		activatedButton();
+	}
+	function OnDePick(){
+		var value = document.getElementById("selectedlgs").value;
+		$("#lgs").append('<option onclick="OnPick()" value="'+value+'">'+value+'</option>');
+		document.getElementById("selectedlgs").remove(value);
+		document.getElementById('d').innerHTML= 'Deselected: ' +value;
+		activatedButton();
+	}
+	function OnNumber(){
+		activatedButton();
+	}
+	
+	function activatedButton(){
+		var val = document.getElementById('number').value;
+		if(isNaN(val) || isNormalInteger(val) == false){
+			document.getElementById("button").disabled=true;
+			document.getElementById("questioncount").style.color="red";
+			return;
+		}else {
+			document.getElementById("questioncount").style.color="black";
+			document.getElementById("button").disabled=false;
+		}
 
+		var arr = [];
+		$("#selectedlgs > option").each(function(){
+			arr.push(this.value);
+		});
+		if(arr.length==0){
+			document.getElementById("button").disabled=true;
+		}else {
+			document.getElementById("button").disabled=false;
+			document.getElementById("button").value = arr.toString();
+		}
+	}
+	function isNormalInteger(str) {
+		var n = ~~Number(str);
+		return String(n) === str&&n>0&&n<51;
+	}
+	function OnCheckbox(){
+		if(document.getElementById("closed").checked==false ){
+			document.getElementById("open").checked=true;
+			return;
+		} 
+		if(document.getElementById("open").checked==false ){
+			document.getElementById("closed").checked=true;
+			return;
+		} 
+	}
+
+	//]]>
+</script>
 </head>
 
 
@@ -61,65 +119,7 @@
 
 </body>
 
-<script>
-	//<![CDATA[
-	function OnPick(){
-		var value = document.getElementById("lgs").value;
-		$("#selectedlgs").append('<option onclick="OnDePick()" value="'+value+'">'+value+'</option>');
-		$('#lgs').find('[value='+value+']').remove();
-		'Selected: ' +value;
-		activatedButton();
-	}
-	function OnDePick(){
-		var value = document.getElementById("selectedlgs").value;
-		$("#lgs").append('<option onclick="OnPick()" value="'+value+'">'+value+'</option>');
-		$('#selectedlgs').find('[value='+value+']').remove();
-		document.getElementById('d').innerHTML= 'Deselected: ' +value;
-		activatedButton();
-	}
-	function OnNumber(){
-		activatedButton();
-	}
 
-	function activatedButton(){
-		var val = document.getElementById('number').value;
-		if(isNaN(val) || isNormalInteger(val) == false){
-			document.getElementById("button").disabled=true;
-			document.getElementById("questioncount").style.color="red";
-			return;
-		}else {
-			document.getElementById("questioncount").style.color="black";
-			document.getElementById("button").disabled=false;
-		}
-
-		var arr = [];
-		$("#selectedlgs > option").each(function(){
-			arr.push(this.value);
-		});
-		if(arr.length==0){
-			document.getElementById("button").disabled=true;
-		}else {
-			document.getElementById("button").disabled=false;
-			document.getElementById("button").value = arr.toString();
-		}
-	}
-	function isNormalInteger(str) {
-		var n = ~~Number(str);
-		return String(n) === str&&n>0&&n<51;
-	}
-	function OnCheckbox(){
-		if(document.getElementById("closed").checked==false ){
-			document.getElementById("open").checked=true;
-			return;
-		} 
-		if(document.getElementById("open").checked==false ){
-			document.getElementById("closed").checked=true;
-			return;
-		} 
-	}
-
-	//]]>
-</script>
 
 <!--   Core JS Files   -->
 <script th:src="@{/js/jquery.min.js}" type="text/javascript"></script>
