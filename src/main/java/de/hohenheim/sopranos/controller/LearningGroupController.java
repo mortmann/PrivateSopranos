@@ -442,7 +442,7 @@ public class LearningGroupController {
 				qd.setChallenger(loginUser);
 				qd.setChallenged(other);
 				qd.setLearningGroup(lg);
-				int questionCount = 1;//Integer.valueOf(count);
+				int questionCount = 10;//Integer.valueOf(count);
 				Random r = new Random();
 				ArrayList<Question> al = new ArrayList<>();
 				ArrayList<Question> qs = new ArrayList<>();
