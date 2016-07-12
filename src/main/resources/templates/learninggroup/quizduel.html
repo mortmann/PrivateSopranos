@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 
-	<title>Freunde</title>
+	<title>Quizduell</title>
 
 	<meta charset="utf-8"/>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -12,37 +12,50 @@
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
 	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" />
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
-	<link rel="stylesheet" th:href="@{/static/css/font-awesome.min.css}" />
+	<link rel="stylesheet" th:href="@{../css/font-awesome.min.css}" />
+	<link rel="stylesheet" th:href="@{../css/icomoon.css}" />
 
 	<!-- CSS Files -->
-	<link th:href="@{css/jumbo.css}" rel="stylesheet" />
-	<link th:href="@{css/backgrounds.css}" rel="stylesheet" />
-	<link th:href="@{css/bootstrap.min.css}" rel="stylesheet" />
-	<link th:href="@{css/material-kit.css}" rel="stylesheet"/>
+	<link th:href="@{../css/jumbo.css}" rel="stylesheet" />
+	<link th:href="@{../css/backgrounds.css}" rel="stylesheet" />
+	<link th:href="@{../css/bootstrap.min.css}" rel="stylesheet" />
+	<link th:href="@{../css/material-kit.css}" rel="stylesheet"/>
 
 </head>
 
 
 <body class="bgr network1">
-
-<th:block th:include="fragments/navbar::nav-In"/>
+<th:block th:include="/fragments/navbar::nav-In"/>
 <div class="container">
 	<div class="jumbotron neo">
 
-<h5>Gruppenmitglieder:</h5>
-<table>
+
+		<b><h2 class="ue">Quizduel</h2></b>
+		<p class="text-divider"></p>
+		<div class="container">
+			<table class="table">
+				<thead>
+				<tr>
+					<th>Name</th>
+					<th>Usernameame</th>
+					<th>E-Mail</th>
+				</tr>
+				</thead>
+				<tbody>
 <tr th:each="c,iterationStatus  : ${users}">
-		<td  class="content" th:utext="${c.getEmail()}"/> 
-		<td  class="content" th:utext="${c.getUsername()}"/> 
-		<td  class="content" th:utext="${c.getName()}"/> 
+
+		<td  class="content" th:utext="${c.getName()}"/>
+		<td  class="content" th:utext="${c.getUsername()}"/>
+		<td  class="content" th:utext="${c.getEmail()}"/>
 		<td >
             <form name="form-login" th:action="@{/learninggroup/quizduel?name=} + ${name}" method="post">
-                <button class="btn btn-default btn-xs" type="submit" th:name="info" th:value="${c.getEmail() + '-challenge'}" aria-hidden="true" title="herausfordern">
+                <button class="btn btn-default btn-xs" type="submit" th:name="info" th:value="${c.getEmail() + '-challenge'}" aria-hidden="true" title="Herausfordern">
                     <i class="material-icons">add</i>
                 </button>
             </form>
         </td>
 </tr>
+				</tbody>
 </table>
 
 
@@ -72,6 +85,7 @@
 
 </div>
 </div>
+	</div>
 </body>
 
 <!--   Core JS Files   -->
@@ -82,6 +96,11 @@
 <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
 <script th:src="@{/js/nouislider.min.js}" type="text/javascript"></script>
 
+<!--  Plugin for the Datepicker, full documentation here: http://www.eyecon.ro/bootstrap-datepicker/ -->
+<script th:src="@{/js/bootstrap-datepicker.js}" type="text/javascript"></script>
+
+<!-- Control Center for Material Kit: activating the ripples, parallax effects, scripts from the example pages etc -->
+<script  th:src="@{/js/material-kit.js}" type="text/javascript"></script>
 <!--  Plugin for the Datepicker, full documentation here: http://www.eyecon.ro/bootstrap-datepicker/ -->
 <script th:src="@{/js/bootstrap-datepicker.js}" type="text/javascript"></script>
 
