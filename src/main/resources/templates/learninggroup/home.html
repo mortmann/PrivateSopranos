@@ -89,23 +89,23 @@
 		<td  class="content" th:utext="${text.getCreateDate()}"/>
 		<td  class="content" >
 			<form name="form-login" th:action="@{/learninggroup/home?name=} + ${name}" method="post">
-				<button class="btn btn-default" type="submit" th:name="info" th:value="${text.getId() +'-comment'}" aria-hidden="true">Kommentieren</button>
+				<button class="btn btn-default btn-lg" type="submit" th:name="info" th:value="${text.getId() +'-comment'}" aria-hidden="true">Kommentieren</button>
 			</form>
 		</td>
 		<td  class="content" th:if="${text.getSopraUser()}==${loginUser} or ${isHost}">
 			<form name="form-login" th:action="@{/learninggroup/home?name=} + ${name}" method="post">
-				<button class="btn btn-default" type="submit" th:name="info" th:value="${text.getId() +'-edit'}" aria-hidden="true">Bearbeiten</button>
+				<button class="btn btn-default btn-lg" type="submit" th:name="info" th:value="${text.getId() +'-edit'}" aria-hidden="true">Bearbeiten</button>
 			</form>
 		</td>
 		<td  class="content" th:if="${text.getSopraUser()}==${loginUser} or ${isHost}">
 			<form name="form-login" th:action="@{/learninggroup/home?name=} + ${name}" method="post">
-				<button class="btn btn-default" type="submit" th:name="info" th:value="${text.getId() +'-delete'}" aria-hidden="true">Löschen</button>
+				<button class="btn btn-default btn-lg" type="submit" th:name="info" th:value="${text.getId() +'-delete'}" aria-hidden="true">Löschen</button>
 			</form>
 		</td>
 		<td>
         	<form name="form-login" th:action="@{/learninggroup/home?name=} + ${name}" method="post">
 					<div class="ratebox" th:attr="data-id=${text.getId()},data-rating=${text.getRating()}" ></div>
-					<button th:id="${'rating'+text.getId()}" th:name="info" class="btn btn-default" style="display:none" type="submit" aria-hidden="true" >Submit</button>
+					<button th:id="${'rating'+text.getId()}" th:name="info" class="btn btn-default btn-lg" style="display:none" type="submit" aria-hidden="true" >Submit</button>
 			 </form>	
 		</td>
 	</tr>
