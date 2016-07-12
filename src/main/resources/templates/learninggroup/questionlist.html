@@ -1,11 +1,21 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-	<title>Fragenliste</title>
-
-	<meta charset="utf-8"/>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+	<meta charset="utf-8"/>
+	<title>Fragenliste</title>
+	<meta name="generator" content="Bootply" />
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'/>
+	<meta name="description"
+		  content="Fragenliste." />
+
+
+	<!-- include libraries(jQuery, bootstrap) -->
+	<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet"/>
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
+	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
+
 
 	<!--     Fonts and icons     -->
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
@@ -20,136 +30,148 @@
 	<link th:href="@{../css/bootstrap.min.css}" rel="stylesheet"/>
 	<link th:href="@{../css/material-kit.css}" rel="stylesheet"/>
 
-	<!--   Core JS Files   -->
-	<script th:src="@{../js/jquery.min.js}" type="text/javascript"></script>
-	<script th:src="@{../js/bootstrap.min.js}" type="text/javascript"></script>
-	<script th:src="@{../js/material.min.js}" type="text/javascript"></script>
-	<!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
-	<script th:src="@{../js/nouislider.min.js}" type="text/javascript"></script>
-	<!--  Plugin for the Datepicker, full documentation here: http://www.eyecon.ro/bootstrap-datepicker/ -->
-	<script th:src="@{../js/bootstrap-datepicker.js}" type="text/javascript"></script>
-	<!-- Control Center for Material Kit: activating the ripples, parallax effects, scripts from the example pages etc -->
-	<script th:src="@{../js/material-kit.js}" type="text/javascript"></script>
-
-<!-- We need the raterater stylesheet -->
-<link th:href="@{/css/raterater.css}" rel="stylesheet"/>
-<script th:src="@{/js/raterater.jquery.js}"></script>
-<style>
-/* Override star colors */
-.raterater-bg-layer {
-    color: rgba( 0, 0, 0, 0.25 );
-}
-.raterater-hover-layer {
-    color: rgba( 255, 255, 0, 0.75 );
-}
-.raterater-hover-layer.rated {
-    color: rgba( 255, 255, 0, 1 );
-}
-.raterater-rating-layer {
-    color: rgba( 255, 155, 0, 0.75 );
-}
-.raterater-outline-layer {
-    color: rgba( 0, 0, 0, 0.25 );
-}
-</style>
+	<!-- We need the raterater stylesheet -->
+	<link th:href="@{/css/raterater.css}" rel="stylesheet"/>
+	<script th:src="@{/js/raterater.jquery.js}"></script>
+	<style>
+		/* Override star colors */
+		.raterater-bg-layer {
+			color: rgba( 0, 0, 0, 0.25 );
+		}
+		.raterater-hover-layer {
+			color: rgba( 255, 255, 0, 0.75 );
+		}
+		.raterater-hover-layer.rated {
+			color: rgba( 255, 255, 0, 1 );
+		}
+		.raterater-rating-layer {
+			color: rgba( 255, 155, 0, 0.75 );
+		}
+		.raterater-outline-layer {
+			color: rgba( 0, 0, 0, 0.25 );
+		}
+	</style>
 
 
 
 </head>
 
 
-<body class="bgr message1">
-<th:block th:include="fragments/navbar::nav-In"/>
+<body class="bgr network1">
+<th:block th:include="/fragments/navbar::nav-In"/>
 <div class="container">
-<div class="row">
-<div class="jumbotron neo">
-<h3>NOCH KEINE QUIZFRAGEN</h3>
-<table>
-	<tr>
-        <th>FRAGE </th>
-        <th>BENUTZER </th>
-    </tr>
-	<tr th:each="question,iterationStatus  : ${nonquizquestions}">
-		<td  class="content" th:utext="${question.getQuestText()}"/>
-		<td  class="content" th:utext="${question.getSopraUser().getEmail()}"/> 
-        <td >
-        <form name="form-login" th:action="@{/learninggroup/questionlist?name=} + ${name}" method="post">
-        	<button class="btn btn-default" type="submit" th:name="info" th:value="${question.getQuestId() + '-comment'}" aria-hidden="true">Kommentieren</button>
-        </form>
-        </td> 
-		<td th:if="${isHost and question.getSopraUser()==loginUser}">
-        <form name="form-login" th:action="@{/learninggroup/questionlist?name=} + ${name}" method="post">
-        	<button class="btn btn-default" type="submit" th:name="info" th:value="${question.getQuestId()} + '-edit'" aria-hidden="true">Ändern</button>
-        </form>
-        </td> 
-        <td th:if="${isHost and question.getSopraUser()==loginUser}">
-        <form name="form-login" th:action="@{/learninggroup/questionlist?name=} + ${name}" method="post">
-        	<button class="btn btn-default" type="submit" th:name="info" th:value="${question.getQuestId()} + '-delete'" aria-hidden="true">Löschen</button>
-        </form>
-        </td> 
-        <td th:if="${isHost}">
-        <form name="form-login" th:action="@{/learninggroup/questionlist?name=} + ${name}" method="post">
-        	<button class="btn btn-default" type="submit" th:name="info" th:value="${question.getQuestId()} + '-addquiz'" aria-hidden="true">Für Quiz freigeben</button>
-        </form>
-        </td> 
-        <td>
-        	<form name="form-login" th:object="${Rating}" th:action="@{/learninggroup/questionlist?name=} + ${name}" method="post">
-					<div class="ratebox" th:attr="data-id=${question.getQuestId()},data-rating=${question.getRating()}" ></div>
-					<button th:id="rating" th:name="info" class="btn btn-default"  type="submit" aria-hidden="true">Submit</button>
-			 </form>	
-		</td>
-	</tr>
-</table>
-</div>
-</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="jumbotron neo">
+				<h2 style="text-align:center">Fragenliste</h2>
 
+				<h3>Neue Fragen</h3>
+				<table class="table">
+					<thead>
+					<tr>
+						<th>Frage</th>
+						<th>Benutzer</th>
+						<th>Aktionen</th>
+						<th></th>
+						<th></th>
+						<th></th>
+						<th></th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr th:each="question,iterationStatus  : ${nonquizquestions}">
+						<td  class="content" th:utext="${question.getQuestText()}"/>
+						<td  class="content" th:utext="${question.getSopraUser().getEmail()}"/>
+						<td >
+							<form name="form-login" th:action="@{/learninggroup/questionlist?name=} + ${name}" method="post">
+								<button class="btn btn-default btn-lg" type="submit" th:name="info" th:value="${question.getQuestId() + '-comment'}" aria-hidden="true">Kommentieren</button>
+							</form>
+						</td>
+						<td th:if="${isHost and question.getSopraUser()==loginUser}">
+							<form name="form-login" th:action="@{/learninggroup/questionlist?name=} + ${name}" method="post">
+								<button class="btn btn-default btn-lg" type="submit" th:name="info" th:value="${question.getQuestId()} + '-edit'" aria-hidden="true">Ändern</button>
+							</form>
+						</td>
+						<td th:if="${isHost and question.getSopraUser()==loginUser}">
+							<form name="form-login" th:action="@{/learninggroup/questionlist?name=} + ${name}" method="post">
+								<button class="btn btn-default btn-lg" type="submit" th:name="info" th:value="${question.getQuestId()} + '-delete'" aria-hidden="true">Löschen</button>
+							</form>
+						</td>
+						<td th:if="${isHost}">
+							<form name="form-login" th:action="@{/learninggroup/questionlist?name=} + ${name}" method="post">
+								<button class="btn btn-default btn-lg" type="submit" th:name="info" th:value="${question.getQuestId()} + '-addquiz'" aria-hidden="true">Für Quiz freigeben</button>
+							</form>
+						</td>
+						<td>
+							<form name="form-login" th:object="${Rating}" th:action="@{/learninggroup/questionlist?name=} + ${name}" method="post">
+								<div class="ratebox" th:attr="data-id=${question.getQuestId()},data-rating=${question.getRating()}" ></div>
+								<button th:id="rating" th:name="info" class="btn btn-default btn-lg"  type="submit" aria-hidden="true">Submit</button>
+							</form>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
 
-<div class="row">
-	<div class="jumbotron neo">
-<h3>QUIZFRAGEN</h3>
-<table>
-	<tr>
-        <th>FRAGE </th>
-        <th>BENUTZER </th>
-    </tr>
-	<tr th:each="question,iterationStatus  : ${quizquestions}">
-		<td  class="content" th:utext="${question.getQuestText()}"/>
-		<td  class="content" th:utext="${question.getSopraUser().getEmail()}"/> 
-        <td >
-        <form name="form-login" th:action="@{/learninggroup/questionlist?name=} + ${name}" method="post">
-        	<button class="btn btn-default" type="submit" th:name="info" th:value="${question.getQuestId() + '-comment'}" aria-hidden="true">Kommentieren</button>
-        </form>
-        </td> 
-		<td th:if="${isHost and question.getSopraUser()==loginUser}">
-        <form name="form-login" th:action="@{/learninggroup/questionlist?name=} + ${name}" method="post">
-        	<button class="btn btn-default" type="submit" th:name="info" th:value="${question.getQuestId()} + '-edit'" aria-hidden="true">Ändern</button>
-        </form>
-        </td> 
-        <td th:if="${isHost and question.getSopraUser()==loginUser}">
-        <form name="form-login" th:action="@{/learninggroup/questionlist?name=} + ${name}" method="post">
-        	<button class="btn btn-default" type="submit" th:name="info" th:value="${question.getQuestId()} + '-delete'" aria-hidden="true">Löschen</button>
-        </form>
-        </td> 
-        <td>
-        	<form name="form-login" th:action="@{/learninggroup/questionlist?name=} + ${name}" method="post">
-					<div class="ratebox" th:attr="data-id=${question.getQuestId()},data-rating=${question.getRating()}" ></div>
-					<button th:id="${'rating'+question.getQuestId()}" th:name="info" class="btn btn-default" style="display:none" type="submit" aria-hidden="true" >Submit</button>
-			 </form>	
-		</td>
-	</tr>
-</table>
-</div>
-</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="jumbotron neo">
+
+				<h3>Quizfragen</h3>
+
+				<table class="table">
+					<thead>
+					<tr>
+						<th>Frage</th>
+						<th>Benutzer</th>
+						<th>Aktionen</th>
+						<th></th>
+						<th></th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr th:each="question,iterationStatus  : ${quizquestions}">
+						<td  class="content" th:utext="${question.getQuestText()}"/>
+						<td  class="content" th:utext="${question.getSopraUser().getEmail()}"/>
+						<td >
+							<form name="form-login" th:action="@{/learninggroup/questionlist?name=} + ${name}" method="post">
+								<button class="btn btn-default btn-lg" type="submit" th:name="info" th:value="${question.getQuestId() + '-comment'}" aria-hidden="true">Kommentieren</button>
+							</form>
+						</td>
+						<td th:if="${isHost and question.getSopraUser()==loginUser}">
+							<form name="form-login" th:action="@{/learninggroup/questionlist?name=} + ${name}" method="post">
+								<button class="btn btn-default btn-lg" type="submit" th:name="info" th:value="${question.getQuestId()} + '-edit'" aria-hidden="true">Ändern</button>
+							</form>
+						</td>
+						<td th:if="${isHost and question.getSopraUser()==loginUser}">
+							<form name="form-login" th:action="@{/learninggroup/questionlist?name=} + ${name}" method="post">
+								<button class="btn btn-default btn-lg" type="submit" th:name="info" th:value="${question.getQuestId()} + '-delete'" aria-hidden="true">Löschen</button>
+							</form>
+						</td>
+						<td>
+							<form name="form-login" th:action="@{/learninggroup/questionlist?name=} + ${name}" method="post">
+								<div class="ratebox" th:attr="data-id=${question.getQuestId()},data-rating=${question.getRating()}" ></div>
+								<button th:id="${'rating'+question.getQuestId()}" th:name="info" class="btn btn-default" style="display:none" type="submit" aria-hidden="true" >Submit</button>
+							</form>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
 </div>
 <script>
 
-/* This is out callback function for when a rating is submitted
- */
-function rateAlert(id, rating)
-{
-	document.getElementById("rating"+id).style = "";
-	document.getElementById("rating"+id).value = id+"-rating-"+rating;
-}
+	/* This is out callback function for when a rating is submitted
+	 */
+	function rateAlert(id, rating)
+	{
+		document.getElementById("rating"+id).style = "";
+		document.getElementById("rating"+id).value = id+"-rating-"+rating;
+	}
 
 	/* Here we initialize raterater on our rating boxes
 	 */
@@ -164,4 +186,25 @@ function rateAlert(id, rating)
 	});
 </script>
 </body>
+
+<!--   Core JS Files   -->
+<script th:src="@{/js/jquery.min.js}" type="text/javascript"></script>
+<script th:src="@{/js/bootstrap.min.js}" type="text/javascript"></script>
+<script th:src="@{/js/material.min.js}" type="text/javascript"></script>
+
+<!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
+<script th:src="@{/js/nouislider.min.js}" type="text/javascript"></script>
+
+<!--  Plugin for the Datepicker, full documentation here: http://www.eyecon.ro/bootstrap-datepicker/ -->
+<script th:src="@{/js/bootstrap-datepicker.js}" type="text/javascript"></script>
+
+<!-- Control Center for Material Kit: activating the ripples, parallax effects, scripts from the example pages etc -->
+<script th:src="@{/js/material-kit.js}" type="text/javascript"></script>
+
+
+<!-- include libraries(jQuery, bootstrap) -->
+<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet"/>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
+
 </html>
