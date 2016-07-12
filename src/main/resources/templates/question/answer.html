@@ -8,35 +8,37 @@
 	name='viewport' />
 <title>Lerngruppe erstellen</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
-	integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
-	crossorigin="anonymous" />
 
-<!-- Optional theme -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
-	integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r"
-	crossorigin="anonymous" />
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<!-- Latest compiled and minified JavaScript -->
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
-	integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
-	crossorigin="anonymous"></script>
-<!-- Website Font style -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css" />
-<!-- Google Fonts -->
-<link href='https://fonts.googleapis.com/css?family=Passion+One'
-	rel='stylesheet' type='text/css' />
-<link href='https://fonts.googleapis.com/css?family=Oxygen'
-	rel='stylesheet' type='text/css' />
+	<!--     Fonts and icons     -->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700"/>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"/>
+	<link rel="stylesheet" th:href="@{../css/font-awesome.min.css}"/>
+	<link rel="stylesheet" th:href="@{../css/icomoon.css}"/>
+
+	<!-- CSS Files -->
+	<link th:href="@{../css/jumbo.css}" rel="stylesheet"/>
+	<link th:href="@{../css/backgrounds.css}" rel="stylesheet"/>
+	<link th:href="@{../css/bootstrap.min.css}" rel="stylesheet"/>
+	<link th:href="@{../css/material-kit.css}" rel="stylesheet"/>
+
+	<!--   Core JS Files   -->
+	<script th:src="@{../js/jquery.min.js}" type="text/javascript"></script>
+	<script th:src="@{../js/bootstrap.min.js}" type="text/javascript"></script>
+	<script th:src="@{../js/material.min.js}" type="text/javascript"></script>
+	<!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
+	<script th:src="@{../js/nouislider.min.js}" type="text/javascript"></script>
+	<!--  Plugin for the Datepicker, full documentation here: http://www.eyecon.ro/bootstrap-datepicker/ -->
+	<script th:src="@{../js/bootstrap-datepicker.js}" type="text/javascript"></script>
+	<!-- Control Center for Material Kit: activating the ripples, parallax effects, scripts from the example pages etc -->
+	<script  th:src="@{../js/material-kit.js}" type="text/javascript"></script>
 </head>
-<body>
 
+<body class="bgr message1">
+<th:block th:include="fragments/navbar::nav-In"/>
+
+<div class="container">
+	<div class="jumbotron neo">
 <form th:action="@{/question/answer(id=${id},number=${number})}" th:object="${Answer}" method="post">
 	<label class="content" th:utext="${question}"></label>
 		<label for="sel2" th:if="${answerstext.length} > 1">Wähle:</label>
@@ -44,8 +46,8 @@
 		<table>
 			<tr th:each="answer,iterationStatus  : ${answerstext}">
 				<td th:if="${answerstext.length} > 1">	
-					<label class="checkbox-inline" th:utext="${answer}">Option 1</label>
 					<input type="checkbox" th:id="${'answer'+__${iterationStatus.index}__} " th:name="${'answer'+__${iterationStatus.index}__}"></input>
+					<label class="checkbox-inline" th:utext="${answer}">Option 1</label>
 				</td>
 				<td th:if="${answerstext.length} == 1">	
 					<textarea class="checkbox-inline" th:id="${'answertext'+__${iterationStatus.index}__} " th:name="${'answertext'+__${iterationStatus.index}__}" Placeholder="Ihre Lösung:"></textarea>
@@ -57,11 +59,11 @@
 			<div class="row">
 				<div class="col-md-12">
 					<ul class="pager">
-							<li><button th:name="direction" type="submit" th:value="'prev'">← Prev</button></li>
-							<li><button th:name="direction" type="submit" th:value="'next'">Next →</button></li>
+							<li><button class="btn btn-raised btn-default btn-lg" th:name="direction" type="submit" th:value="'prev'">← Prev</button></li>
+							<li><button class="btn btn-raised btn-default btn-lg" th:name="direction" type="submit" th:value="'next'">Next →</button></li>
 					</ul>
 					<div class="progress">
-						<div class="progress-bar" role="progressbar" th:utext="${percentage +'%'}" th:style="${'width: '+ percentage +'%;'}">
+						<div class="progress-bar-info" role="progressbar" th:utext="${percentage +'%'}" th:style="${'width: '+ percentage +'%;'}">
 							</div>
 					</div>
 				</div>
@@ -69,5 +71,7 @@
 		</div>
 	</div>
 </form>
+		</div>
+	</div>
 </body>
 </html>
